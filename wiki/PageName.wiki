@@ -1,8 +1,0 @@
-#summary Structural Overview
-
-= Introduction =
-
-
-= Details =
-
-This structure is still under discussion (2010-09-17)
