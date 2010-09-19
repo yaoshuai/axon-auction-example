@@ -1,8 +1,5 @@
-#summary Structural Overview
+= Structural Overview =
 
-= Diagram =
+This structure is still under discussion (2010-09-17).
+
 http://www.fuin.org/files/axon-auction-example-structure-3.gif
-
-= Details =
-
-This structure is still under discussion (2010-09-17)
