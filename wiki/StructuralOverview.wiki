@@ -1,7 +1,7 @@
 #summary Structural Overview
 
 = Diagram =
-
+http://www.fuin.org/files/axon-auction-example-structure-3.gif
 
 = Details =
 
