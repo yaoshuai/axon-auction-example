@@ -1,0 +1,8 @@
+#summary Structural Overview
+
+= Diagram =
+
+
+= Details =
+
+This structure is still under discussion (2010-09-17)
