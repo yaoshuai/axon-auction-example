@@ -1,5 +1,3 @@
 = Structural Overview =
 
-This structure is still under discussion (2010-09-17).
-
-http://www.fuin.org/files/axon-auction-example-structure-3.gif
+http://axon-auction-example.googlecode.com/svn/www/project-structure.gif
