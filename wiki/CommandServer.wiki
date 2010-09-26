@@ -1,3 +1,5 @@
+#summary Description of the "auction-command-server" project
+
 = Description =
 The *auction-command-server* project is the heart of the example project. It contains the [http://code.google.com/p/axonframework/ Axon Framework] related code.
 
