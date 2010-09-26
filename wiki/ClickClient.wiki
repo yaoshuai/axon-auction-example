@@ -1,0 +1,5 @@
+= Description =
+The *auction-client-click* project is an [http://click.apache.org/ Apache Click] web application. It's an example of a web based client application.
+
+= Dependencies =
+http://axon-auction-example.googlecode.com/svn/www/auction-client-click-dependency.gif
