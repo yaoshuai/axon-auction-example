@@ -1,3 +1,5 @@
+#summary Description of the "auction-query-server" project
+
 = Description =
 The *auction-query-server* project contains the query server code.
 
