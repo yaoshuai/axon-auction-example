@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<click-app> 
+  <pages package="org.fuin.auction.client.click"/>
+</click-app> 
