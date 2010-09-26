@@ -1,2 +1,4 @@
+#summary Description of the "auction-parent" project
+
 = Description =
 The *auction-parent* project contains mavent configurations used by all other projects.
