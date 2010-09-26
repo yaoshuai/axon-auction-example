@@ -1,3 +1,5 @@
+#summary Description of the "auction-message-api" project
+
 = Description =
 The *auction-message-api* project contains layer independent messaging code.
 
