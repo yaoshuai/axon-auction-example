@@ -1,3 +1,5 @@
+#summary Description of the *auction-client-swing* project
+
 = Description =
 The *auction-client-swing* project is a [http://download.oracle.com/javase/tutorial/uiswing/ Swing] application. It's an example of a rich client application.
 
