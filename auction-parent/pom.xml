@@ -192,4 +192,15 @@
 
 	</dependencies>
 
+	<modules>
+		<module>../auction-client-click</module>
+		<module>../auction-client-swing</module>
+		<module>../auction-command-api</module>
+		<module>../auction-command-server</module>
+		<module>../auction-common</module>
+		<module>../auction-message-api</module>
+		<module>../auction-query-api</module>
+		<module>../auction-query-server</module>
+	</modules>
+
 </project>
