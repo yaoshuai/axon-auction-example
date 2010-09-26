@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+  <wb-module deploy-name="auction-client-click">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/auction-common/auction-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/auction-message-api/auction-message-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/auction-query-api/auction-query-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/auction-command-api/auction-command-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    <property name="java-output-path" value="/target/classes"/>
+        <property name="context-root" value="auction-client-click"/>
+    <wb-resource deploy-path="/" source-path="src/main/webapp"/>
+    <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+  </wb-module>
+</project-modules>
