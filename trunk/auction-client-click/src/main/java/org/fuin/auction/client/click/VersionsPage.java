@@ -97,6 +97,9 @@ public class VersionsPage extends Page {
 
     @Override
     public final void onRender() {
+    	if (lastLoad == null) {
+    		onLoad();
+    	}
         addModel("applicationVersion", applicationVersion);
         addModel("commandServerVersion", commandServerVersion);
         addModel("queryServerVersion", queryServerVersion);
