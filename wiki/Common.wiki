@@ -1,3 +1,5 @@
+#summary Description of the "auction-common" project
+
 = Description =
 The *auction-common* project contains layer independent code that may be used by all other projects.
 
