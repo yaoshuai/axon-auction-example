@@ -1,3 +1,5 @@
+#summary Description of the "auction-command-api" project
+
 = Description =
 The *auction-command-api* project contains layer independent command code.
 
