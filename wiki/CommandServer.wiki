@@ -1,0 +1,5 @@
+= Description =
+The *auction-command-server* project is the heart of the example project. It contains the [http://code.google.com/p/axonframework/ Axon Framework] related code.
+
+= Dependencies =
+http://axon-auction-example.googlecode.com/svn/www/auction-command-server-dependency.gif
