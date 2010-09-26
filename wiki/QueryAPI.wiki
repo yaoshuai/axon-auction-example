@@ -1,3 +1,5 @@
+#summary Description of the "auction-query-api" project
+
 = Description =
 The *auction-query-api* project contains layer independent query code.
 
