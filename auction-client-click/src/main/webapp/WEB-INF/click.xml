@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<click-app> 
-  <pages package="org.fuin.auction.client.click"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE click-app PUBLIC "-//Apache Software Foundation//DTD Click Configuration 2.1//EN" "http://click.apache.org/dtds/click-2.1.dtd"> 
+<click-app>
+	<pages package="org.fuin.auction.client.click" />
 </click-app> 
