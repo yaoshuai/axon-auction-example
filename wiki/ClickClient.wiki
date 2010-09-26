@@ -1,3 +1,5 @@
+#summary Description of the "auction-client-click" project
+
 = Description =
 The *auction-client-click* project is an [http://click.apache.org/ Apache Click] web application. It's an example of a web based client application.
 
