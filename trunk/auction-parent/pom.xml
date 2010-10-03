@@ -165,6 +165,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>surefire-report-maven-plugin</artifactId>
+				<version>2.6</version>
 				<inherited>true</inherited>
 			</plugin>
 
@@ -206,7 +207,7 @@
 		<dependency>
 			<groupId>org.fuin</groupId>
 			<artifactId>units4j</artifactId>
-			<version>0.1.2</version>
+			<version>0.2.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -227,16 +228,5 @@
 		</repository>
 
 	</repositories>
-
-	<modules>
-		<module>../auction-client-click</module>
-		<module>../auction-client-swing</module>
-		<module>../auction-command-api</module>
-		<module>../auction-command-server</module>
-		<module>../auction-common</module>
-		<module>../auction-message-api</module>
-		<module>../auction-query-api</module>
-		<module>../auction-query-server</module>
-	</modules>
 
 </project>
