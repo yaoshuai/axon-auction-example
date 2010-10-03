@@ -20,45 +20,45 @@ package org.fuin.auction.common;
  */
 public final class Contract {
 
-    /**
-     * Private constructor to avoid instantiation.
-     */
-    private Contract() {
-        throw new UnsupportedOperationException("You cannot create an instance of a utility class!");
-    }
+	/**
+	 * Private constructor to avoid instantiation.
+	 */
+	private Contract() {
+		throw new UnsupportedOperationException("You cannot create an instance of a utility class!");
+	}
 
-    /**
-     * Checks if the given value is not <code>null</code> or throws an
-     * {@link IllegalArgumentException} otherwise.
-     * 
-     * @param name
-     *            Name of the argument to display on the error message.
-     * @param value
-     *            Value to check for <code>null</code>.
-     * 
-     * @pre name != null
-     */
-    public static void requireParamNotNull(final String name, final Object value) {
-        if (value == null) {
-            throw new IllegalArgumentException("The argument '" + name + "' cannot be null!");
-        }
-    }
+	/**
+	 * Checks if the given value is not <code>null</code> or throws an
+	 * {@link IllegalArgumentException} otherwise.
+	 * 
+	 * @param name
+	 *            Name of the argument to display on the error message.
+	 * @param value
+	 *            Value to check for <code>null</code>.
+	 * 
+	 * @pre name != null
+	 */
+	public static void requireParamNotNull(final String name, final Object value) {
+		if (value == null) {
+			throw new IllegalArgumentException("The argument '" + name + "' cannot be null!");
+		}
+	}
 
-    /**
-     * Checks if the given property value is not <code>null</code> or throws an
-     * {@link IllegalStateException} otherwise.
-     * 
-     * @param name
-     *            Name of the property key to display on the error message.
-     * @param value
-     *            Value to check for <code>null</code>.
-     * 
-     * @pre name != null
-     */
-    public static void requirePropertyNotNull(final String name, final Object value) {
-        if (value == null) {
-            throw new IllegalStateException("The property key '" + name + "' was not found!");
-        }
-    }
+	/**
+	 * Checks if the given property value is not <code>null</code> or throws an
+	 * {@link IllegalStateException} otherwise.
+	 * 
+	 * @param name
+	 *            Name of the property key to display on the error message.
+	 * @param value
+	 *            Value to check for <code>null</code>.
+	 * 
+	 * @pre name != null
+	 */
+	public static void requirePropertyNotNull(final String name, final Object value) {
+		if (value == null) {
+			throw new IllegalStateException("The property key '" + name + "' was not found!");
+		}
+	}
 
 }

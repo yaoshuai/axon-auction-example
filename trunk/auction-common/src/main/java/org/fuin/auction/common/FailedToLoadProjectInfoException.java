@@ -21,51 +21,51 @@ package org.fuin.auction.common;
  */
 public final class FailedToLoadProjectInfoException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final Class<?> clasz;
+	private final Class<?> clasz;
 
-    private final String propertiesFilename;
+	private final String propertiesFilename;
 
-    /**
-     * Constructor with class and cause.
-     * 
-     * @param clasz
-     *            Class used to get the project info resource from.
-     * @param propertiesFilename
-     *            Name and path of the properties file.
-     * @param cause
-     *            The cause.
-     * 
-     * @pre clasz != null
-     * @pre propertiesFilename != null
-     * @pre cause != null
-     */
-    public FailedToLoadProjectInfoException(final Class<?> clasz, final String propertiesFilename,
-            final Throwable cause) {
-        super("Resource '" + propertiesFilename + "' not found!", cause);
-        Contract.requireParamNotNull("clasz", clasz);
-        Contract.requireParamNotNull("propertiesFilename", propertiesFilename);
-        this.clasz = clasz;
-        this.propertiesFilename = propertiesFilename;
-    }
+	/**
+	 * Constructor with class and cause.
+	 * 
+	 * @param clasz
+	 *            Class used to get the project info resource from.
+	 * @param propertiesFilename
+	 *            Name and path of the properties file.
+	 * @param cause
+	 *            The cause.
+	 * 
+	 * @pre clasz != null
+	 * @pre propertiesFilename != null
+	 * @pre cause != null
+	 */
+	public FailedToLoadProjectInfoException(final Class<?> clasz, final String propertiesFilename,
+	        final Throwable cause) {
+		super("Resource '" + propertiesFilename + "' not found!", cause);
+		Contract.requireParamNotNull("clasz", clasz);
+		Contract.requireParamNotNull("propertiesFilename", propertiesFilename);
+		this.clasz = clasz;
+		this.propertiesFilename = propertiesFilename;
+	}
 
-    /**
-     * Returns the class used to get the project info resource from.
-     * 
-     * @return Class.
-     */
-    public final Class<?> getClasz() {
-        return clasz;
-    }
+	/**
+	 * Returns the class used to get the project info resource from.
+	 * 
+	 * @return Class.
+	 */
+	public final Class<?> getClasz() {
+		return clasz;
+	}
 
-    /**
-     * Returns the name of the properties file in the class path.
-     * 
-     * @return Name and path.
-     */
-    public final String getPropertiesFilename() {
-        return propertiesFilename;
-    }
+	/**
+	 * Returns the name of the properties file in the class path.
+	 * 
+	 * @return Name and path.
+	 */
+	public final String getPropertiesFilename() {
+		return propertiesFilename;
+	}
 
 }
