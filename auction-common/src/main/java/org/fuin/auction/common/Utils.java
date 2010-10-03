@@ -24,60 +24,60 @@ import java.util.Properties;
  */
 public final class Utils {
 
-    /**
-     * Private constructor to avoid instantiation.
-     */
-    private Utils() {
-        throw new UnsupportedOperationException("You cannot create an instance of a utility class!");
-    }
+	/**
+	 * Private constructor to avoid instantiation.
+	 */
+	private Utils() {
+		throw new UnsupportedOperationException("You cannot create an instance of a utility class!");
+	}
 
-    /**
-     * Returns the project information relative to the given class.
-     * 
-     * @param clasz
-     *            Class to use for getting the project information resource
-     *            from.
-     * @param propertiesFilename
-     *            Name and path of the properties file.
-     * 
-     * @return Project information.
-     * 
-     * @throws FailedToLoadProjectInfoException
-     *             The project properties resource relative to the given class
-     *             was not found or could not be loaded for other reasons.
-     * 
-     * @pre clasz != null
-     * @pre propertiesFilename != null
-     */
-    public static final ProjectInfo getProjectInfo(final Class<?> clasz,
-            final String propertiesFilename) throws FailedToLoadProjectInfoException {
+	/**
+	 * Returns the project information relative to the given class.
+	 * 
+	 * @param clasz
+	 *            Class to use for getting the project information resource
+	 *            from.
+	 * @param propertiesFilename
+	 *            Name and path of the properties file.
+	 * 
+	 * @return Project information.
+	 * 
+	 * @throws FailedToLoadProjectInfoException
+	 *             The project properties resource relative to the given class
+	 *             was not found or could not be loaded for other reasons.
+	 * 
+	 * @pre clasz != null
+	 * @pre propertiesFilename != null
+	 */
+	public static final ProjectInfo getProjectInfo(final Class<?> clasz,
+	        final String propertiesFilename) throws FailedToLoadProjectInfoException {
 
-        Contract.requireParamNotNull("clasz", clasz);
-        Contract.requireParamNotNull("propertiesFilename", propertiesFilename);
+		Contract.requireParamNotNull("clasz", clasz);
+		Contract.requireParamNotNull("propertiesFilename", propertiesFilename);
 
-        try {
+		try {
 
-            final Properties props = new Properties();
-            final InputStream inStream = clasz.getResourceAsStream(propertiesFilename);
-            if (inStream == null) {
-                throw new FailedToLoadProjectInfoException(clasz, propertiesFilename,
-                        new IOException("Resource '" + propertiesFilename + "' not found!"));
-            }
-            try {
-                try {
-                    props.load(inStream);
-                } finally {
-                    inStream.close();
-                }
-            } catch (final IOException ex) {
-                throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
-            }
-            return new ProjectInfo(props);
+			final Properties props = new Properties();
+			final InputStream inStream = clasz.getResourceAsStream(propertiesFilename);
+			if (inStream == null) {
+				throw new FailedToLoadProjectInfoException(clasz, propertiesFilename,
+				        new IOException("Resource '" + propertiesFilename + "' not found!"));
+			}
+			try {
+				try {
+					props.load(inStream);
+				} finally {
+					inStream.close();
+				}
+			} catch (final IOException ex) {
+				throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
+			}
+			return new ProjectInfo(props);
 
-        } catch (final RuntimeException ex) {
-            throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
-        }
+		} catch (final RuntimeException ex) {
+			throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
+		}
 
-    }
+	}
 
 }

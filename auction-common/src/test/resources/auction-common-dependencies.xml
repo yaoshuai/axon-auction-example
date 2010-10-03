@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dependencies>
+  
+  <!-- All classes are allowed to import this -->
+  <alwaysAllowed>
+    <dependsOn package="java.lang"/>
+    <dependsOn package="java.io"/>
+    <dependsOn package="java.util"/>
+    <!-- dependsOn package="java.text"/-->
+  </alwaysAllowed>
+  
+  <!-- It's forbidden for all packages to use this (in production code) -->
+  <alwaysForbidden>
+    <notDependsOn package="junit.framework"/>
+    <notDependsOn package="org.junit"/>
+  </alwaysForbidden>
+  
+  <!-- Packages are ONLY allowed to use the following packages (all other packages are forbidden) -->
+  <allowed/>
+
+  <!-- Packages are NOT allowed to use the following ones (all other packages are allowed) -->  
+  <forbidden/>
+  
+</dependencies>

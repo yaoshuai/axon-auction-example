@@ -28,94 +28,94 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public final class ProjectInfo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /** Key for the name of the project. */
-    public static final String PROPERTY_NAME = "name";
+	/** Key for the name of the project. */
+	public static final String PROPERTY_NAME = "name";
 
-    /** Key for the version of the project. */
-    public static final String PROPERTY_VERSION = "version";
+	/** Key for the version of the project. */
+	public static final String PROPERTY_VERSION = "version";
 
-    /** Key for the build timestamp. */
-    public static final String PROPERTY_BUILD_TIMESTAMP = "buildTimestamp";
+	/** Key for the build timestamp. */
+	public static final String PROPERTY_BUILD_TIMESTAMP = "buildTimestamp";
 
-    /** Format of the build timestamp. */
-    public static final String BUILD_TIMESTAMP_FORMAT = "yyyy-MM-dd_HH-mm";
+	/** Format of the build timestamp. */
+	public static final String BUILD_TIMESTAMP_FORMAT = "yyyy-MM-dd_HH-mm";
 
-    private final String name;
+	private final String name;
 
-    private final String version;
+	private final String version;
 
-    private final Date buildTimestamp;
+	private final Date buildTimestamp;
 
-    /**
-     * Constructor with data to populate the instance with.
-     * 
-     * @param props
-     *            Properties to get the values from.
-     * 
-     * @pre props != null
-     * @pre The properties file must contain all required properties (see public
-     *      'PROPERTY_*' constants).
-     * @pre The build timestamp is required to have the correct format (see
-     *      BUILD_TIMESTAMP_FORMAT constant).
-     */
-    public ProjectInfo(final Properties props) {
-        super();
+	/**
+	 * Constructor with data to populate the instance with.
+	 * 
+	 * @param props
+	 *            Properties to get the values from.
+	 * 
+	 * @pre props != null
+	 * @pre The properties file must contain all required properties (see public
+	 *      'PROPERTY_*' constants).
+	 * @pre The build timestamp is required to have the correct format (see
+	 *      BUILD_TIMESTAMP_FORMAT constant).
+	 */
+	public ProjectInfo(final Properties props) {
+		super();
 
-        Contract.requireParamNotNull("props", props);
+		Contract.requireParamNotNull("props", props);
 
-        name = props.getProperty(PROPERTY_NAME);
-        Contract.requirePropertyNotNull(PROPERTY_NAME, name);
+		name = props.getProperty(PROPERTY_NAME);
+		Contract.requirePropertyNotNull(PROPERTY_NAME, name);
 
-        version = props.getProperty(PROPERTY_VERSION);
-        Contract.requirePropertyNotNull(PROPERTY_VERSION, version);
+		version = props.getProperty(PROPERTY_VERSION);
+		Contract.requirePropertyNotNull(PROPERTY_VERSION, version);
 
-        final String buildTimestampStr = props.getProperty(PROPERTY_BUILD_TIMESTAMP);
-        Contract.requirePropertyNotNull(PROPERTY_BUILD_TIMESTAMP, buildTimestampStr);
+		final String buildTimestampStr = props.getProperty(PROPERTY_BUILD_TIMESTAMP);
+		Contract.requirePropertyNotNull(PROPERTY_BUILD_TIMESTAMP, buildTimestampStr);
 
-        final SimpleDateFormat sdf = new SimpleDateFormat(BUILD_TIMESTAMP_FORMAT);
-        try {
-            buildTimestamp = sdf.parse(buildTimestampStr);
-        } catch (final ParseException ex) {
-            throw new IllegalStateException("The value '" + buildTimestampStr
-                    + "' of the property '" + name + "' was not in the format '"
-                    + BUILD_TIMESTAMP_FORMAT + "'!");
-        }
+		final SimpleDateFormat sdf = new SimpleDateFormat(BUILD_TIMESTAMP_FORMAT);
+		try {
+			buildTimestamp = sdf.parse(buildTimestampStr);
+		} catch (final ParseException ex) {
+			throw new IllegalStateException("The value '" + buildTimestampStr
+			        + "' of the property '" + name + "' was not in the format '"
+			        + BUILD_TIMESTAMP_FORMAT + "'!");
+		}
 
-    }
+	}
 
-    /**
-     * Returns the project name.
-     * 
-     * @return Name of the project.
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Returns the project name.
+	 * 
+	 * @return Name of the project.
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Returns the version of the project.
-     * 
-     * @return Version.
-     */
-    public String getVersion() {
-        return version;
-    }
+	/**
+	 * Returns the version of the project.
+	 * 
+	 * @return Version.
+	 */
+	public String getVersion() {
+		return version;
+	}
 
-    /**
-     * Returns the build timestamp.
-     * 
-     * @return Date and time of the build.
-     */
-    public Date getBuildTimestamp() {
-        return buildTimestamp;
-    }
+	/**
+	 * Returns the build timestamp.
+	 * 
+	 * @return Date and time of the build.
+	 */
+	public Date getBuildTimestamp() {
+		return buildTimestamp;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("name", name).append("version", version).append(
-                "buildTimestamp", buildTimestamp).toString();
-    }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("name", name).append("version", version).append(
+		        "buildTimestamp", buildTimestamp).toString();
+	}
 
 }
