@@ -32,6 +32,18 @@
 		</developer>
 	</developers>
 
+	<issueManagement>
+		<system>Google</system>
+		<url>http://code.google.com/p/axon-auction-example/issues/list</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:http://axon-auction-example.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://axon-auction-example.googlecode.com/svn/trunk</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://code.google.com/p/axon-auction-example/source/browse</url>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.build.timestamp.format>yyyy-MM-dd_HH-mm</maven.build.timestamp.format>
@@ -191,7 +203,30 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.fuin</groupId>
+			<artifactId>units4j</artifactId>
+			<version>0.1.2</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
+
+	<repositories>
+
+		<repository>
+			<id>fuin.org</id>
+			<name>Repository at fuin.org</name>
+			<url>http://www.fuin.org/maven-repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+	</repositories>
 
 	<modules>
 		<module>../auction-client-click</module>
