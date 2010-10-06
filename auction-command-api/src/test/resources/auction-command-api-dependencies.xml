@@ -13,8 +13,8 @@
 
   <!-- Packages are NOT allowed to use the following ones (all other packages are allowed) -->  
   <forbidden>
-    <package name="org.fuin.auction.common" comment="Common is not allowed to access any of the other projects">
-      <notDependsOn package="org.fuin.auction.command"/>
+    <package name="org.fuin.auction.command.api" comment="Command API is only allowed to access Common">
+      <notDependsOn package="org.fuin.auction.command.server"/>
       <notDependsOn package="org.fuin.auction.query"/>    
       <notDependsOn package="org.fuin.auction.message"/>
       <notDependsOn package="org.fuin.auction.client"/>

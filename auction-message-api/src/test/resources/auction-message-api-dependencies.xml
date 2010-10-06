@@ -13,10 +13,9 @@
 
   <!-- Packages are NOT allowed to use the following ones (all other packages are allowed) -->  
   <forbidden>
-    <package name="org.fuin.auction.common" comment="Common is not allowed to access any of the other projects">
-      <notDependsOn package="org.fuin.auction.command"/>
-      <notDependsOn package="org.fuin.auction.query"/>    
-      <notDependsOn package="org.fuin.auction.message"/>
+    <package name="oorg.fuin.auction.message.api" comment="Message API is only allowed to access Common">
+      <notDependsOn package="org.fuin.auction.query"/>
+      <notDependsOn package="org.fuin.auction.command"/>    
       <notDependsOn package="org.fuin.auction.client"/>
     </package>
   </forbidden>
