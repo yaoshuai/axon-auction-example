@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dependencies>
   <!-- Project dependency definition for use with AssertDependencies - http://www.fuin.org/units4j/ -->
-  
+    
   <!-- All classes are allowed to use this -->
   <alwaysAllowed/>
   
@@ -13,11 +13,9 @@
 
   <!-- Packages are NOT allowed to use the following ones (all other packages are allowed) -->  
   <forbidden>
-    <package name="org.fuin.auction.common" comment="Common is not allowed to access any of the other projects">
-      <notDependsOn package="org.fuin.auction.command"/>
-      <notDependsOn package="org.fuin.auction.query"/>    
-      <notDependsOn package="org.fuin.auction.message"/>
-      <notDependsOn package="org.fuin.auction.client"/>
+    <package name="org.fuin.auction.query.server">
+      <notDependsOn package="org.fuin.auction.command" comment="Query server communicates with the Command Server only using messaging"/>
+      <notDependsOn package="org.fuin.auction.client" comment="Client tier cannot be accessed by the server"/>
     </package>
   </forbidden>
   
