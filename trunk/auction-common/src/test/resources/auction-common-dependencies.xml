@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dependencies>
   
-  <!-- All classes are allowed to import this -->
+  <!-- All classes are allowed to use this -->
   <alwaysAllowed>
     <dependsOn package="java.lang"/>
     <dependsOn package="java.io"/>
@@ -20,8 +20,12 @@
 
   <!-- Packages are NOT allowed to use the following ones (all other packages are allowed) -->  
   <forbidden>
-    <notDependsOn package="org.fuin.auction.command"/>
-    <notDependsOn package="org.fuin.auction.client"/>
+    <package name="org.fuin.auction.common" comment="Commons is not allowed to access any of the other project packages">
+      <notDependsOn package="org.fuin.auction.command"/>
+      <notDependsOn package="org.fuin.auction.query"/>    
+      <notDependsOn package="org.fuin.auction.message"/>
+      <notDependsOn package="org.fuin.auction.client"/>
+    </package>
   </forbidden>
   
 </dependencies>
