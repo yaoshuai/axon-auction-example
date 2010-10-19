@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="org.fuin.auction.command.server" />
+
+	<bean id="commandBus" class="org.axonframework.commandhandling.SimpleCommandBus">
+		<property name="interceptors">
+			<bean
+				class="org.axonframework.commandhandling.interceptors.SimpleUnitOfWorkInterceptor" />
+		</property>
+	</bean>
+
+	<bean
+		class="org.axonframework.eventhandling.annotation.AnnotationEventListenerBeanPostProcessor">
+		<property name="executor" ref="taskExecutor" />
+	</bean>
+
+	<bean
+		class="org.axonframework.commandhandling.annotation.AnnotationCommandHandlerBeanPostProcessor">
+		<property name="commandBus" ref="commandBus" />
+	</bean>
+
+	<bean id="eventBus" class="org.axonframework.eventhandling.SimpleEventBus" />
+
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="2" />
+		<property name="maxPoolSize" value="5" />
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+	</bean>
+
+	<bean id="userRepository"
+		class="org.axonframework.eventsourcing.GenericEventSourcingRepository">
+		<constructor-arg value="org.fuin.auction.command.server.User" />
+		<property name="eventBus" ref="eventBus" />
+		<property name="eventStore" ref="triggeringEventStore" />
+	</bean>
+
+	<bean id="triggeringEventStore"
+		class="org.axonframework.eventsourcing.EventCountSnapshotterTrigger">
+		<property name="eventStore" ref="eventStore" />
+		<property name="snapshotter" ref="snapshotter" />
+		<property name="triggerConfiguration">
+			<props>
+				<prop key="User">2</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="snapshotter"
+		class="org.axonframework.eventsourcing.SpringAggregateSnapshotter">
+		<property name="eventStore" ref="eventStore" />
+		<property name="executor" ref="taskExecutor" />
+	</bean>
+
+	<bean id="eventStore" class="org.axonframework.eventstore.fs.FileSystemEventStore">
+		<property name="baseDir">
+			<bean class="org.springframework.core.io.FileSystemResource">
+				<constructor-arg value="${java.io.tmpdir}/axon-auction-example/" />
+			</bean>
+		</property>
+	</bean>
+
+</beans>

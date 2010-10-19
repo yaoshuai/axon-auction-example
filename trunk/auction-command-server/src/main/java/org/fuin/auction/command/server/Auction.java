@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api;
+package org.fuin.auction.command.server;
+
+import java.util.UUID;
+
+import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 
 /**
- * Service for sending commands to the command server.
+ * Represents the process of buying and selling goods or services by offering
+ * them up for bid, taking bids, and then selling the item to the highest
+ * bidder.
  */
-public interface AuctionCommandService {
+public final class Auction extends AbstractAnnotatedAggregateRoot {
 
 	/**
-	 * Sends a command to the server.
+	 * Constructor with id.
 	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
-	 * 
-	 * @return Result.
+	 * @param identifier
+	 *            Unique id of the auction.
 	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	public Auction(final UUID identifier) {
+		super(identifier);
+	}
 
 }

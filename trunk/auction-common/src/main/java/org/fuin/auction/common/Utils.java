@@ -45,15 +45,9 @@ public final class Utils {
 	 * @throws FailedToLoadProjectInfoException
 	 *             The project properties resource relative to the given class
 	 *             was not found or could not be loaded for other reasons.
-	 * 
-	 * @pre clasz != null
-	 * @pre propertiesFilename != null
 	 */
 	public static final ProjectInfo getProjectInfo(final Class<?> clasz,
 	        final String propertiesFilename) throws FailedToLoadProjectInfoException {
-
-		Contract.requireParamNotNull("clasz", clasz);
-		Contract.requireParamNotNull("propertiesFilename", propertiesFilename);
 
 		try {
 
@@ -78,6 +72,26 @@ public final class Utils {
 			throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
 		}
 
+	}
+
+	/**
+	 * Creates an error message from an exception. Some exceptions (for example
+	 * {@link NullPointerException}) don't carry a message. In this case the
+	 * simple name of the exception is used for creating the error message.
+	 * 
+	 * @param ex
+	 *            Exception to create an error message for.
+	 * 
+	 * @return Error message - Always non-<code>null</code> and not empty.
+	 */
+	public static String createMessage(final Exception ex) {
+		final String msg;
+		if ((ex.getMessage() == null) || (ex.getMessage().trim().length() == 0)) {
+			msg = ex.getClass().getSimpleName();
+		} else {
+			msg = ex.getMessage();
+		}
+		return msg;
 	}
 
 }

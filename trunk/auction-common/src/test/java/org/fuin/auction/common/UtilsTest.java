@@ -22,27 +22,42 @@ import org.junit.Test;
 // TESTCODE:BEGIN
 public final class UtilsTest {
 
-    @Test
-    public final void testGetProjectInfo() throws FailedToLoadProjectInfoException {
+	@Test
+	public final void testGetProjectInfo() throws FailedToLoadProjectInfoException {
 
-        // TEST
-        final ProjectInfo projectInfo = Utils.getProjectInfo(Utils.class,
-                "/auction-common.properties");
+		// TEST
+		final ProjectInfo projectInfo = Utils.getProjectInfo(Utils.class,
+		        "/auction-common.properties");
 
-        // VERIFY
-        assertThat(projectInfo.getName()).isEqualTo("Axon Auction Example - Common");
-        assertThat(projectInfo.getVersion()).isNotEmpty();
-        assertThat(projectInfo.getBuildTimestamp()).isNotNull();
+		// VERIFY
+		assertThat(projectInfo.getName()).isEqualTo("Axon Auction Example - Common");
+		assertThat(projectInfo.getVersion()).isNotEmpty();
+		assertThat(projectInfo.getBuildTimestamp()).isNotNull();
 
-    }
+	}
 
-    @Test(expected = FailedToLoadProjectInfoException.class)
-    public final void testGetProjectInfoNotFound() throws FailedToLoadProjectInfoException {
+	@Test(expected = FailedToLoadProjectInfoException.class)
+	public final void testGetProjectInfoNotFound() throws FailedToLoadProjectInfoException {
 
-        // TEST
-        Utils.getProjectInfo(Utils.class, "unknown-config.properties");
+		// TEST
+		Utils.getProjectInfo(Utils.class, "unknown-config.properties");
 
-    }
+	}
+
+	@Test
+	public final void testCreateMessage() {
+
+		// PREPARE
+		final String msg = "Abc-123";
+
+		// TEST & VERIFY
+		assertThat(Utils.createMessage(new NullPointerException())).isEqualTo(
+		        "NullPointerException");
+		assertThat(Utils.createMessage(new NullPointerException(""))).isEqualTo(
+		        "NullPointerException");
+		assertThat(Utils.createMessage(new RuntimeException(msg))).isEqualTo(msg);
+
+	}
 
 }
 // TESTCODE:END

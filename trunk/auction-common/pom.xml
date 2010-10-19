@@ -19,4 +19,32 @@
 		<finalName>auction-common-${auction-version}</finalName>
 	</build>
 
+	<dependencies>
+
+		<!-- RUNTIME -->
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fuin</groupId>
+			<artifactId>objects4j</artifactId>
+			<version>0.1.2</version>
+		</dependency>
+
+		<!-- TEST -->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.0.2.GA</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+
 </project>

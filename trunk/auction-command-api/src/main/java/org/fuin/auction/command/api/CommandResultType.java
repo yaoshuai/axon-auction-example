@@ -16,20 +16,17 @@
 package org.fuin.auction.command.api;
 
 /**
- * Service for sending commands to the command server.
+ * Type of a command result.
  */
-public interface AuctionCommandService {
+public enum CommandResultType {
 
-	/**
-	 * Sends a command to the server.
-	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
-	 * 
-	 * @return Result.
-	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	/** The operation was successful. */
+	SUCCESS,
+
+	/** The operation was partially successful. */
+	WARNING,
+
+	/** The operation failed for some reason. */
+	ERROR
 
 }

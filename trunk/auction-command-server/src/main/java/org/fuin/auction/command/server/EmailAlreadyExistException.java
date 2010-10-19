@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api;
+package org.fuin.auction.command.server;
+
+import org.fuin.objects4j.EmailAddress;
 
 /**
- * Service for sending commands to the command server.
+ * The email is already used for another user account.
  */
-public interface AuctionCommandService {
+public final class EmailAlreadyExistException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Sends a command to the server.
+	 * Constructor email.
 	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
-	 * 
-	 * @return Result.
+	 * @param email
+	 *            Email address.
 	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	public EmailAlreadyExistException(final EmailAddress email) {
+		super("The email '" + email + "' is already in use by another user account!");
+	}
 
 }

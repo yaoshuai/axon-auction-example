@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api;
+package org.fuin.auction.command.server;
 
 /**
- * Service for sending commands to the command server.
+ * A password is wrong.
  */
-public interface AuctionCommandService {
+public final class PasswordException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Sends a command to the server.
+	 * Constructor with message.
 	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
-	 * 
-	 * @return Result.
+	 * @param message
+	 *            Error message.
 	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	public PasswordException(final String message) {
+		super(message);
+	}
 
 }

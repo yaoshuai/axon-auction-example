@@ -15,21 +15,34 @@
  */
 package org.fuin.auction.command.api;
 
+import java.io.Serializable;
+
 /**
- * Service for sending commands to the command server.
+ * Result of executing a command.
+ * 
+ * @param <TYPE>
+ *            Concrete type of the command.
  */
-public interface AuctionCommandService {
+public interface CommandResult<TYPE> extends Serializable {
 
 	/**
-	 * Sends a command to the server.
+	 * Initialize the specific command result for an internal error.
 	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
+	 * @param message
+	 *            Error message.
 	 * 
-	 * @return Result.
+	 * @return The result instance (this).
 	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	public TYPE internalError(String message);
+
+	/**
+	 * Initialize the specific command result for an invalid command error.
+	 * 
+	 * @param message
+	 *            Error message.
+	 * 
+	 * @return The result instance (this).
+	 */
+	public TYPE invalidCommand(String message);
 
 }

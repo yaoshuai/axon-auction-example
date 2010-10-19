@@ -16,20 +16,19 @@
 package org.fuin.auction.command.api;
 
 /**
- * Service for sending commands to the command server.
+ * Base class for concrete commands.
+ * 
+ * @param <RESULT>
+ *            Type of the result.
  */
-public interface AuctionCommandService {
+public abstract class AbstractCommand<RESULT extends CommandResult<RESULT>> implements
+        Command<RESULT> {
 
-	/**
-	 * Sends a command to the server.
-	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
-	 * 
-	 * @return Result.
-	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	private static final long serialVersionUID = 3334119737176964257L;
+
+	@Override
+	public final String getName() {
+		return this.getClass().getName();
+	}
 
 }

@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api;
+package org.fuin.auction.command.server;
+
+import org.fuin.objects4j.UserId;
 
 /**
- * Service for sending commands to the command server.
+ * A user id is already registered.
  */
-public interface AuctionCommandService {
+public final class UserIdAlreadyExistException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Sends a command to the server.
+	 * Constructor with user id.
 	 * 
-	 * @param command
-	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
-	 * 
-	 * @return Result.
+	 * @param userId
+	 *            User id.
 	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	public UserIdAlreadyExistException(final UserId userId) {
+		super("The user id'" + userId + "' already exists!");
+	}
 
 }
