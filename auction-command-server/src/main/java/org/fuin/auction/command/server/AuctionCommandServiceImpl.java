@@ -15,29 +15,62 @@
  */
 package org.fuin.auction.command.server;
 
+import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.commandhandling.callbacks.FutureCallback;
+import org.fuin.auction.command.api.AbstractCommandResult;
 import org.fuin.auction.command.api.AuctionCommandService;
-import org.fuin.auction.common.FailedToLoadProjectInfoException;
+import org.fuin.auction.command.api.Command;
 import org.fuin.auction.common.Utils;
+import org.fuin.objects4j.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implements the {@link AuctionCommandService}.
  */
 public class AuctionCommandServiceImpl implements AuctionCommandService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandServiceImpl.class);
 
-    @Override
-    public final String getVersion() {
-        try {
-            return Utils.getProjectInfo(this.getClass(), "/auction-command-server.properties")
-                    .getVersion();
-        } catch (final FailedToLoadProjectInfoException ex) {
-            final String message = "Cannot retrieve version!";
-            LOG.error(message, ex);
-            throw new RuntimeException(message);
-        }
-    }
+	@Autowired
+	private CommandBus commandBus;
+
+	/**
+	 * Sets the command bus.
+	 * 
+	 * @param commandBus
+	 *            Command bus.
+	 */
+	public final void setCommandBus(final CommandBus commandBus) {
+		this.commandBus = commandBus;
+	}
+
+	@Override
+	public final <RESULT extends AbstractCommandResult<RESULT>> RESULT send(
+	        final Command<RESULT> command) {
+
+		try {
+			// Don't let invalid commands get through
+			Contract.requireValid(command);
+		} catch (final IllegalStateException ex) {
+			LOG.error("Invalid command: " + command, ex);
+			return command.invalidCommand(Utils.createMessage(ex));
+		}
+
+		try {
+
+			// Dispatch command and wait for result
+			final FutureCallback<Command<RESULT>, RESULT> callback;
+			callback = new FutureCallback<Command<RESULT>, RESULT>();
+			commandBus.dispatch(command, callback);
+			return callback.get();
+
+		} catch (final Exception ex) {
+			LOG.error("Internal error: " + command, ex);
+			return command.internalError(Utils.createMessage(ex));
+		}
+
+	}
 
 }

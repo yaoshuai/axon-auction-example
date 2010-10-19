@@ -21,6 +21,8 @@ import java.util.Date;
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
 import org.fuin.auction.command.api.AuctionCommandService;
+import org.fuin.auction.command.api.GetServerInfoCommand;
+import org.fuin.auction.command.api.GetServerInfoCommandResult;
 import org.fuin.auction.common.FailedToLoadProjectInfoException;
 import org.fuin.auction.common.Utils;
 import org.fuin.auction.query.api.AuctionQueryService;
@@ -34,76 +36,82 @@ import com.caucho.hessian.client.HessianProxyFactory;
  */
 public class VersionsPage extends Page {
 
-    private static final String ERROR_LOADING_VERSION_INFORMATION = "Error loading version information!";
+	private static final String ERROR_LOADING_VERSION_INFORMATION = "Error loading version information!";
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final Logger LOG = LoggerFactory.getLogger(VersionsPage.class);
+	private static final Logger LOG = LoggerFactory.getLogger(VersionsPage.class);
 
-    private String applicationVersion = "?";
+	private String applicationVersion = "?";
 
-    private String commandServerVersion = "?";
+	private String commandServerVersion = "?";
 
-    private String queryServerVersion = "?";
+	private String queryServerVersion = "?";
 
-    private Date lastLoad = null;
+	private String message = "";
 
-    /**
-     * Default constructor.
-     */
-    public VersionsPage() {
-        addControl(new ActionLink("load", this, "onLoad"));
-    }
+	private Date lastLoad = null;
 
-    /**
-     * Loads the version data.
-     * 
-     * @return If the loading was successful <code>true</code> else
-     *         <code>false</code>.
-     */
-    public final boolean onLoad() {
+	/**
+	 * Default constructor.
+	 */
+	public VersionsPage() {
+		addControl(new ActionLink("load", this, "onLoad"));
+	}
 
-        lastLoad = new Date();
+	/**
+	 * Loads the version data.
+	 * 
+	 * @return If the loading was successful <code>true</code> else
+	 *         <code>false</code>.
+	 */
+	public final boolean onLoad() {
 
-        try {
+		lastLoad = new Date();
 
-            final HessianProxyFactory factory = new HessianProxyFactory();
+		try {
 
-            applicationVersion = Utils.getProjectInfo(this.getClass(),
-                    "/auction-client-click.properties").getVersion();
+			final HessianProxyFactory factory = new HessianProxyFactory();
 
-            final AuctionQueryService queryService = (AuctionQueryService) factory.create(
-                    AuctionQueryService.class,
-                    "http://localhost:8080/auction-query-server/AuctionQueryService");
-            queryServerVersion = queryService.getVersion();
+			applicationVersion = Utils.getProjectInfo(this.getClass(),
+			        "/auction-client-click.properties").getVersion();
 
-            final AuctionCommandService commandService = (AuctionCommandService) factory.create(
-                    AuctionCommandService.class,
-                    "http://localhost:8080/auction-command-server/AuctionCommandService");
-            commandServerVersion = commandService.getVersion();
+			final AuctionQueryService queryService = (AuctionQueryService) factory.create(
+			        AuctionQueryService.class,
+			        "http://localhost:8080/auction-query-server/AuctionQueryService");
+			queryServerVersion = queryService.getVersion();
 
-            return true;
+			final AuctionCommandService commandService = (AuctionCommandService) factory.create(
+			        AuctionCommandService.class,
+			        "http://localhost:8080/auction-command-server/AuctionCommandService");
+			final GetServerInfoCommandResult result = commandService
+			        .send(new GetServerInfoCommand());
+			commandServerVersion = result.getVersion();
+			message = result.getInternalMessage();
 
-        } catch (final RuntimeException ex) {
-            LOG.error(ERROR_LOADING_VERSION_INFORMATION, ex);
-        } catch (final FailedToLoadProjectInfoException ex) {
-            LOG.error(ERROR_LOADING_VERSION_INFORMATION, ex);
-        } catch (final MalformedURLException ex) {
-            LOG.error(ERROR_LOADING_VERSION_INFORMATION, ex);
-        }
-        return false;
+			return true;
 
-    }
+		} catch (final RuntimeException ex) {
+			LOG.error(ERROR_LOADING_VERSION_INFORMATION, ex);
+		} catch (final FailedToLoadProjectInfoException ex) {
+			LOG.error(ERROR_LOADING_VERSION_INFORMATION, ex);
+		} catch (final MalformedURLException ex) {
+			LOG.error(ERROR_LOADING_VERSION_INFORMATION, ex);
+		}
+		return false;
 
-    @Override
-    public final void onRender() {
-    	if (lastLoad == null) {
-    		onLoad();
-    	}
-        addModel("applicationVersion", applicationVersion);
-        addModel("commandServerVersion", commandServerVersion);
-        addModel("queryServerVersion", queryServerVersion);
-        addModel("lastLoad", lastLoad);
-    }
+	}
+
+	@Override
+	public final void onRender() {
+		if (lastLoad == null) {
+			onLoad();
+		}
+		addModel("applicationVersion", applicationVersion);
+		addModel("commandServerVersion", commandServerVersion);
+		addModel("queryServerVersion", queryServerVersion);
+		addModel("message", message);
+		addModel("lastLoad", lastLoad);
+	}
 
 }

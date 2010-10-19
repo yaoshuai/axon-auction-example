@@ -15,6 +15,10 @@
  */
 package org.fuin.auction.common;
 
+import javax.validation.constraints.NotNull;
+
+import org.fuin.objects4j.Contract;
+
 /**
  * The project properties resource relative to the given class was not found or
  * could not be loaded for other reasons.
@@ -23,8 +27,10 @@ public final class FailedToLoadProjectInfoException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	private final Class<?> clasz;
 
+	@NotNull
 	private final String propertiesFilename;
 
 	/**
@@ -36,18 +42,13 @@ public final class FailedToLoadProjectInfoException extends Exception {
 	 *            Name and path of the properties file.
 	 * @param cause
 	 *            The cause.
-	 * 
-	 * @pre clasz != null
-	 * @pre propertiesFilename != null
-	 * @pre cause != null
 	 */
 	public FailedToLoadProjectInfoException(final Class<?> clasz, final String propertiesFilename,
 	        final Throwable cause) {
 		super("Resource '" + propertiesFilename + "' not found!", cause);
-		Contract.requireParamNotNull("clasz", clasz);
-		Contract.requireParamNotNull("propertiesFilename", propertiesFilename);
 		this.clasz = clasz;
 		this.propertiesFilename = propertiesFilename;
+		Contract.requireValid(this);
 	}
 
 	/**

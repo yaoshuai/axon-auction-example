@@ -24,24 +24,24 @@ import org.junit.Test;
 //TESTCODE:BEGIN
 public class FailedToLoadProjectInfoExceptionTest {
 
-    @Test
-    public final void testConstruct() {
+	@Test
+	public final void testConstruct() {
 
-        // PREPARE
-        final Class<?> clasz = Contract.class;
-        final String propertiesFilename = "project.properties";
-        final IOException cause = new IOException("Dummy");
+		// PREPARE
+		final Class<?> clasz = ProjectInfo.class;
+		final String propertiesFilename = "project.properties";
+		final IOException cause = new IOException("Dummy");
 
-        // TEST
-        final FailedToLoadProjectInfoException testee = new FailedToLoadProjectInfoException(clasz,
-                propertiesFilename, cause);
+		// TEST
+		final FailedToLoadProjectInfoException testee = new FailedToLoadProjectInfoException(clasz,
+		        propertiesFilename, cause);
 
-        // VERIFY
-        assertThat(testee.getClasz()).isSameAs(clasz);
-        assertThat(testee.getPropertiesFilename()).isEqualTo(propertiesFilename);
-        assertThat(testee.getCause()).isSameAs(cause);
+		// VERIFY
+		assertThat(testee.getClasz()).isSameAs(clasz);
+		assertThat(testee.getPropertiesFilename()).isEqualTo(propertiesFilename);
+		assertThat(testee.getCause()).isSameAs(cause);
 
-    }
+	}
 
 }
 // TESTCODE:BEGIN

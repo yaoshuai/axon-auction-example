@@ -27,28 +27,28 @@ import org.junit.Test;
 //TESTCODE:BEGIN
 public class ProjectInfoTest {
 
-    @Test
-    public final void testProjectInfo() throws ParseException {
+	@Test
+	public final void testProjectInfo() throws ParseException {
 
-        // PREPARE
-        final SimpleDateFormat sdf = new SimpleDateFormat(ProjectInfo.BUILD_TIMESTAMP_FORMAT);
-        final String name = "Project X";
-        final String version = "1.2.3";
-        final Date buildTimestamp = sdf.parse(sdf.format(new Date()));
-        final Properties props = new Properties();
-        props.put(ProjectInfo.PROPERTY_NAME, name);
-        props.put(ProjectInfo.PROPERTY_VERSION, version);
-        props.put(ProjectInfo.PROPERTY_BUILD_TIMESTAMP, sdf.format(buildTimestamp));
+		// PREPARE
+		final SimpleDateFormat sdf = new SimpleDateFormat(ProjectInfo.BUILD_TIMESTAMP_FORMAT);
+		final String name = "Project X";
+		final String version = "1.2.3";
+		final String buildTimestamp = sdf.format(new Date());
+		final Properties props = new Properties();
+		props.put(ProjectInfo.PROPERTY_NAME, name);
+		props.put(ProjectInfo.PROPERTY_VERSION, version);
+		props.put(ProjectInfo.PROPERTY_BUILD_TIMESTAMP, buildTimestamp);
 
-        // TEST
-        final ProjectInfo testee = new ProjectInfo(props);
+		// TEST
+		final ProjectInfo testee = new ProjectInfo(props);
 
-        // VERIFY
-        assertThat(testee.getName()).isEqualTo(name);
-        assertThat(testee.getVersion()).isEqualTo(version);
-        assertThat(testee.getBuildTimestamp()).isEqualTo(buildTimestamp);
+		// VERIFY
+		assertThat(testee.getName()).isEqualTo(name);
+		assertThat(testee.getVersion()).isEqualTo(version);
+		assertThat(testee.getBuildTimestamp()).isEqualTo(buildTimestamp);
 
-    }
+	}
 
 }
 // TESTCODE:END
