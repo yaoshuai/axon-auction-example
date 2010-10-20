@@ -15,24 +15,11 @@
  */
 package org.fuin.auction.command.server;
 
-import javax.inject.Named;
-
-import org.axonframework.domain.AggregateIdentifier;
-
 /**
- * Creates aggregate identifiers for users.
+ * Marker annotation for UUID based aggregate identifiers.
  */
-@Named
-public final class UserIdFactory implements AggregateIdentifierFactory {
-
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
-
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId) {
-		return new AggregateIdentifierUUID(aggregateId);
-	}
+@javax.inject.Qualifier
+@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface IdUUID {
 
 }
