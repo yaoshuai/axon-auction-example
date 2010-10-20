@@ -24,7 +24,7 @@ import org.fuin.objects4j.validation.UserIdStr;
 /**
  * Register a new user.
  */
-public final class RegisterUserCommand extends AbstractCommand<RegisterUserCommandResult> {
+public final class RegisterUserCommand implements Command {
 
 	private static final long serialVersionUID = 5381295115581408651L;
 
@@ -126,16 +126,6 @@ public final class RegisterUserCommand extends AbstractCommand<RegisterUserComma
 	 */
 	public final void setEmail(final String email) {
 		this.email = email;
-	}
-
-	@Override
-	public final RegisterUserCommandResult internalError(final String message) {
-		return new RegisterUserCommandResult().internalError(message);
-	}
-
-	@Override
-	public final RegisterUserCommandResult invalidCommand(final String message) {
-		return new RegisterUserCommandResult().invalidCommand(message);
 	}
 
 }

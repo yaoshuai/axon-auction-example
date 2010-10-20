@@ -18,6 +18,7 @@ package org.fuin.auction.command.server;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
+import org.fuin.auction.command.api.PasswordException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.PasswordSha512;
@@ -72,7 +73,8 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	public final void changePassword(final Password oldPw, final Password newPw)
 	        throws PasswordException {
 
-		if (!password.equals(oldPw)) {
+		final PasswordSha512 oldPassword = new PasswordSha512(oldPw);
+		if (!password.equals(oldPassword)) {
 			throw new PasswordException("The old password is wrong!");
 		}
 

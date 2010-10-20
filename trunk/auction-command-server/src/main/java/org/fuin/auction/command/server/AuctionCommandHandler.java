@@ -19,27 +19,28 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
+import org.axonframework.domain.AggregateIdentifier;
+import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
-import org.fuin.auction.command.api.GetServerInfoCommand;
-import org.fuin.auction.command.api.GetServerInfoCommandResult;
+import org.fuin.auction.command.api.ChangePasswordCommand;
+import org.fuin.auction.command.api.CommandResult;
+import org.fuin.auction.command.api.EmailAlreadyExistException;
+import org.fuin.auction.command.api.IdNotFoundException;
+import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.RegisterUserCommand;
 import org.fuin.auction.command.api.RegisterUserCommandResult;
-import org.fuin.auction.common.FailedToLoadProjectInfoException;
-import org.fuin.auction.common.ProjectInfo;
+import org.fuin.auction.command.api.UserIdAlreadyExistException;
+import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Handler for managing the auction commands.
  */
 @Named
 public class AuctionCommandHandler {
-
-	private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandHandler.class);
 
 	@Inject
 	private ConstraintService constraintService;
@@ -83,7 +84,7 @@ public class AuctionCommandHandler {
 	}
 
 	/**
-	 * Returns the server information.
+	 * Register a new user.
 	 * 
 	 * @param command
 	 *            Command to handle.
@@ -91,28 +92,7 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final GetServerInfoCommandResult handle(final GetServerInfoCommand command) {
-		try {
-			final ProjectInfo projectInfo = Utils.getProjectInfo(this.getClass(),
-			        "/auction-command-server.properties");
-			return new GetServerInfoCommandResult(projectInfo.getName(), projectInfo.getVersion(),
-			        projectInfo.getBuildTimestampAsDate());
-		} catch (final FailedToLoadProjectInfoException ex) {
-			LOG.error("Unable to retrieve server info!", ex);
-			return new GetServerInfoCommandResult().internalError(Utils.createMessage(ex));
-		}
-	}
-
-	/**
-	 * Registers a new user.
-	 * 
-	 * @param command
-	 *            Command to handle.
-	 * 
-	 * @return Result of the command.
-	 */
-	@CommandHandler
-	public final RegisterUserCommandResult handle(final RegisterUserCommand command) {
+	public final CommandResult handle(final RegisterUserCommand command) {
 
 		try {
 
@@ -128,12 +108,42 @@ public class AuctionCommandHandler {
 			return new RegisterUserCommandResult(user.getIdentifier().toString());
 
 		} catch (final UserIdEmailCombinationAlreadyExistException ex) {
-			return RegisterUserCommandResult.createUserIdEmailCombinationAlreadyExistError(ex
-			        .getMessage());
+			return ex.toCommandResult();
 		} catch (final UserIdAlreadyExistException ex) {
-			return RegisterUserCommandResult.createUserIdAlreadyExistError(ex.getMessage());
+			return ex.toCommandResult();
 		} catch (final EmailAlreadyExistException ex) {
-			return RegisterUserCommandResult.createEmailAlreadyExistError(ex.getMessage());
+			return ex.toCommandResult();
+		}
+
+	}
+
+	/**
+	 * Register a new user.
+	 * 
+	 * @param command
+	 *            Command to handle.
+	 * 
+	 * @return Result of the command.
+	 */
+	@CommandHandler
+	public final CommandResult handle(final ChangePasswordCommand command) {
+
+		try {
+
+			final AggregateIdentifier id = userIdFactory.fromString(command.getUserAggregateId());
+			final Password oldPw = new Password(command.getOldPassword());
+			final Password newPw = new Password(command.getNewPassword());
+
+			final User user = userRepository.load(id);
+
+			user.changePassword(oldPw, newPw);
+
+			return new RegisterUserCommandResult(user.getIdentifier().toString());
+
+		} catch (final PasswordException ex) {
+			return ex.toCommandResult();
+		} catch (final AggregateNotFoundException ex) {
+			return new IdNotFoundException(Utils.createMessage(ex)).toCommandResult();
 		}
 
 	}

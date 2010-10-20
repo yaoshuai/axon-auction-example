@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server;
+package org.fuin.auction.command.api;
+
+import java.util.List;
 
 /**
- * A password is wrong.
+ * The command was not valid.
  */
-public final class PasswordException extends Exception {
+public class InvalidCommandException extends CommandException {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4913714664808710044L;
+
+	/** Unique message id for the exception. */
+	public static final int MESSAGE_ID = 2;
 
 	/**
 	 * Constructor with message.
@@ -28,8 +33,23 @@ public final class PasswordException extends Exception {
 	 * @param message
 	 *            Error message.
 	 */
-	public PasswordException(final String message) {
+	public InvalidCommandException(final String message) {
 		super(message);
+	}
+
+	@Override
+	public final int getMessageId() {
+		return MESSAGE_ID;
+	}
+
+	@Override
+	public final List<MessageKeyValue> getMessageKeyValues() {
+		return null;
+	}
+
+	@Override
+	public final CommandResult toCommandResult() {
+		return new BasicCommandResult(CommandResultType.ERROR, getMessageId(), getMessage());
 	}
 
 }

@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Result of sending a command without command specific attributes.
  */
-public final class BasicCommandResult extends AbstractCommandResult<BasicCommandResult> {
+public final class BasicCommandResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = -3123164570987026143L;
 

@@ -21,8 +21,6 @@ import java.util.Date;
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
 import org.fuin.auction.command.api.AuctionCommandService;
-import org.fuin.auction.command.api.GetServerInfoCommand;
-import org.fuin.auction.command.api.GetServerInfoCommandResult;
 import org.fuin.auction.common.FailedToLoadProjectInfoException;
 import org.fuin.auction.common.Utils;
 import org.fuin.auction.query.api.AuctionQueryService;
@@ -84,10 +82,8 @@ public class VersionsPage extends Page {
 			final AuctionCommandService commandService = (AuctionCommandService) factory.create(
 			        AuctionCommandService.class,
 			        "http://localhost:8080/auction-command-server/AuctionCommandService");
-			final GetServerInfoCommandResult result = commandService
-			        .send(new GetServerInfoCommand());
-			commandServerVersion = result.getVersion();
-			message = result.getInternalMessage();
+
+			// FIXME michael 20.10.2010 Add call to server
 
 			return true;
 

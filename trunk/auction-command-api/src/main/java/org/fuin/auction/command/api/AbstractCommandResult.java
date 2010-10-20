@@ -30,7 +30,7 @@ import org.fuin.objects4j.Requires;
  * @param <TYPE>
  *            Concrete type of the command.
  */
-public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE> {
+public abstract class AbstractCommandResult implements CommandResult {
 
 	private static final long serialVersionUID = 2861284299330260251L;
 
@@ -175,24 +175,6 @@ public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE>
 	 */
 	public final void setMessageKeyValues(final List<MessageKeyValue> messageKeyValues) {
 		this.messageKeyValues = messageKeyValues;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public final TYPE internalError(final String message) {
-		this.type = CommandResultType.ERROR;
-		this.messageId = 1;
-		this.internalMessage = message;
-		return (TYPE) this;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public final TYPE invalidCommand(final String message) {
-		this.type = CommandResultType.ERROR;
-		this.messageId = 2;
-		this.internalMessage = message;
-		return (TYPE) this;
 	}
 
 	/**

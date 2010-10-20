@@ -20,11 +20,8 @@ import java.util.List;
 
 /**
  * Result of executing a command.
- * 
- * @param <TYPE>
- *            Concrete type of the command.
  */
-public interface CommandResult<TYPE> extends Serializable {
+public interface CommandResult extends Serializable {
 
 	/**
 	 * Returns the type of the result.
@@ -65,25 +62,5 @@ public interface CommandResult<TYPE> extends Serializable {
 	 * @return Key/values for localized messages.
 	 */
 	public List<MessageKeyValue> getMessageKeyValues();
-
-	/**
-	 * Initialize the specific command result for an internal error.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return The result instance (this).
-	 */
-	public TYPE internalError(String message);
-
-	/**
-	 * Initialize the specific command result for an invalid command error.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return The result instance (this).
-	 */
-	public TYPE invalidCommand(String message);
 
 }

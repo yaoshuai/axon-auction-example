@@ -15,35 +15,41 @@
  */
 package org.fuin.auction.command.api;
 
+import java.util.List;
+
 /**
- * Register a new user.
+ * Something unexpected happened inside the server.
  */
-public final class GetServerInfoCommand extends AbstractCommand<GetServerInfoCommandResult> {
+public class InternalErrorException extends CommandException {
 
-	private static final long serialVersionUID = 5381295115581408651L;
+	private static final long serialVersionUID = -7275119395188816338L;
 
-	private static final int VERSION = 1;
+	/** Unique message id for the exception. */
+	public static final int MESSAGE_ID = 1;
 
 	/**
-	 * Default constructor.
+	 * Constructor with message.
+	 * 
+	 * @param message
+	 *            Error message.
 	 */
-	public GetServerInfoCommand() {
-		super();
+	public InternalErrorException(final String message) {
+		super(message);
 	}
 
 	@Override
-	public final int getVersion() {
-		return VERSION;
+	public final int getMessageId() {
+		return MESSAGE_ID;
 	}
 
 	@Override
-	public final GetServerInfoCommandResult internalError(final String message) {
-		return new GetServerInfoCommandResult().internalError(message);
+	public final List<MessageKeyValue> getMessageKeyValues() {
+		return null;
 	}
 
 	@Override
-	public final GetServerInfoCommandResult invalidCommand(final String message) {
-		return new GetServerInfoCommandResult().invalidCommand(message);
+	public final CommandResult toCommandResult() {
+		return new BasicCommandResult(CommandResultType.ERROR, getMessageId(), getMessage());
 	}
 
 }
