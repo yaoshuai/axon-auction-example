@@ -18,14 +18,15 @@ package org.fuin.auction.command.server;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Named;
+
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserId;
-import org.springframework.stereotype.Component;
 
 /**
  * In memory constraint service - Just a dummy implementation.
  */
-@Component
+@Named
 public final class ConstraintServiceInMemory implements ConstraintService {
 
 	private Map<UserId, EmailAddress> map = new HashMap<UserId, EmailAddress>();

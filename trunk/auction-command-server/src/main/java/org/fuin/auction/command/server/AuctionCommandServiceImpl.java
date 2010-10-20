@@ -15,6 +15,8 @@
  */
 package org.fuin.auction.command.server;
 
+import javax.inject.Inject;
+
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.callbacks.FutureCallback;
 import org.fuin.auction.command.api.AbstractCommandResult;
@@ -24,7 +26,6 @@ import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implements the {@link AuctionCommandService}.
@@ -33,7 +34,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private CommandBus commandBus;
 
 	/**
