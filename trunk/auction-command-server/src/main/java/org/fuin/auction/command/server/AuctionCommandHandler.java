@@ -43,7 +43,7 @@ import org.fuin.objects4j.UserId;
 public class AuctionCommandHandler {
 
 	@Inject
-	private ConstraintService constraintService;
+	private ConstraintSet constraintSet;
 
 	@Inject
 	@Named("userRepository")
@@ -54,13 +54,13 @@ public class AuctionCommandHandler {
 	private AggregateIdentifierFactory userIdFactory;
 
 	/**
-	 * Sets the constraint service.
+	 * Sets the constraint set.
 	 * 
-	 * @param constraintService
-	 *            Service to set.
+	 * @param constraintSet
+	 *            Constraint set to set.
 	 */
-	protected final void setConstraintService(final ConstraintService constraintService) {
-		this.constraintService = constraintService;
+	protected final void setConstraintSet(final ConstraintSet constraintSet) {
+		this.constraintSet = constraintSet;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class AuctionCommandHandler {
 			final EmailAddress emailAddress = new EmailAddress(command.getEmail());
 			final Password password = new Password(command.getPassword());
 
-			constraintService.add(userId, emailAddress);
+			constraintSet.add(userId, emailAddress);
 
 			final User user = new User(userIdFactory.create(), userId, password, emailAddress);
 			userRepository.add(user);

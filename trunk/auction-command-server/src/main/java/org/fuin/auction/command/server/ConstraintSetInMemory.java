@@ -30,7 +30,7 @@ import org.fuin.objects4j.UserId;
  * In memory constraint service - Just a dummy implementation.
  */
 @Named
-public final class ConstraintServiceInMemory implements ConstraintService {
+public final class ConstraintSetInMemory implements ConstraintSet {
 
 	private Map<UserId, EmailAddress> map = new HashMap<UserId, EmailAddress>();
 
