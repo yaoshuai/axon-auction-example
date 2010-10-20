@@ -25,7 +25,7 @@ import org.fuin.objects4j.UserId;
  * Internal service for checking constraints that are not enforceable by the
  * domain model.
  */
-public interface ConstraintService {
+public interface ConstraintSet {
 
 	/**
 	 * Checks if a user id/email combination already exists and adds it
