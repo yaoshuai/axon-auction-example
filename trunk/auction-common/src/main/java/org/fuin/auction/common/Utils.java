@@ -17,12 +17,18 @@ package org.fuin.auction.common;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Properties;
 
 /**
  * Layer independent utilities for the auction application.
  */
 public final class Utils {
+
+	private static final char[] DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
+	        'b', 'c', 'd', 'e', 'f' };
 
 	/**
 	 * Private constructor to avoid instantiation.
@@ -92,6 +98,43 @@ public final class Utils {
 			msg = ex.getMessage();
 		}
 		return msg;
+	}
+
+	/**
+	 * Encodes a byte array base64.
+	 * 
+	 * @param buffer
+	 *            Bytes to encode.
+	 * 
+	 * @return Base64 encoded string.
+	 */
+	public static String encodeBase64(final byte[] buffer) {
+		final int l = buffer.length;
+		final char[] out = new char[l << 1];
+		int j = 0;
+		for (int i = 0; i < l; i++) {
+			out[j++] = DIGITS[(0xF0 & buffer[i]) >>> 4];
+			out[j++] = DIGITS[0x0F & buffer[i]];
+		}
+		return String.copyValueOf(out);
+	}
+
+	/**
+	 * Creates a encoded secure random string.
+	 * 
+	 * @return Base64 encoded string.
+	 */
+	public static String createSecureRandom() {
+		try {
+			final SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+			secureRandom.setSeed(System.currentTimeMillis());
+			final String no = "" + secureRandom.nextInt();
+			final MessageDigest md = MessageDigest.getInstance("SHA-1");
+			final byte[] digest = md.digest(no.getBytes());
+			return encodeBase64(digest);
+		} catch (final NoSuchAlgorithmException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.fuin.auction.command.api.PasswordException;
+import org.fuin.auction.command.api.VerificationFailedException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.PasswordSha512;
@@ -29,7 +30,11 @@ import org.fuin.objects4j.UserId;
  */
 public final class User extends AbstractAnnotatedAggregateRoot {
 
+	private UserState userState = UserState.NEW;
+
 	private PasswordSha512 password;
+
+	private String verificationToken;
 
 	/**
 	 * Constructor with id that fires NO EVENT.
@@ -83,6 +88,53 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	}
 
 	/**
+	 * Prepares the user for receiving a verification token.
+	 * 
+	 * @param verificationToken
+	 *            Token to use for the following verification.
+	 * 
+	 * @throws IllegalUserStateException
+	 *             The state was not {@link UserState#NEW} or
+	 *             {@link UserState#RESET}.
+	 */
+	public final void prepareVerification(final String verificationToken)
+	        throws IllegalUserStateException {
+
+		if (!(userState.equals(UserState.NEW) || userState.equals(UserState.RESET))) {
+			throw new IllegalUserStateException(userState, UserState.NEW, UserState.RESET);
+		}
+
+		apply(new PreparedVerificationEvent(verificationToken));
+
+	}
+
+	/**
+	 * Verify the user by checking the verification token.
+	 * 
+	 * @param token
+	 *            Token to compare with the internal token.
+	 * 
+	 * @throws IllegalUserStateException
+	 *             The state was not {@link UserState#WAITING_FOR_VERIFICATION}.
+	 * @throws VerificationFailedException
+	 *             The given token was not equal to the user's verification
+	 *             token.
+	 */
+	public final void verify(final String token) throws IllegalUserStateException,
+	        VerificationFailedException {
+
+		if (!userState.equals(UserState.WAITING_FOR_VERIFICATION)) {
+			throw new IllegalUserStateException(userState, UserState.WAITING_FOR_VERIFICATION);
+		}
+		if (!verificationToken.equals(token)) {
+			throw new VerificationFailedException();
+		}
+
+		apply(new UserVerifiedEvent());
+
+	}
+
+	/**
 	 * Handles the creation event without checking any constraints.
 	 * 
 	 * @param event
@@ -102,6 +154,29 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	@EventHandler
 	protected final void handlePasswordChangedEvent(final PasswordChangedEvent event) {
 		this.password = event.getNewPassword();
+	}
+
+	/**
+	 * Handles prepare verification event without checking any constraints.
+	 * 
+	 * @param event
+	 *            Event.
+	 */
+	@EventHandler
+	protected final void handlePrepareVerificationEvent(final PreparedVerificationEvent event) {
+		this.userState = UserState.WAITING_FOR_VERIFICATION;
+		this.verificationToken = event.getToken();
+	}
+
+	/**
+	 * Handles user verified event without checking any constraints.
+	 * 
+	 * @param event
+	 *            Event.
+	 */
+	@EventHandler
+	protected final void handleUserVerifiedEvent(final UserVerifiedEvent event) {
+		this.userState = UserState.ACTIVE;
 	}
 
 }

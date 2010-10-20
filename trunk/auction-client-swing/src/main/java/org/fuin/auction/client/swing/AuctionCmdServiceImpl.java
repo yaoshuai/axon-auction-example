@@ -21,6 +21,7 @@ import org.fuin.auction.command.api.AuctionCommandService;
 import org.fuin.auction.command.api.ChangePasswordCommand;
 import org.fuin.auction.command.api.CommandResult;
 import org.fuin.auction.command.api.EmailAlreadyExistException;
+import org.fuin.auction.command.api.IdNotFoundException;
 import org.fuin.auction.command.api.InternalErrorException;
 import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
@@ -28,6 +29,8 @@ import org.fuin.auction.command.api.RegisterUserCommand;
 import org.fuin.auction.command.api.RegisterUserCommandResult;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.VerificationFailedException;
+import org.fuin.auction.command.api.VerifyUserCommand;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
@@ -63,7 +66,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public String registerUser(final String userId, final String password, final String email)
+	public final String registerUser(final String userId, final String password, final String email)
 	        throws UserIdEmailCombinationAlreadyExistException, UserIdAlreadyExistException,
 	        EmailAlreadyExistException, InternalErrorException, InvalidCommandException {
 
@@ -94,9 +97,9 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public void changePassword(final String userAggregateId, final String oldPassword,
-	        final String newPassword) throws PasswordException, InternalErrorException,
-	        InvalidCommandException {
+	public final void changePassword(final String userAggregateId, final String oldPassword,
+	        final String newPassword) throws IdNotFoundException, PasswordException,
+	        InternalErrorException, InvalidCommandException {
 
 		final ChangePasswordCommand cmd = new ChangePasswordCommand(userAggregateId, oldPassword,
 		        newPassword);
@@ -106,8 +109,37 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 
 			// Error handling
 			switch (result.getMessageId()) {
+			case IdNotFoundException.MESSAGE_ID:
+				throw new IdNotFoundException(result.getInternalMessage());
 			case PasswordException.MESSAGE_ID:
 				throw new PasswordException(result.getInternalMessage());
+			case InternalErrorException.MESSAGE_ID:
+				throw new InternalErrorException(result.getInternalMessage());
+			case InvalidCommandException.MESSAGE_ID:
+				throw new InvalidCommandException(result.getInternalMessage());
+			default:
+				throw new IllegalStateException("Unknown message id: " + result.getMessageId());
+			}
+
+		}
+
+	}
+
+	@Override
+	public final void verifyUser(final String userAggregateId, final String securityToken)
+	        throws IdNotFoundException, VerificationFailedException, InternalErrorException,
+	        InvalidCommandException {
+
+		final VerifyUserCommand cmd = new VerifyUserCommand(userAggregateId, securityToken);
+		final CommandResult result = commandService.send(cmd);
+		if (!result.isSuccess()) {
+
+			// Error handling
+			switch (result.getMessageId()) {
+			case IdNotFoundException.MESSAGE_ID:
+				throw new IdNotFoundException(result.getInternalMessage());
+			case VerificationFailedException.MESSAGE_ID:
+				throw new VerificationFailedException();
 			case InternalErrorException.MESSAGE_ID:
 				throw new InternalErrorException(result.getInternalMessage());
 			case InvalidCommandException.MESSAGE_ID:

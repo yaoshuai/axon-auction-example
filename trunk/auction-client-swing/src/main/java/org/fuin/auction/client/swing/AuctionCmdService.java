@@ -16,11 +16,13 @@
 package org.fuin.auction.client.swing;
 
 import org.fuin.auction.command.api.EmailAlreadyExistException;
+import org.fuin.auction.command.api.IdNotFoundException;
 import org.fuin.auction.command.api.InternalErrorException;
 import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.VerificationFailedException;
 
 /**
  * This is a convenience layer that maps the result codes from the original
@@ -66,6 +68,8 @@ public interface AuctionCmdService {
 	 * @param newPassword
 	 *            New clear text password.
 	 * 
+	 * @throws IdNotFoundException
+	 *             The user with the aggregate id is unknown.
 	 * @throws PasswordException
 	 *             The old password was wrong.
 	 * @throws InvalidCommandException
@@ -74,6 +78,28 @@ public interface AuctionCmdService {
 	 *             Internal error.
 	 */
 	public void changePassword(String userAggregateId, String oldPassword, String newPassword)
-	        throws PasswordException, InternalErrorException, InvalidCommandException;
+	        throws IdNotFoundException, PasswordException, InternalErrorException,
+	        InvalidCommandException;
+
+	/**
+	 * Verify the user.
+	 * 
+	 * @param userAggregateId
+	 *            User reference.
+	 * @param securityToken
+	 *            Security token.
+	 * 
+	 * @throws IdNotFoundException
+	 *             The user with the aggregate id is unknown.
+	 * @throws VerificationFailedException
+	 *             The given security token was wrong.
+	 * @throws InvalidCommandException
+	 *             The data sent is not valid.
+	 * @throws InternalErrorException
+	 *             Internal error.
+	 */
+	public void verifyUser(String userAggregateId, String securityToken)
+	        throws IdNotFoundException, VerificationFailedException, InternalErrorException,
+	        InvalidCommandException;
 
 }
