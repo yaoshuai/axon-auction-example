@@ -28,7 +28,7 @@ public final class BasicCommandResult extends AbstractCommandResult {
 	 * Default constructor.
 	 */
 	public BasicCommandResult() {
-		super();
+		super(CommandResultType.SUCCESS, 0, "");
 	}
 
 	/**

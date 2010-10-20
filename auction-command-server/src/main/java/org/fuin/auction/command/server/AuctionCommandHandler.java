@@ -22,25 +22,33 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
+import org.fuin.auction.command.api.BasicCommandResult;
 import org.fuin.auction.command.api.ChangePasswordCommand;
 import org.fuin.auction.command.api.CommandResult;
 import org.fuin.auction.command.api.EmailAlreadyExistException;
 import org.fuin.auction.command.api.IdNotFoundException;
+import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.RegisterUserCommand;
 import org.fuin.auction.command.api.RegisterUserCommandResult;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.VerificationFailedException;
+import org.fuin.auction.command.api.VerifyUserCommand;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handler for managing the auction commands.
  */
 @Named
 public class AuctionCommandHandler {
+
+	private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandHandler.class);
 
 	@Inject
 	private ConstraintSet constraintSet;
@@ -118,7 +126,7 @@ public class AuctionCommandHandler {
 	}
 
 	/**
-	 * Register a new user.
+	 * Change the user's password.
 	 * 
 	 * @param command
 	 *            Command to handle.
@@ -138,12 +146,62 @@ public class AuctionCommandHandler {
 
 			user.changePassword(oldPw, newPw);
 
-			return new RegisterUserCommandResult(user.getIdentifier().toString());
+			return new BasicCommandResult();
 
 		} catch (final PasswordException ex) {
 			return ex.toCommandResult();
 		} catch (final AggregateNotFoundException ex) {
 			return new IdNotFoundException(Utils.createMessage(ex)).toCommandResult();
+		}
+
+	}
+
+	/**
+	 * Prepare the user for receiving a verification command.
+	 * 
+	 * @param command
+	 *            Command to handle.
+	 */
+	@CommandHandler
+	public final void handle(final PrepareUserVerificationCommand command) {
+
+		final User user = userRepository.load(command.getAggregateIdentifier());
+		try {
+			user.prepareVerification(command.getToken());
+		} catch (final IllegalUserStateException ex) {
+			LOG.error("Preparing the user for verification failed!", ex);
+		}
+
+	}
+
+	/**
+	 * Verify the user.
+	 * 
+	 * @param command
+	 *            Command to handle.
+	 * 
+	 * @return Result of the command.
+	 */
+	@CommandHandler
+	public final CommandResult handle(final VerifyUserCommand command) {
+
+		try {
+
+			final AggregateIdentifier id = userIdFactory.fromString(command.getUserAggregateId());
+			final String securityToken = command.getSecurityToken();
+
+			final User user = userRepository.load(id);
+
+			user.verify(securityToken);
+
+			return new BasicCommandResult();
+
+		} catch (final AggregateNotFoundException ex) {
+			return new IdNotFoundException(Utils.createMessage(ex)).toCommandResult();
+		} catch (final VerificationFailedException ex) {
+			return ex.toCommandResult();
+		} catch (final IllegalUserStateException ex) {
+			return new InvalidCommandException(ex.getMessage()).toCommandResult();
 		}
 
 	}

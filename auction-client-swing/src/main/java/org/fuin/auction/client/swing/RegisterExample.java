@@ -23,12 +23,12 @@ import com.caucho.hessian.client.HessianProxyFactory;
 /**
  * Temporary test class to check server connection.
  */
-public final class Example {
+public final class RegisterExample {
 
 	/**
 	 * Private constructor to avoid instantiation.
 	 */
-	private Example() {
+	private RegisterExample() {
 		throw new UnsupportedOperationException("You cannot create an instance of a utility class!");
 	}
 
@@ -48,13 +48,13 @@ public final class Example {
 		final HessianProxyFactory factory = new HessianProxyFactory();
 
 		System.out.println("Application: "
-		        + Utils.getProjectInfo(Example.class, "/auction-client-swing.properties")
+		        + Utils.getProjectInfo(RegisterExample.class, "/auction-client-swing.properties")
 		                .getVersion());
 
 		final AuctionCmdService cmdService = new AuctionCmdServiceImpl(factory,
 		        "http://localhost:8080/auction-command-server/AuctionCommandService");
 
-		// Add three user
+		// Add three users
 		final String peter1Pw = "12345678";
 		final String peter1Id = cmdService.registerUser("peter1", peter1Pw, "peter1@nowhere.com");
 		System.out.println("peter1=" + peter1Id);
@@ -73,12 +73,6 @@ public final class Example {
 		// Change password for peter1
 		cmdService.changePassword(peter1Id, peter1Pw, "abc123def");
 		System.out.println("Password for peter1 changed!");
-
-		// final AuctionQueryService queryService = (AuctionQueryService)
-		// factory.create(
-		// AuctionQueryService.class,
-		// "http://localhost:8080/auction-query-server/AuctionQueryService");
-		// System.out.println("Query-Server: " + queryService.getVersion());
 
 	}
 
