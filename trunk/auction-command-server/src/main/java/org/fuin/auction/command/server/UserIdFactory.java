@@ -15,24 +15,24 @@
  */
 package org.fuin.auction.command.server;
 
+import javax.inject.Named;
+
 import org.axonframework.domain.AggregateIdentifier;
-import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 
 /**
- * Represents the process of buying and selling goods or services by offering
- * them up for bid, taking bids, and then selling the item to the highest
- * bidder.
+ * Creates aggregate identifiers for users.
  */
-public final class Auction extends AbstractAnnotatedAggregateRoot {
+@Named
+public final class UserIdFactory implements AggregateIdentifierFactory {
 
-	/**
-	 * Constructor with id.
-	 * 
-	 * @param identifier
-	 *            Unique id of the auction.
-	 */
-	public Auction(final AggregateIdentifier identifier) {
-		super(identifier);
+	@Override
+	public final AggregateIdentifier create() {
+		return new AggregateIdentifierUUID();
+	}
+
+	@Override
+	public final AggregateIdentifier fromString(final String aggregateId) {
+		return new AggregateIdentifierUUID(aggregateId);
 	}
 
 }

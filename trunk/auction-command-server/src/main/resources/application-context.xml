@@ -5,12 +5,7 @@
 
 	<context:component-scan base-package="org.fuin.auction.command.server" />
 
-	<bean id="commandBus" class="org.axonframework.commandhandling.SimpleCommandBus">
-		<property name="interceptors">
-			<bean
-				class="org.axonframework.commandhandling.interceptors.SimpleUnitOfWorkInterceptor" />
-		</property>
-	</bean>
+	<bean id="commandBus" class="org.axonframework.commandhandling.SimpleCommandBus" />
 
 	<bean
 		class="org.axonframework.eventhandling.annotation.AnnotationEventListenerBeanPostProcessor">
@@ -35,24 +30,7 @@
 		class="org.axonframework.eventsourcing.GenericEventSourcingRepository">
 		<constructor-arg value="org.fuin.auction.command.server.User" />
 		<property name="eventBus" ref="eventBus" />
-		<property name="eventStore" ref="triggeringEventStore" />
-	</bean>
-
-	<bean id="triggeringEventStore"
-		class="org.axonframework.eventsourcing.EventCountSnapshotterTrigger">
 		<property name="eventStore" ref="eventStore" />
-		<property name="snapshotter" ref="snapshotter" />
-		<property name="triggerConfiguration">
-			<props>
-				<prop key="User">2</prop>
-			</props>
-		</property>
-	</bean>
-
-	<bean id="snapshotter"
-		class="org.axonframework.eventsourcing.SpringAggregateSnapshotter">
-		<property name="eventStore" ref="eventStore" />
-		<property name="executor" ref="taskExecutor" />
 	</bean>
 
 	<bean id="eventStore" class="org.axonframework.eventstore.fs.FileSystemEventStore">

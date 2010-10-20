@@ -62,8 +62,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 		try {
 
 			// Dispatch command and wait for result
-			final FutureCallback<Command<RESULT>, RESULT> callback;
-			callback = new FutureCallback<Command<RESULT>, RESULT>();
+			final FutureCallback<RESULT> callback = new FutureCallback<RESULT>();
 			commandBus.dispatch(command, callback);
 			return callback.get();
 
