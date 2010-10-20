@@ -51,7 +51,7 @@ public class MailManager {
 	 *            A new user was created.
 	 */
 	@EventHandler
-	public final void handleContactCreatedEvent(final UserCreatedEvent event) {
+	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
 
 		final String token = Utils.createSecureRandom();
 
