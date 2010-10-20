@@ -16,6 +16,7 @@
 package org.fuin.auction.command.api;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Result of executing a command.
@@ -24,6 +25,46 @@ import java.io.Serializable;
  *            Concrete type of the command.
  */
 public interface CommandResult<TYPE> extends Serializable {
+
+	/**
+	 * Returns the type of the result.
+	 * 
+	 * @return Type of result.
+	 */
+	public CommandResultType getType();
+
+	/**
+	 * Returns the information if the command was successful. Convenience method
+	 * that checks the result type internally.
+	 * 
+	 * @return If the command was executed without error or warning
+	 *         <code>true</code> else <code>false</code>.
+	 */
+	public boolean isSuccess();
+
+	/**
+	 * Returns the id of the message. This is the key within the
+	 * <code>auction-command-messages.properties</code> file.
+	 * 
+	 * @return Unique id of the message.
+	 */
+	public int getMessageId();
+
+	/**
+	 * Returns an internal message describing a hint, warning or error.
+	 * 
+	 * @return Internal message.
+	 */
+	public String getInternalMessage();
+
+	/**
+	 * Returns a list of key/value pairs. This corresponds to the variables used
+	 * within the value of key <code>messageId</code> in the
+	 * <code>auction-command-messages.properties</code> file.
+	 * 
+	 * @return Key/values for localized messages.
+	 */
+	public List<MessageKeyValue> getMessageKeyValues();
 
 	/**
 	 * Initialize the specific command result for an internal error.

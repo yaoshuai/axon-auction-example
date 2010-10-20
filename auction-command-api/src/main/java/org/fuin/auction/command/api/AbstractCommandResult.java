@@ -107,11 +107,7 @@ public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE>
 		this.messageKeyValues = messageKeyValues;
 	}
 
-	/**
-	 * Returns the type of the result.
-	 * 
-	 * @return Type of result.
-	 */
+	@Override
 	public final CommandResultType getType() {
 		return type;
 	}
@@ -127,23 +123,12 @@ public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE>
 		this.type = type;
 	}
 
-	/**
-	 * Returns the information if the command was successful. Convenience method
-	 * that checks the result type internally.
-	 * 
-	 * @return If the command was executed without error or warning
-	 *         <code>true</code> else <code>false</code>.
-	 */
+	@Override
 	public final boolean isSuccess() {
 		return (CommandResultType.SUCCESS.equals(type));
 	}
 
-	/**
-	 * Returns the id of the message. This is the key within the
-	 * <code>auction-command-messages.properties</code> file.
-	 * 
-	 * @return Unique id of the message.
-	 */
+	@Override
 	public final int getMessageId() {
 		return messageId;
 	}
@@ -160,11 +145,7 @@ public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE>
 		this.messageId = messageId;
 	}
 
-	/**
-	 * Returns an internal message describing a hint, warning or error.
-	 * 
-	 * @return Internal message.
-	 */
+	@Override
 	public final String getInternalMessage() {
 		return internalMessage;
 	}
@@ -179,13 +160,7 @@ public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE>
 		this.internalMessage = internalMessage;
 	}
 
-	/**
-	 * Returns a list of key/value pairs. This corresponds to the variables used
-	 * within the value of key <code>messageId</code> in the
-	 * <code>auction-command-messages.properties</code> file.
-	 * 
-	 * @return Key/values for localized messages.
-	 */
+	@Override
 	public final List<MessageKeyValue> getMessageKeyValues() {
 		return messageKeyValues;
 	}
@@ -226,7 +201,7 @@ public abstract class AbstractCommandResult<TYPE> implements CommandResult<TYPE>
 	 * @param builder
 	 *            Builder to append key/values.
 	 */
-	protected void append(final ToStringBuilder builder) {
+	protected final void appendAbstractCommandResult(final ToStringBuilder builder) {
 		builder.append("type", type).append("messageId", messageId).append("internalMessage",
 		        internalMessage).append("messageKeyValues", messageKeyValues);
 	}
