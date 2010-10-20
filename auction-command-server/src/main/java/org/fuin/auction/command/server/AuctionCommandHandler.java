@@ -15,7 +15,11 @@
  */
 package org.fuin.auction.command.server;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.axonframework.commandhandling.annotation.CommandHandler;
+import org.axonframework.repository.Repository;
 import org.fuin.auction.command.api.GetServerInfoCommand;
 import org.fuin.auction.command.api.GetServerInfoCommandResult;
 import org.fuin.auction.command.api.RegisterUserCommand;
@@ -28,28 +32,40 @@ import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Handler for managing the auction commands.
  */
-@Component
+@Named
 public class AuctionCommandHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandHandler.class);
 
-	@Autowired
+	@Inject
 	private ConstraintService constraintService;
 
+	@Inject
+	@Named("userRepository")
+	private Repository<User> userRepository;
+
 	/**
-	 * Sets the internal query service.
+	 * Sets the constraint service.
 	 * 
-	 * @param queryService
+	 * @param constraintService
 	 *            Service to set.
 	 */
-	protected final void setQueryInternalService(final ConstraintService queryService) {
-		this.constraintService = queryService;
+	protected final void setConstraintService(final ConstraintService constraintService) {
+		this.constraintService = constraintService;
+	}
+
+	/**
+	 * Sets the user repository.
+	 * 
+	 * @param userRepository
+	 *            User repository to set.
+	 */
+	protected final void setUserRepository(final Repository<User> userRepository) {
+		this.userRepository = userRepository;
 	}
 
 	/**
@@ -93,6 +109,7 @@ public class AuctionCommandHandler {
 			constraintService.add(userId, emailAddress);
 
 			final User user = new User(userId, password, emailAddress);
+			userRepository.add(user);
 
 			return new RegisterUserCommandResult(user.getIdentifier().toString());
 
