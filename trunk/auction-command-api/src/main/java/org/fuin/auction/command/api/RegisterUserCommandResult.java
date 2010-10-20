@@ -72,15 +72,15 @@ public final class RegisterUserCommandResult extends
 	 * @param builder
 	 *            Builder to append key/values.
 	 */
-	protected void append(final ToStringBuilder builder) {
+	protected void appendRegisterUserCommandResult(final ToStringBuilder builder) {
 		builder.append("id", id);
 	}
 
 	@Override
 	public final String toString() {
 		final ToStringBuilder builder = new ToStringBuilder(this);
-		super.append(builder);
-		append(builder);
+		appendAbstractCommandResult(builder);
+		appendRegisterUserCommandResult(builder);
 		return builder.toString();
 	}
 

@@ -129,7 +129,7 @@ public final class GetServerInfoCommandResult extends
 	 * @param builder
 	 *            Builder to append key/values.
 	 */
-	protected void append(final ToStringBuilder builder) {
+	protected void appendGetServerInfoCommandResult(final ToStringBuilder builder) {
 		builder.append("name", name).append("version", version).append("buildTimestamp",
 		        buildTimestamp);
 	}
@@ -137,8 +137,8 @@ public final class GetServerInfoCommandResult extends
 	@Override
 	public final String toString() {
 		final ToStringBuilder builder = new ToStringBuilder(this);
-		super.append(builder);
-		append(builder);
+		appendAbstractCommandResult(builder);
+		appendGetServerInfoCommandResult(builder);
 		return builder.toString();
 	}
 
