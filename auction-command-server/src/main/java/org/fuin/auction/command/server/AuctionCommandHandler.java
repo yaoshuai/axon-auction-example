@@ -50,7 +50,7 @@ public class AuctionCommandHandler {
 	private Repository<User> userRepository;
 
 	@Inject
-	@Named("userIdFactory")
+	@IdUUID
 	private AggregateIdentifierFactory userIdFactory;
 
 	/**
