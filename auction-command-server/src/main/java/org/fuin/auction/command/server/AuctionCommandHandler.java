@@ -48,6 +48,10 @@ public class AuctionCommandHandler {
 	@Named("userRepository")
 	private Repository<User> userRepository;
 
+	@Inject
+	@Named("userIdFactory")
+	private AggregateIdentifierFactory userIdFactory;
+
 	/**
 	 * Sets the constraint service.
 	 * 
@@ -66,6 +70,16 @@ public class AuctionCommandHandler {
 	 */
 	protected final void setUserRepository(final Repository<User> userRepository) {
 		this.userRepository = userRepository;
+	}
+
+	/**
+	 * Sets the user aggregate identifier factory.
+	 * 
+	 * @param userIdFactory
+	 *            User aggregate identifier factory to set.
+	 */
+	public final void setUserIdFactory(final AggregateIdentifierFactory userIdFactory) {
+		this.userIdFactory = userIdFactory;
 	}
 
 	/**
@@ -108,7 +122,7 @@ public class AuctionCommandHandler {
 
 			constraintService.add(userId, emailAddress);
 
-			final User user = new User(userId, password, emailAddress);
+			final User user = new User(userIdFactory.create(), userId, password, emailAddress);
 			userRepository.add(user);
 
 			return new RegisterUserCommandResult(user.getIdentifier().toString());

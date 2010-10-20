@@ -15,8 +15,7 @@
  */
 package org.fuin.auction.command.server;
 
-import java.util.UUID;
-
+import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.fuin.objects4j.EmailAddress;
@@ -37,13 +36,15 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 * @param identifier
 	 *            Unique aggregate root id.
 	 */
-	public User(final UUID identifier) {
+	public User(final AggregateIdentifier identifier) {
 		super(identifier);
 	}
 
 	/**
 	 * Constructor that fires a {@link UserCreatedEvent}.
 	 * 
+	 * @param identifier
+	 *            New id previously generated.
 	 * @param userId
 	 *            Human readable unique name of the user.
 	 * @param password
@@ -51,8 +52,9 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 * @param email
 	 *            Password.
 	 */
-	public User(final UserId userId, final Password password, final EmailAddress email) {
-		super(UUID.randomUUID());
+	public User(final AggregateIdentifier identifier, final UserId userId, final Password password,
+	        final EmailAddress email) {
+		super(identifier);
 		apply(new UserCreatedEvent(userId, new PasswordSha512(password), email));
 	}
 
