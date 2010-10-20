@@ -20,6 +20,9 @@ import java.util.Map;
 
 import javax.inject.Named;
 
+import org.fuin.auction.command.api.EmailAlreadyExistException;
+import org.fuin.auction.command.api.UserIdAlreadyExistException;
+import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserId;
 
@@ -39,14 +42,17 @@ public final class ConstraintServiceInMemory implements ConstraintService {
 		final EmailAddress value = map.get(userId);
 		if (value == null) {
 			if (map.containsValue(email)) {
-				throw new EmailAlreadyExistException(email);
+				throw new EmailAlreadyExistException("The email '" + email
+				        + "' is already in use by another user account!");
 			}
 			map.put(userId, email);
 		} else {
 			if (value.equals(email)) {
-				throw new UserIdEmailCombinationAlreadyExistException(userId, email);
+				throw new UserIdEmailCombinationAlreadyExistException(
+				        "The combination of user id '" + userId + "' and email '" + email
+				                + "' already exists!");
 			}
-			throw new UserIdAlreadyExistException(userId);
+			throw new UserIdAlreadyExistException("The user id '" + userId + "' already exists!");
 		}
 
 	}

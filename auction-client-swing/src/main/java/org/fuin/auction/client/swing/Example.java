@@ -15,14 +15,7 @@
  */
 package org.fuin.auction.client.swing;
 
-import java.net.MalformedURLException;
-
-import org.fuin.auction.command.api.AuctionCommandService;
-import org.fuin.auction.command.api.GetServerInfoCommand;
-import org.fuin.auction.command.api.GetServerInfoCommandResult;
-import org.fuin.auction.command.api.RegisterUserCommand;
-import org.fuin.auction.command.api.RegisterUserCommandResult;
-import org.fuin.auction.common.FailedToLoadProjectInfoException;
+import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.common.Utils;
 
 import com.caucho.hessian.client.HessianProxyFactory;
@@ -45,13 +38,10 @@ public final class Example {
 	 * @param args
 	 *            Not used.
 	 * 
-	 * @throws MalformedURLException
-	 *             Should never happen.
-	 * @throws FailedToLoadProjectInfoException
-	 *             Should never happen.
+	 * @throws Exception
+	 *             Some error happened.
 	 */
-	public static void main(final String[] args) throws MalformedURLException,
-	        FailedToLoadProjectInfoException {
+	public static void main(final String[] args) throws Exception {
 
 		System.out.println("java.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
 
@@ -61,23 +51,28 @@ public final class Example {
 		        + Utils.getProjectInfo(Example.class, "/auction-client-swing.properties")
 		                .getVersion());
 
-		final AuctionCommandService commandService = (AuctionCommandService) factory.create(
-		        AuctionCommandService.class,
+		final AuctionCmdService cmdService = new AuctionCmdServiceImpl(factory,
 		        "http://localhost:8080/auction-command-server/AuctionCommandService");
-		final GetServerInfoCommandResult info = commandService.send(new GetServerInfoCommand());
-		System.out.println("Server-Info: " + info);
 
 		// Add three user
-		System.out.println("Register: "
-		        + register(commandService, "peter1", "12345678", "peter1@nowhere.com"));
-		System.out.println("Register: "
-		        + register(commandService, "peter2", "12345678", "peter2@nowhere.com"));
-		System.out.println("Register: "
-		        + register(commandService, "peter3", "12345678", "peter3@nowhere.com"));
+		final String peter1Pw = "12345678";
+		final String peter1Id = cmdService.registerUser("peter1", peter1Pw, "peter1@nowhere.com");
+		System.out.println("peter1=" + peter1Id);
+		System.out.println("peter2="
+		        + cmdService.registerUser("peter2", "90123456", "peter2@nowhere.com"));
+		System.out.println("peter3="
+		        + cmdService.registerUser("peter3", "78901234", "peter3@nowhere.com"));
 
 		// Error because of a duplicate user id
-		System.out.println("Register: "
-		        + register(commandService, "peter3", "12345678", "peter@nowhere.com"));
+		try {
+			cmdService.registerUser("peter3", "12345678", "peter@nowhere.com");
+		} catch (final UserIdAlreadyExistException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		// Change password for peter1
+		cmdService.changePassword(peter1Id, peter1Pw, "abc123def");
+		System.out.println("Password for peter1 changed!");
 
 		// final AuctionQueryService queryService = (AuctionQueryService)
 		// factory.create(
@@ -85,15 +80,6 @@ public final class Example {
 		// "http://localhost:8080/auction-query-server/AuctionQueryService");
 		// System.out.println("Query-Server: " + queryService.getVersion());
 
-	}
-
-	private static RegisterUserCommandResult register(final AuctionCommandService commandService,
-	        final String userId, final String password, final String email) {
-		final RegisterUserCommand cmd = new RegisterUserCommand();
-		cmd.setUserId(userId);
-		cmd.setPassword(password);
-		cmd.setEmail(email);
-		return commandService.send(cmd);
 	}
 
 }

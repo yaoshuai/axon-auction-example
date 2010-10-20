@@ -19,11 +19,8 @@ import java.io.Serializable;
 
 /**
  * Common behavior shared by all commands.
- * 
- * @param <RESULT>
- *            Type of the result.
  */
-public interface Command<RESULT extends CommandResult<RESULT>> extends Serializable {
+public interface Command extends Serializable {
 
 	/**
 	 * Returns the version of the command. When a command is changed, it's
@@ -32,32 +29,5 @@ public interface Command<RESULT extends CommandResult<RESULT>> extends Serializa
 	 * @return Version number.
 	 */
 	public int getVersion();
-
-	/**
-	 * Returns a unique name of the command.
-	 * 
-	 * @return Full qualified class name
-	 */
-	public String getName();
-
-	/**
-	 * Creates the specific command result for an internal error.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return Internal error result.
-	 */
-	public RESULT internalError(String message);
-
-	/**
-	 * Creates the specific command result for an invalid command.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return Invalid command result.
-	 */
-	public RESULT invalidCommand(String message);
 
 }

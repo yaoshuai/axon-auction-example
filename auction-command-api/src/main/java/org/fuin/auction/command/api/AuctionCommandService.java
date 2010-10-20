@@ -16,7 +16,8 @@
 package org.fuin.auction.command.api;
 
 /**
- * Service for sending commands to the command server.
+ * Service for sending commands to the command server - This is implemented
+ * directly by the command server.
  */
 public interface AuctionCommandService {
 
@@ -25,11 +26,9 @@ public interface AuctionCommandService {
 	 * 
 	 * @param command
 	 *            Command.
-	 * @param <RESULT>
-	 *            Type of the result that depends on the command.
 	 * 
 	 * @return Result.
 	 */
-	public <RESULT extends AbstractCommandResult<RESULT>> RESULT send(Command<RESULT> command);
+	public CommandResult send(Command command);
 
 }

@@ -21,8 +21,7 @@ import org.fuin.objects4j.Contract;
 /**
  * Result of registering a new user.
  */
-public final class RegisterUserCommandResult extends
-        AbstractCommandResult<RegisterUserCommandResult> {
+public final class RegisterUserCommandResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = 7124123040949548640L;
 
@@ -82,62 +81,6 @@ public final class RegisterUserCommandResult extends
 		appendAbstractCommandResult(builder);
 		appendRegisterUserCommandResult(builder);
 		return builder.toString();
-	}
-
-	/**
-	 * Creates an error with a given message id and text.
-	 * 
-	 * @param messageId
-	 *            Message id.
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return New result instance.
-	 */
-	private static final RegisterUserCommandResult createError(final int messageId,
-	        final String message) {
-		final RegisterUserCommandResult result = new RegisterUserCommandResult();
-		result.setType(CommandResultType.ERROR);
-		result.setMessageId(messageId);
-		result.setInternalMessage(message);
-		return result;
-	}
-
-	/**
-	 * Creates an error instance for the an existing user id.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return New instance with type {@link CommandResultType#ERROR}.
-	 */
-	public static final RegisterUserCommandResult createUserIdAlreadyExistError(final String message) {
-		return createError(3, message);
-	}
-
-	/**
-	 * Creates an error instance for the an existing user id.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return New instance with type {@link CommandResultType#ERROR}.
-	 */
-	public static final RegisterUserCommandResult createEmailAlreadyExistError(final String message) {
-		return createError(4, message);
-	}
-
-	/**
-	 * Creates an error instance for the an existing user id/email combination.
-	 * 
-	 * @param message
-	 *            Error message.
-	 * 
-	 * @return New instance with type {@link CommandResultType#ERROR}.
-	 */
-	public static final RegisterUserCommandResult createUserIdEmailCombinationAlreadyExistError(
-	        final String message) {
-		return createError(5, message);
 	}
 
 }
