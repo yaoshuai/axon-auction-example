@@ -36,6 +36,8 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 
 	private final EmailAddress email;
 
+	private final String securityToken;
+
 	/**
 	 * Constructor with all data.
 	 * 
@@ -45,13 +47,16 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	 *            Hashed password.
 	 * @param email
 	 *            Email.
+	 * @param securityToken
+	 *            Base64 encoded security token.
 	 */
 	public UserCreatedEvent(final UserId userId, final PasswordSha512 password,
-	        final EmailAddress email) {
+	        final EmailAddress email, final String securityToken) {
 		super();
 		this.userId = userId;
 		this.password = password;
 		this.email = email;
+		this.securityToken = securityToken;
 	}
 
 	/**
@@ -81,10 +86,19 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 		return email;
 	}
 
+	/**
+	 * Returns the security token of the user.
+	 * 
+	 * @return Base64 encoded security token.
+	 */
+	public final String getSecurityToken() {
+		return securityToken;
+	}
+
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userId", userId).append("email", email).append(
-		        "version", getVersion()).toString();
+		        "securityToken", securityToken).append("version", getVersion()).toString();
 	}
 
 	@Override

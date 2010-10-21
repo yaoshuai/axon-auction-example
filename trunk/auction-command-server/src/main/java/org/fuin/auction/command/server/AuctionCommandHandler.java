@@ -170,28 +170,6 @@ public class AuctionCommandHandler {
 	}
 
 	/**
-	 * Prepare the user for receiving an email verification command.
-	 * 
-	 * @param command
-	 *            Command to handle.
-	 */
-	@CommandHandler
-	public final void handle(final PrepareForUserEmailVerificationCommand command) {
-
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Handle command: " + command.toTraceString());
-		}
-
-		final User user = userRepository.load(command.getAggregateIdentifier());
-		try {
-			user.prepareForEmailVerification(command.getToken());
-		} catch (final IllegalUserStateException ex) {
-			LOG.error("Preparing the user for verification failed!", ex);
-		}
-
-	}
-
-	/**
 	 * Verify the user.
 	 * 
 	 * @param command

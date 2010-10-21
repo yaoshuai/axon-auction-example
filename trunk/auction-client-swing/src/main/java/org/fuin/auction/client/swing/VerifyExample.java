@@ -50,10 +50,10 @@ public final class VerifyExample {
 		// Verify user
 
 		// Get this value from the RegisterExample console
-		final String userAggregateId = "39f82498-5ecc-4ec5-bbe9-af14ad1c3cbe";
+		final String userAggregateId = "9323f46d-6dd8-4163-ac37-ddad26451d67";
 
 		// Get this value from Command Server console
-		final String securityToken = "8613d6e08cfe841501efdb04e993b9844e53edcb";
+		final String securityToken = "87cb05dddab5245266882f0d679e5e8fb44f7943";
 
 		cmdService.verifyUser(userAggregateId, securityToken);
 
