@@ -52,34 +52,67 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	@Override
 	public final CommandResult send(final Command command) {
 
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Received command: " + command.toTraceString());
-		}
-
 		try {
-			// Don't let invalid commands get through
-			Contract.requireValid(command);
-		} catch (final IllegalStateException ex) {
-			LOG.error("Invalid command: " + command.toTraceString(), ex);
-			return new InvalidCommandException(Utils.createMessage(ex)).toResult();
-		}
+			validateAndLogCommand(command);
 
-		try {
-
-			// Dispatch command and wait for result
 			final FutureCallback<CommandResult> callback = new FutureCallback<CommandResult>();
 			commandBus.dispatch(command, callback);
 			final CommandResult result = callback.get();
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Result=" + result.toTraceString());
-			}
+
+			validateAndLogResult(result);
+
 			return result;
 
+		} catch (final InvalidCommandException ex) {
+			LOG.error("Invalid command: " + command.toTraceString(), ex);
+			return ex.toResult();
 		} catch (final Exception ex) {
 			LOG.error("Internal error: " + command.toTraceString(), ex);
 			return new InternalErrorException(Utils.createMessage(ex)).toResult();
 		}
 
+	}
+
+	/**
+	 * Logs the command and checks if it's valid.
+	 * 
+	 * @param command
+	 *            Command to log and validate.
+	 * 
+	 * @throws InvalidCommandException
+	 *             The command was invalid.
+	 */
+	private void validateAndLogCommand(final Command command) throws InvalidCommandException {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Received command: " + command.toTraceString());
+		}
+		try {
+			// Don't let invalid commands get through
+			Contract.requireValid(command);
+		} catch (final IllegalStateException ex) {
+			throw new InvalidCommandException(Utils.createMessage(ex));
+		}
+	}
+
+	/**
+	 * Logs the result and checks if it's valid.
+	 * 
+	 * @param result
+	 *            Result to log and validate.
+	 * 
+	 * @throws InvalidResultException
+	 *             The result was invalid.
+	 */
+	private void validateAndLogResult(final CommandResult result) throws InvalidResultException {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Result=" + result.toTraceString());
+		}
+		try {
+			Contract.requireValid(result);
+		} catch (final IllegalStateException ex) {
+			// Violated post condition / Programming error!
+			throw new InvalidResultException(ex);
+		}
 	}
 
 }

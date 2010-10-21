@@ -37,6 +37,7 @@ public abstract class AbstractCommandResult implements CommandResult {
 	@Min(0)
 	private int messageId;
 
+	@NotNull
 	private String internalMessage;
 
 	private List<MessageKeyValue> messageKeyValues;

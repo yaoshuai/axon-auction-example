@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.fuin</groupId>
 			<artifactId>objects4j</artifactId>
-			<version>0.1.2</version>
+			<version>0.1.4</version>
 		</dependency>
 
 		<!-- TEST -->
