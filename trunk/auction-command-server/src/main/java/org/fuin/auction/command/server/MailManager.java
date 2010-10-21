@@ -38,6 +38,7 @@ public class MailManager {
 	@EventHandler
 	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
 
+		// TODO michael 21.10.2010 Send a real email
 		System.out.println("SEND mail to " + event.getEmail() + " [" + event.getSecurityToken()
 		        + "]");
 
