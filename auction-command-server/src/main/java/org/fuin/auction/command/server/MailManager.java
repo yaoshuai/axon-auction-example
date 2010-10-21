@@ -15,14 +15,11 @@
  */
 package org.fuin.auction.command.server;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.eventhandling.FullConcurrencyPolicy;
 import org.axonframework.eventhandling.annotation.AsynchronousEventListener;
 import org.axonframework.eventhandling.annotation.EventHandler;
-import org.fuin.auction.common.Utils;
 
 /**
  * Responsible for sending or receiving mails.
@@ -31,21 +28,9 @@ import org.fuin.auction.common.Utils;
 @AsynchronousEventListener(sequencingPolicyClass = FullConcurrencyPolicy.class)
 public class MailManager {
 
-	@Inject
-	private CommandBus commandBus;
-
 	/**
-	 * Sets the command bus to a new value.
-	 * 
-	 * @param commandBus
-	 *            Value to set.
-	 */
-	protected final void setCommandBus(final CommandBus commandBus) {
-		this.commandBus = commandBus;
-	}
-
-	/**
-	 * Creates a welcome mail with a unique identifier.
+	 * Creates a welcome mail with a unique identifier to verify the email
+	 * address.
 	 * 
 	 * @param event
 	 *            A new user was created.
@@ -53,13 +38,9 @@ public class MailManager {
 	@EventHandler
 	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
 
-		final String token = Utils.createSecureRandom();
-
-		System.out.println("SEND mail to " + event.getEmail() + " [" + token + "]");
-
-		final PrepareForUserEmailVerificationCommand command = new PrepareForUserEmailVerificationCommand(event
-		        .getAggregateIdentifier(), token);
-		commandBus.dispatch(command);
+		System.out.println("SEND mail to " + event.getEmail() + " [" + event.getSecurityToken()
+		        + "]");
 
 	}
+
 }

@@ -26,9 +26,6 @@ public enum UserState {
 	/** User was reset to an initial state. */
 	RESET,
 
-	/** Waiting for verification. */
-	WAITING_FOR_VERIFICATION,
-
 	/** Verified user. */
 	ACTIVE,
 
