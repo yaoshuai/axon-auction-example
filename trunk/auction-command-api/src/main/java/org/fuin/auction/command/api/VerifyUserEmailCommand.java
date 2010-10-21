@@ -17,10 +17,12 @@ package org.fuin.auction.command.api;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
- * Verify the user with a given security token.
+ * Verify the user's email address with a given security token.
  */
-public final class VerifyUserCommand implements Command {
+public final class VerifyUserEmailCommand implements Command {
 
 	private static final long serialVersionUID = 7178665113651928567L;
 
@@ -36,7 +38,7 @@ public final class VerifyUserCommand implements Command {
 	/**
 	 * Default constructor.
 	 */
-	public VerifyUserCommand() {
+	public VerifyUserEmailCommand() {
 		super();
 	}
 
@@ -48,7 +50,7 @@ public final class VerifyUserCommand implements Command {
 	 * @param securityToken
 	 *            Security token.
 	 */
-	public VerifyUserCommand(final String userAggregateId, final String securityToken) {
+	public VerifyUserEmailCommand(final String userAggregateId, final String securityToken) {
 		super();
 		this.userAggregateId = userAggregateId;
 		this.securityToken = securityToken;
@@ -95,6 +97,12 @@ public final class VerifyUserCommand implements Command {
 	 */
 	public final void setSecurityToken(final String securityToken) {
 		this.securityToken = securityToken;
+	}
+
+	@Override
+	public final String toTraceString() {
+		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
+		        "securityToken", securityToken).append("version", getVersion()).toString();
 	}
 
 }

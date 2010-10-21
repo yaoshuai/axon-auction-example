@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api;
+package org.fuin.auction.common;
 
+import java.io.Serializable;
 
 /**
- * The verification of the user failed.
+ * An object that has a version information for the class. This is NOT the same
+ * as the {@link Serializable} interface. This version is intended to handle
+ * different versions of an object (do a conversion for example).
  */
-public class VerificationFailedException extends CommandException {
-
-	private static final long serialVersionUID = -1014595618427359399L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 8;
+public interface Versioned {
 
 	/**
-	 * Default constructor.
+	 * Returns the version of the class. When a class is changed, it's version
+	 * is incremented by one.
+	 * 
+	 * @return Version number.
 	 */
-	public VerificationFailedException() {
-		super(MESSAGE_ID, "The given token was not equal to the one inside the user!");
-	}
+	public int getVersion();
 
 }

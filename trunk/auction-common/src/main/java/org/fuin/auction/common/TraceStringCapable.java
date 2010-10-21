@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server;
-
-import org.axonframework.domain.DomainEvent;
+package org.fuin.auction.common;
 
 /**
- * A user was verified.
+ * Tags objects that can create a trace string representation.
  */
-public final class UserVerifiedEvent extends DomainEvent {
-
-	private static final long serialVersionUID = -3180886093274054695L;
+public interface TraceStringCapable {
 
 	/**
-	 * Default constructor.
+	 * Creates a representation of the command for tracing.
+	 * 
+	 * @return A string for a technical log.
 	 */
-	public UserVerifiedEvent() {
-		super();
-	}
+	public String toTraceString();
 
 }

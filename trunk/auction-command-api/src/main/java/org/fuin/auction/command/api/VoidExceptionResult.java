@@ -17,6 +17,8 @@ package org.fuin.auction.command.api;
 
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Result of sending a command without command specific attributes.
  */
@@ -64,6 +66,13 @@ public final class VoidExceptionResult extends AbstractCommandResult {
 	public VoidExceptionResult(final int messageId, final String internalMessage,
 	        final List<MessageKeyValue> messageKeyValues) {
 		super(CommandResultType.ERROR, messageId, internalMessage, messageKeyValues);
+	}
+
+	@Override
+	public final String toTraceString() {
+		final ToStringBuilder builder = new ToStringBuilder(this);
+		appendAbstractCommandResult(builder);
+		return builder.toString();
 	}
 
 }

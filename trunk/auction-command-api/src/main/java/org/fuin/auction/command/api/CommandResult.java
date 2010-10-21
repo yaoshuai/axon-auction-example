@@ -18,10 +18,12 @@ package org.fuin.auction.command.api;
 import java.io.Serializable;
 import java.util.List;
 
+import org.fuin.auction.common.TraceStringCapable;
+
 /**
  * Result of executing a command.
  */
-public interface CommandResult extends Serializable {
+public interface CommandResult extends Serializable, TraceStringCapable {
 
 	/**
 	 * Returns the type of the result.

@@ -15,15 +15,19 @@
  */
 package org.fuin.auction.command.server;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.AggregateIdentifier;
+import org.fuin.auction.command.api.Command;
 
 /**
- * Prepare the user for receiving a verification command. This is an internal
- * command only used within the command server.
+ * Prepare the user for receiving an email verification command. This is an
+ * internal command only used within the command server.
  */
-public final class PrepareUserVerificationCommand {
+final class PrepareForUserEmailVerificationCommand implements Command {
 
 	private static final long serialVersionUID = -3776153476455175302L;
+
+	private static final int VERSION = 1;
 
 	private final AggregateIdentifier aggregateIdentifier;
 
@@ -37,10 +41,15 @@ public final class PrepareUserVerificationCommand {
 	 * @param token
 	 *            Base64 encoded security token.
 	 */
-	public PrepareUserVerificationCommand(final AggregateIdentifier aggregateIdentifier,
+	public PrepareForUserEmailVerificationCommand(final AggregateIdentifier aggregateIdentifier,
 	        final String token) {
 		this.aggregateIdentifier = aggregateIdentifier;
 		this.token = token;
+	}
+
+	@Override
+	public final int getVersion() {
+		return VERSION;
 	}
 
 	/**
@@ -59,6 +68,12 @@ public final class PrepareUserVerificationCommand {
 	 */
 	public final String getToken() {
 		return token;
+	}
+
+	@Override
+	public final String toTraceString() {
+		return new ToStringBuilder(this).append("aggregateIdentifier", aggregateIdentifier).append(
+		        "token", token).append("version", getVersion()).toString();
 	}
 
 }
