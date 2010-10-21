@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.validation.PasswordStr;
+import org.fuin.objects4j.validation.UUIDStr;
 
 /**
  * Change the user's password.
@@ -30,7 +31,7 @@ public final class ChangeUserPasswordCommand implements Command {
 	private static final int VERSION = 1;
 
 	@NotNull
-	// TODO michael 20.10.2010 Create a validator for aggregateId
+	@UUIDStr
 	private String userAggregateId;
 
 	@NotNull

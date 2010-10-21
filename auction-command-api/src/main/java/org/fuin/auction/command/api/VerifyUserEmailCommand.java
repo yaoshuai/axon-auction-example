@@ -18,6 +18,7 @@ package org.fuin.auction.command.api;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.fuin.objects4j.validation.UUIDStr;
 
 /**
  * Verify the user's email address with a given security token.
@@ -29,7 +30,7 @@ public final class VerifyUserEmailCommand implements Command {
 	private static final int VERSION = 1;
 
 	@NotNull
-	// TODO michael 20.10.2010 Create a validator for aggregateId
+	@UUIDStr
 	private String userAggregateId;
 
 	@NotNull

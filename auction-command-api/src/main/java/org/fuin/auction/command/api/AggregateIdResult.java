@@ -15,8 +15,11 @@
  */
 package org.fuin.auction.command.api;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.validation.UUIDStr;
 
 /**
  * Result of successfully creating a new aggregate.
@@ -25,6 +28,8 @@ public final class AggregateIdResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = 7124123040949548640L;
 
+	@NotNull
+	@UUIDStr
 	private String id;
 
 	/**
