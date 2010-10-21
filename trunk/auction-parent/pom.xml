@@ -49,6 +49,9 @@
 		<maven.build.timestamp.format>yyyy-MM-dd_HH-mm</maven.build.timestamp.format>
 		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 		<spring.version>3.0.4.RELEASE</spring.version>
+		<derby.version>10.6.2.1</derby.version>
+		<activemq.version>5.4.1</activemq.version>
+		<hibernate.version>3.5.1-Final</hibernate.version>
 	</properties>
 
 	<build>
