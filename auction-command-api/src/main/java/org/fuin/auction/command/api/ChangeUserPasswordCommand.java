@@ -17,12 +17,13 @@ package org.fuin.auction.command.api;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.validation.PasswordStr;
 
 /**
  * Change the user's password.
  */
-public final class ChangePasswordCommand implements Command {
+public final class ChangeUserPasswordCommand implements Command {
 
 	private static final long serialVersionUID = -7557765676459176985L;
 
@@ -55,7 +56,7 @@ public final class ChangePasswordCommand implements Command {
 	 * @param newPassword
 	 *            New clear text password.
 	 */
-	public ChangePasswordCommand(final String userAggregateId, final String oldPassword,
+	public ChangeUserPasswordCommand(final String userAggregateId, final String oldPassword,
 	        final String newPassword) {
 		super();
 		this.userAggregateId = userAggregateId;
@@ -118,6 +119,14 @@ public final class ChangePasswordCommand implements Command {
 	 */
 	public void setNewPassword(final String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	@Override
+	public final String toTraceString() {
+		// We don't want to include the clear text passwords for security
+		// reasons here
+		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
+		        "version", getVersion()).toString();
 	}
 
 }

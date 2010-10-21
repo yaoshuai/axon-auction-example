@@ -13,29 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api;
+package org.fuin.auction.command.server;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.axonframework.domain.DomainEvent;
 
 /**
- * Result that signals success without any additional data.
+ * A user was activated.
  */
-public final class VoidSuccessResult extends AbstractCommandResult {
+public final class UserEmailVerifiedEvent extends DomainEvent implements ExtendedDomainEvent {
 
-	private static final long serialVersionUID = -3123164570987026143L;
+	private static final long serialVersionUID = -3180886093274054695L;
+
+	private static final int VERSION = 1;
 
 	/**
 	 * Default constructor.
 	 */
-	public VoidSuccessResult() {
-		super(CommandResultType.SUCCESS, 0, "");
+	public UserEmailVerifiedEvent() {
+		super();
 	}
 
 	@Override
 	public final String toTraceString() {
-		final ToStringBuilder builder = new ToStringBuilder(this);
-		appendAbstractCommandResult(builder);
-		return builder.toString();
+		return new ToStringBuilder(this).append("version", getVersion()).toString();
+	}
+
+	@Override
+	public final int getVersion() {
+		return VERSION;
 	}
 
 }

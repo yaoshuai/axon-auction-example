@@ -57,7 +57,7 @@ public class MailManager {
 
 		System.out.println("SEND mail to " + event.getEmail() + " [" + token + "]");
 
-		final PrepareUserVerificationCommand command = new PrepareUserVerificationCommand(event
+		final PrepareForUserEmailVerificationCommand command = new PrepareForUserEmailVerificationCommand(event
 		        .getAggregateIdentifier(), token);
 		commandBus.dispatch(command);
 

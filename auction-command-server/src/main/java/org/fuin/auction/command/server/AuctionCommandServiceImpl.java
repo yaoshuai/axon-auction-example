@@ -52,11 +52,15 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	@Override
 	public final CommandResult send(final Command command) {
 
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Received command: " + command.toTraceString());
+		}
+
 		try {
 			// Don't let invalid commands get through
 			Contract.requireValid(command);
 		} catch (final IllegalStateException ex) {
-			LOG.error("Invalid command: " + command, ex);
+			LOG.error("Invalid command: " + command.toTraceString(), ex);
 			return new InvalidCommandException(Utils.createMessage(ex)).toResult();
 		}
 
@@ -65,10 +69,14 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 			// Dispatch command and wait for result
 			final FutureCallback<CommandResult> callback = new FutureCallback<CommandResult>();
 			commandBus.dispatch(command, callback);
-			return callback.get();
+			final CommandResult result = callback.get();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Result=" + result.toTraceString());
+			}
+			return result;
 
 		} catch (final Exception ex) {
-			LOG.error("Internal error: " + command, ex);
+			LOG.error("Internal error: " + command.toTraceString(), ex);
 			return new InternalErrorException(Utils.createMessage(ex)).toResult();
 		}
 

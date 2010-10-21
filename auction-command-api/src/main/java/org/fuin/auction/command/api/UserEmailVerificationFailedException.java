@@ -15,14 +15,21 @@
  */
 package org.fuin.auction.command.api;
 
-import java.io.Serializable;
-
-import org.fuin.auction.common.TraceStringCapable;
-import org.fuin.auction.common.Versioned;
-
 /**
- * Common behavior shared by all commands.
+ * The verification of the user's email failed.
  */
-public interface Command extends Serializable, TraceStringCapable, Versioned {
+public class UserEmailVerificationFailedException extends CommandException {
+
+	private static final long serialVersionUID = -1014595618427359399L;
+
+	/** Unique message id for the exception. */
+	public static final int MESSAGE_ID = 8;
+
+	/**
+	 * Default constructor.
+	 */
+	public UserEmailVerificationFailedException() {
+		super(MESSAGE_ID, "The given token was not equal to the one inside the user!");
+	}
 
 }

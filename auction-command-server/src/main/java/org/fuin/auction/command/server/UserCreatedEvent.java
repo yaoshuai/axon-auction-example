@@ -15,6 +15,7 @@
  */
 package org.fuin.auction.command.server;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.DomainEvent;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.PasswordSha512;
@@ -23,9 +24,11 @@ import org.fuin.objects4j.UserId;
 /**
  * A user was created.
  */
-public final class UserCreatedEvent extends DomainEvent {
+public final class UserCreatedEvent extends DomainEvent implements ExtendedDomainEvent {
 
 	private static final long serialVersionUID = 8303845111764138148L;
+
+	private static final int VERSION = 1;
 
 	private final UserId userId;
 
@@ -76,6 +79,17 @@ public final class UserCreatedEvent extends DomainEvent {
 	 */
 	public final EmailAddress getEmail() {
 		return email;
+	}
+
+	@Override
+	public final String toTraceString() {
+		return new ToStringBuilder(this).append("userId", userId).append("email", email).append(
+		        "version", getVersion()).toString();
+	}
+
+	@Override
+	public final int getVersion() {
+		return VERSION;
 	}
 
 }

@@ -22,7 +22,7 @@ import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.VerificationFailedException;
+import org.fuin.auction.command.api.UserEmailVerificationFailedException;
 
 /**
  * This is a convenience layer that maps the result codes from the original
@@ -91,7 +91,7 @@ public interface AuctionCmdService {
 	 * 
 	 * @throws IdNotFoundException
 	 *             The user with the aggregate id is unknown.
-	 * @throws VerificationFailedException
+	 * @throws UserEmailVerificationFailedException
 	 *             The given security token was wrong.
 	 * @throws InvalidCommandException
 	 *             The data sent is not valid.
@@ -99,7 +99,7 @@ public interface AuctionCmdService {
 	 *             Internal error.
 	 */
 	public void verifyUser(String userAggregateId, String securityToken)
-	        throws IdNotFoundException, VerificationFailedException, InternalErrorException,
+	        throws IdNotFoundException, UserEmailVerificationFailedException, InternalErrorException,
 	        InvalidCommandException;
 
 }

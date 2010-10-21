@@ -17,6 +17,7 @@ package org.fuin.auction.command.api;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.PasswordStr;
 import org.fuin.objects4j.validation.UserIdStr;
@@ -126,6 +127,14 @@ public final class RegisterUserCommand implements Command {
 	 */
 	public final void setEmail(final String email) {
 		this.email = email;
+	}
+
+	@Override
+	public final String toTraceString() {
+		// We don't want to include the clear text password for security
+		// reasons here
+		return new ToStringBuilder(this).append("userId", userId).append("email", email).append(
+		        "version", getVersion()).toString();
 	}
 
 }

@@ -22,18 +22,18 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
-import org.fuin.auction.command.api.ChangePasswordCommand;
+import org.fuin.auction.command.api.AggregateIdResult;
+import org.fuin.auction.command.api.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.CommandResult;
 import org.fuin.auction.command.api.EmailAlreadyExistException;
 import org.fuin.auction.command.api.IdNotFoundException;
 import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.RegisterUserCommand;
-import org.fuin.auction.command.api.AggregateIdCommandResult;
+import org.fuin.auction.command.api.UserEmailVerificationFailedException;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.VerificationFailedException;
-import org.fuin.auction.command.api.VerifyUserCommand;
+import org.fuin.auction.command.api.VerifyUserEmailCommand;
 import org.fuin.auction.command.api.VoidSuccessResult;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
@@ -102,6 +102,10 @@ public class AuctionCommandHandler {
 	@CommandHandler
 	public final CommandResult handle(final RegisterUserCommand command) {
 
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle command: " + command.toTraceString());
+		}
+
 		try {
 
 			final UserId userId = new UserId(command.getUserId());
@@ -113,13 +117,16 @@ public class AuctionCommandHandler {
 			final User user = new User(userIdFactory.create(), userId, password, emailAddress);
 			userRepository.add(user);
 
-			return new AggregateIdCommandResult(user.getIdentifier().toString());
+			return createAndLogAggregateIdResult(user.getIdentifier());
 
 		} catch (final UserIdEmailCombinationAlreadyExistException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		} catch (final UserIdAlreadyExistException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		} catch (final EmailAlreadyExistException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		}
 
@@ -134,7 +141,11 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final ChangePasswordCommand command) {
+	public final CommandResult handle(final ChangeUserPasswordCommand command) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle command: " + command.toTraceString());
+		}
 
 		try {
 
@@ -146,28 +157,34 @@ public class AuctionCommandHandler {
 
 			user.changePassword(oldPw, newPw);
 
-			return new VoidSuccessResult();
+			return createAndLogVoidSuccessResult();
 
 		} catch (final PasswordException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		} catch (final AggregateNotFoundException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
 		}
 
 	}
 
 	/**
-	 * Prepare the user for receiving a verification command.
+	 * Prepare the user for receiving an email verification command.
 	 * 
 	 * @param command
 	 *            Command to handle.
 	 */
 	@CommandHandler
-	public final void handle(final PrepareUserVerificationCommand command) {
+	public final void handle(final PrepareForUserEmailVerificationCommand command) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle command: " + command.toTraceString());
+		}
 
 		final User user = userRepository.load(command.getAggregateIdentifier());
 		try {
-			user.prepareVerification(command.getToken());
+			user.prepareForEmailVerification(command.getToken());
 		} catch (final IllegalUserStateException ex) {
 			LOG.error("Preparing the user for verification failed!", ex);
 		}
@@ -183,7 +200,11 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final VerifyUserCommand command) {
+	public final CommandResult handle(final VerifyUserEmailCommand command) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle command: " + command.toTraceString());
+		}
 
 		try {
 
@@ -192,18 +213,37 @@ public class AuctionCommandHandler {
 
 			final User user = userRepository.load(id);
 
-			user.verify(securityToken);
+			user.verifyEmail(securityToken);
 
-			return new VoidSuccessResult();
+			return createAndLogVoidSuccessResult();
 
 		} catch (final AggregateNotFoundException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
-		} catch (final VerificationFailedException ex) {
+		} catch (final UserEmailVerificationFailedException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		} catch (final IllegalUserStateException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return new InvalidCommandException(ex.getMessage()).toResult();
 		}
 
+	}
+
+	private CommandResult createAndLogVoidSuccessResult() {
+		final CommandResult result = new VoidSuccessResult();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Result: " + result.toTraceString());
+		}
+		return result;
+	}
+
+	private CommandResult createAndLogAggregateIdResult(final AggregateIdentifier id) {
+		final CommandResult result = new AggregateIdResult(id.toString());
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Result: " + result.toTraceString());
+		}
+		return result;
 	}
 
 }
