@@ -40,6 +40,8 @@ public final class VerifyExample {
 	 */
 	public static void main(final String[] args) throws Exception {
 
+		System.out.println("java.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
+
 		final HessianProxyFactory factory = new HessianProxyFactory();
 
 		final AuctionCmdService cmdService = new AuctionCmdServiceImpl(factory,

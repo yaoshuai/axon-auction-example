@@ -26,7 +26,7 @@ import org.fuin.auction.command.api.InternalErrorException;
 import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.RegisterUserCommand;
-import org.fuin.auction.command.api.RegisterUserCommandResult;
+import org.fuin.auction.command.api.AggregateIdCommandResult;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
 import org.fuin.auction.command.api.VerificationFailedException;
@@ -74,7 +74,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 
 		final CommandResult result = commandService.send(cmd);
 		if (result.isSuccess()) {
-			final RegisterUserCommandResult rucr = (RegisterUserCommandResult) result;
+			final AggregateIdCommandResult rucr = (AggregateIdCommandResult) result;
 			return rucr.getId();
 		}
 

@@ -20,7 +20,7 @@ import org.fuin.auction.query.api.AuctionQueryService;
 import com.caucho.hessian.client.HessianProxyFactory;
 
 /**
- * Temporary test class to check server connection.
+ * Temporary test class to check query server connection.
  */
 public final class QueryExample {
 

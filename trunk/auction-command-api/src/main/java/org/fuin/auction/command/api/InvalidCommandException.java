@@ -15,7 +15,6 @@
  */
 package org.fuin.auction.command.api;
 
-import java.util.List;
 
 /**
  * The command was not valid.
@@ -34,22 +33,7 @@ public class InvalidCommandException extends CommandException {
 	 *            Error message.
 	 */
 	public InvalidCommandException(final String message) {
-		super(message);
-	}
-
-	@Override
-	public final int getMessageId() {
-		return MESSAGE_ID;
-	}
-
-	@Override
-	public final List<MessageKeyValue> getMessageKeyValues() {
-		return null;
-	}
-
-	@Override
-	public final CommandResult toCommandResult() {
-		return new BasicCommandResult(CommandResultType.ERROR, getMessageId(), getMessage());
+		super(MESSAGE_ID, message);
 	}
 
 }

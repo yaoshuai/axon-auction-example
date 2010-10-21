@@ -19,9 +19,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.Contract;
 
 /**
- * Result of registering a new user.
+ * Result of successfully creating a new aggregate.
  */
-public final class RegisterUserCommandResult extends AbstractCommandResult {
+public final class AggregateIdCommandResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = 7124123040949548640L;
 
@@ -30,7 +30,7 @@ public final class RegisterUserCommandResult extends AbstractCommandResult {
 	/**
 	 * Default constructor.
 	 */
-	public RegisterUserCommandResult() {
+	public AggregateIdCommandResult() {
 		super();
 	}
 
@@ -40,7 +40,7 @@ public final class RegisterUserCommandResult extends AbstractCommandResult {
 	 * @param id
 	 *            Unique internal id of the user.
 	 */
-	public RegisterUserCommandResult(final String id) {
+	public AggregateIdCommandResult(final String id) {
 		super(CommandResultType.SUCCESS, 0, "");
 		this.id = id;
 		Contract.requireValid(this);

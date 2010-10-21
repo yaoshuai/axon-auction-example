@@ -15,7 +15,6 @@
  */
 package org.fuin.auction.command.api;
 
-import java.util.List;
 
 /**
  * The verification of the user failed.
@@ -31,22 +30,7 @@ public class VerificationFailedException extends CommandException {
 	 * Default constructor.
 	 */
 	public VerificationFailedException() {
-		super("The given token was not equal to the one inside the user!");
-	}
-
-	@Override
-	public final int getMessageId() {
-		return MESSAGE_ID;
-	}
-
-	@Override
-	public final List<MessageKeyValue> getMessageKeyValues() {
-		return null;
-	}
-
-	@Override
-	public final CommandResult toCommandResult() {
-		return new BasicCommandResult(CommandResultType.ERROR, getMessageId(), getMessage());
+		super(MESSAGE_ID, "The given token was not equal to the one inside the user!");
 	}
 
 }
