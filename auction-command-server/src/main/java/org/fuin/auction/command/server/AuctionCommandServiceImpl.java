@@ -57,7 +57,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 			Contract.requireValid(command);
 		} catch (final IllegalStateException ex) {
 			LOG.error("Invalid command: " + command, ex);
-			return new InvalidCommandException(Utils.createMessage(ex)).toCommandResult();
+			return new InvalidCommandException(Utils.createMessage(ex)).toResult();
 		}
 
 		try {
@@ -69,7 +69,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
 		} catch (final Exception ex) {
 			LOG.error("Internal error: " + command, ex);
-			return new InternalErrorException(Utils.createMessage(ex)).toCommandResult();
+			return new InternalErrorException(Utils.createMessage(ex)).toResult();
 		}
 
 	}

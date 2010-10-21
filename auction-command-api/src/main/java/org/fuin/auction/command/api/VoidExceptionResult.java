@@ -20,37 +20,25 @@ import java.util.List;
 /**
  * Result of sending a command without command specific attributes.
  */
-public final class BasicCommandResult extends AbstractCommandResult {
+public final class VoidExceptionResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = -3123164570987026143L;
 
 	/**
-	 * Default constructor.
-	 */
-	public BasicCommandResult() {
-		super(CommandResultType.SUCCESS, 0, "");
-	}
-
-	/**
 	 * Constructor without key/values.
 	 * 
-	 * @param type
-	 *            Type of the result.
 	 * @param messageId
 	 *            Unique id of the message.
 	 * @param internalMessage
 	 *            Internal message.
 	 */
-	public BasicCommandResult(final CommandResultType type, final int messageId,
-	        final String internalMessage) {
-		super(type, messageId, internalMessage);
+	public VoidExceptionResult(final int messageId, final String internalMessage) {
+		super(CommandResultType.ERROR, messageId, internalMessage);
 	}
 
 	/**
 	 * Constructor with key/value array.
 	 * 
-	 * @param type
-	 *            Type of the result.
 	 * @param messageId
 	 *            Unique id of the message.
 	 * @param internalMessage
@@ -58,16 +46,14 @@ public final class BasicCommandResult extends AbstractCommandResult {
 	 * @param messageKeyValues
 	 *            Array of key/value pairs for localized error message.
 	 */
-	public BasicCommandResult(final CommandResultType type, final int messageId,
-	        final String internalMessage, final MessageKeyValue... messageKeyValues) {
-		super(type, messageId, internalMessage, messageKeyValues);
+	public VoidExceptionResult(final int messageId, final String internalMessage,
+	        final MessageKeyValue... messageKeyValues) {
+		super(CommandResultType.ERROR, messageId, internalMessage, messageKeyValues);
 	}
 
 	/**
 	 * Constructor with key/value list.
 	 * 
-	 * @param type
-	 *            Type of the result.
 	 * @param messageId
 	 *            Unique id of the message.
 	 * @param internalMessage
@@ -75,9 +61,9 @@ public final class BasicCommandResult extends AbstractCommandResult {
 	 * @param messageKeyValues
 	 *            List of key/value pairs for localized error message.
 	 */
-	public BasicCommandResult(final CommandResultType type, final int messageId,
-	        final String internalMessage, final List<MessageKeyValue> messageKeyValues) {
-		super(type, messageId, internalMessage, messageKeyValues);
+	public VoidExceptionResult(final int messageId, final String internalMessage,
+	        final List<MessageKeyValue> messageKeyValues) {
+		super(CommandResultType.ERROR, messageId, internalMessage, messageKeyValues);
 	}
 
 }

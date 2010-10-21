@@ -17,23 +17,17 @@ package org.fuin.auction.command.api;
 
 
 /**
- * Something unexpected happened inside the server.
+ * Result that signals success without any additional data.
  */
-public class InternalErrorException extends CommandException {
+public final class VoidSuccessResult extends AbstractCommandResult {
 
-	private static final long serialVersionUID = -7275119395188816338L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 1;
+	private static final long serialVersionUID = -3123164570987026143L;
 
 	/**
-	 * Constructor with message.
-	 * 
-	 * @param message
-	 *            Error message.
+	 * Default constructor.
 	 */
-	public InternalErrorException(final String message) {
-		super(MESSAGE_ID, message);
+	public VoidSuccessResult() {
+		super(CommandResultType.SUCCESS, 0, "");
 	}
 
 }

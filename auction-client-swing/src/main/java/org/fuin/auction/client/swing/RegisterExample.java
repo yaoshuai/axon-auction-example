@@ -21,7 +21,7 @@ import org.fuin.auction.common.Utils;
 import com.caucho.hessian.client.HessianProxyFactory;
 
 /**
- * Temporary test class to check server connection.
+ * Temporary test class to check command server connection.
  */
 public final class RegisterExample {
 

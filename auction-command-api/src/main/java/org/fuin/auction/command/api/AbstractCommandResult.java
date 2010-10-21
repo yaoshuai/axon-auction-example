@@ -26,9 +26,6 @@ import org.fuin.objects4j.Requires;
 
 /**
  * Basic result of sending/executing a command.
- * 
- * @param <TYPE>
- *            Concrete type of the command.
  */
 public abstract class AbstractCommandResult implements CommandResult {
 

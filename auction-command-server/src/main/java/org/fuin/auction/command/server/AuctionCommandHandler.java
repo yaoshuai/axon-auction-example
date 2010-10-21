@@ -22,7 +22,6 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
-import org.fuin.auction.command.api.BasicCommandResult;
 import org.fuin.auction.command.api.ChangePasswordCommand;
 import org.fuin.auction.command.api.CommandResult;
 import org.fuin.auction.command.api.EmailAlreadyExistException;
@@ -30,11 +29,12 @@ import org.fuin.auction.command.api.IdNotFoundException;
 import org.fuin.auction.command.api.InvalidCommandException;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.RegisterUserCommand;
-import org.fuin.auction.command.api.RegisterUserCommandResult;
+import org.fuin.auction.command.api.AggregateIdCommandResult;
 import org.fuin.auction.command.api.UserIdAlreadyExistException;
 import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
 import org.fuin.auction.command.api.VerificationFailedException;
 import org.fuin.auction.command.api.VerifyUserCommand;
+import org.fuin.auction.command.api.VoidSuccessResult;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
@@ -113,14 +113,14 @@ public class AuctionCommandHandler {
 			final User user = new User(userIdFactory.create(), userId, password, emailAddress);
 			userRepository.add(user);
 
-			return new RegisterUserCommandResult(user.getIdentifier().toString());
+			return new AggregateIdCommandResult(user.getIdentifier().toString());
 
 		} catch (final UserIdEmailCombinationAlreadyExistException ex) {
-			return ex.toCommandResult();
+			return ex.toResult();
 		} catch (final UserIdAlreadyExistException ex) {
-			return ex.toCommandResult();
+			return ex.toResult();
 		} catch (final EmailAlreadyExistException ex) {
-			return ex.toCommandResult();
+			return ex.toResult();
 		}
 
 	}
@@ -146,12 +146,12 @@ public class AuctionCommandHandler {
 
 			user.changePassword(oldPw, newPw);
 
-			return new BasicCommandResult();
+			return new VoidSuccessResult();
 
 		} catch (final PasswordException ex) {
-			return ex.toCommandResult();
+			return ex.toResult();
 		} catch (final AggregateNotFoundException ex) {
-			return new IdNotFoundException(Utils.createMessage(ex)).toCommandResult();
+			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
 		}
 
 	}
@@ -194,14 +194,14 @@ public class AuctionCommandHandler {
 
 			user.verify(securityToken);
 
-			return new BasicCommandResult();
+			return new VoidSuccessResult();
 
 		} catch (final AggregateNotFoundException ex) {
-			return new IdNotFoundException(Utils.createMessage(ex)).toCommandResult();
+			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
 		} catch (final VerificationFailedException ex) {
-			return ex.toCommandResult();
+			return ex.toResult();
 		} catch (final IllegalUserStateException ex) {
-			return new InvalidCommandException(ex.getMessage()).toCommandResult();
+			return new InvalidCommandException(ex.getMessage()).toResult();
 		}
 
 	}

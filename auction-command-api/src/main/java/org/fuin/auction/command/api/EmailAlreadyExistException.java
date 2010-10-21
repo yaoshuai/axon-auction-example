@@ -15,7 +15,6 @@
  */
 package org.fuin.auction.command.api;
 
-import java.util.List;
 
 /**
  * The email is already used for another user account.
@@ -34,22 +33,7 @@ public final class EmailAlreadyExistException extends CommandException {
 	 *            Error message.
 	 */
 	public EmailAlreadyExistException(final String message) {
-		super(message);
-	}
-
-	@Override
-	public final int getMessageId() {
-		return MESSAGE_ID;
-	}
-
-	@Override
-	public final List<MessageKeyValue> getMessageKeyValues() {
-		return null;
-	}
-
-	@Override
-	public final CommandResult toCommandResult() {
-		return new BasicCommandResult(CommandResultType.ERROR, getMessageId(), getMessage());
+		super(MESSAGE_ID, message);
 	}
 
 }
