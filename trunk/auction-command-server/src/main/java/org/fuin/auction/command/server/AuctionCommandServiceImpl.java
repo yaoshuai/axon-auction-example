@@ -64,7 +64,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 			return result;
 
 		} catch (final InvalidCommandException ex) {
-			LOG.error("Invalid command: " + command.toTraceString(), ex);
+			LOG.error("Invalid command: " + ex.getMessage());
 			return ex.toResult();
 		} catch (final Exception ex) {
 			LOG.error("Internal error: " + command.toTraceString(), ex);
