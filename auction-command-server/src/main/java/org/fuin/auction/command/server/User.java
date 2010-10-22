@@ -20,6 +20,7 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.fuin.auction.command.api.PasswordException;
 import org.fuin.auction.command.api.UserEmailVerificationFailedException;
+import org.fuin.auction.common.UserState;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
