@@ -97,7 +97,7 @@ public class AuctionMessageProducer {
 	 */
 	private void publish(final AuctionMessage message) {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Publish to JMS: " + message);
+			LOG.debug("Publish to JMS: " + message.toTraceString());
 		}
 		jmsTemplate.send(new MessageCreator() {
 			@Override

@@ -20,6 +20,8 @@ import javax.inject.Named;
 import org.axonframework.eventhandling.FullConcurrencyPolicy;
 import org.axonframework.eventhandling.annotation.AsynchronousEventListener;
 import org.axonframework.eventhandling.annotation.EventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Responsible for sending or receiving mails.
@@ -27,6 +29,8 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 @Named
 @AsynchronousEventListener(sequencingPolicyClass = FullConcurrencyPolicy.class)
 public class MailManager {
+
+	private static final Logger LOG = LoggerFactory.getLogger(MailManager.class);
 
 	/**
 	 * Creates a welcome mail with a unique identifier to verify the email
@@ -39,8 +43,11 @@ public class MailManager {
 	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
 
 		// TODO michael 21.10.2010 Send a real email
-		System.out.println("SEND welcome mail to " + event.getEmail() + " ["
-		        + event.getSecurityToken() + "]");
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("SEND welcome mail to " + event.getEmail() + " [" + event.getSecurityToken()
+			        + "]");
+		}
 
 	}
 

@@ -15,6 +15,8 @@
  */
 package org.fuin.auction.command.server;
 
+import org.fuin.auction.common.UserState;
+
 
 /**
  * The state of the user is not as expected.
