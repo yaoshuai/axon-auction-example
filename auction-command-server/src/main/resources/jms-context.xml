@@ -9,12 +9,19 @@
 		</property>
 	</bean>
 
+	<bean id="cachedConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<property name="targetConnectionFactory" ref="connectionFactory" />
+		<property name="sessionCacheSize" value="10" />
+	</bean>
+
 	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg value="brokerAxonAuctionExample" />
 	</bean>
 
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="connectionFactory" ref="cachedConnectionFactory" />
+		<property name="defaultDestination" ref="destination"/>
 	</bean>
 
 </beans>
