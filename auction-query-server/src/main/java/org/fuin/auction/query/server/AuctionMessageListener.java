@@ -17,22 +17,40 @@ package org.fuin.auction.query.server;
 
 import java.io.Serializable;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
+import org.fuin.auction.common.UserState;
 import org.fuin.auction.message.api.UserCreatedMessage;
 import org.fuin.auction.message.api.UserEmailVerfiedMessage;
 import org.fuin.auction.message.api.UserPasswordChangedMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Handles incoming JMS messages.
  */
-public final class AuctionMessageListener implements MessageListener {
+@Named
+public class AuctionMessageListener implements MessageListener {
+
+	private static final Logger LOG = LoggerFactory.getLogger(AuctionMessageListener.class);
+
+	@Inject
+	private AuctionUserDao userDao;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public final void onMessage(final Message message) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(message.toString());
+		}
 
 		if (message instanceof ObjectMessage) {
 			final ObjectMessage objectMessage = (ObjectMessage) message;
@@ -45,27 +63,47 @@ public final class AuctionMessageListener implements MessageListener {
 				} else if (obj instanceof UserPasswordChangedMessage) {
 					handleMessage((UserPasswordChangedMessage) obj);
 				} else {
-					System.out.println("RECEIVED NON-AUCTION MESSAGE: " + obj);
+					LOG.warn("Received non-Auction message: " + obj);
 				}
 			} catch (final JMSException ex) {
-				ex.printStackTrace();
+				LOG.error("Error reading object from message", ex);
 			}
 		} else {
-			System.out.println("RECEIVED NON-OBJECT MESSAGE: " + message);
+			LOG.warn("Received non-Object message: " + message);
 		}
 
 	}
 
 	private void handleMessage(final UserCreatedMessage message) {
-		System.out.println("RECEIVED " + message.toTraceString());
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle: " + message.toTraceString());
+		}
+
+		userDao.persist(new AuctionUser(message.getUserAggregateId(), message.getUserId(), message
+		        .getEmail(), UserState.NEW));
+
 	}
 
 	private void handleMessage(final UserEmailVerfiedMessage message) {
-		System.out.println("RECEIVED " + message.toTraceString());
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle: " + message.toTraceString());
+		}
+
+		final AuctionUser user = userDao.findByAggregateId(message.getUserAggregateId());
+		user.setState(UserState.ACTIVE);
+		userDao.save(user);
+
 	}
 
 	private void handleMessage(final UserPasswordChangedMessage message) {
-		System.out.println("RECEIVED " + message.toTraceString());
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle: " + message.toTraceString());
+		}
+		// Nothing to do for now...
+
 	}
 
 }

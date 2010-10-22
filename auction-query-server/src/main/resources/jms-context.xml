@@ -16,9 +16,7 @@
 		<property name="sessionCacheSize" value="10" />
 	</bean>
 
-	<bean id="auctionMessageListener" class="org.fuin.auction.query.server.AuctionMessageListener" />
-
-	<jms:listener-container container-type="default"
+	<jms:listener-container container-type="default" 
 		connection-factory="cachedConnectionFactory" acknowledge="auto">
 		<jms:listener destination="brokerAxonAuctionExample" ref="auctionMessageListener"
 			method="onMessage" />
