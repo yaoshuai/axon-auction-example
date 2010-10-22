@@ -39,6 +39,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-oxm</artifactId>
 			<version>1.5.9</version>
@@ -200,8 +206,36 @@
 			<version>${activemq.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.trg</groupId>
+			<artifactId>trg-dao</artifactId>
+			<version>0.5.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.trg</groupId>
+			<artifactId>trg-search-jpa-hibernate</artifactId>
+			<version>0.5.1</version>
+		</dependency>
+
 		<!-- TEST -->
 
 	</dependencies>
+
+	<repositories>
+
+		<repository>
+			<id>trg-dao-repo</id>
+			<name>Repository for The Revere Group's Hibernate Generic DAO framework</name>
+			<url>http://hibernate-generic-dao.googlecode.com/svn/trunk/maven-repo/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+	</repositories>
 
 </project>

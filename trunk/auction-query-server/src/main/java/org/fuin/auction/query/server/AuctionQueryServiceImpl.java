@@ -15,6 +15,8 @@
  */
 package org.fuin.auction.query.server;
 
+import javax.inject.Named;
+
 import org.fuin.auction.common.FailedToLoadProjectInfoException;
 import org.fuin.auction.common.Utils;
 import org.fuin.auction.query.api.AuctionQueryService;
@@ -24,20 +26,21 @@ import org.slf4j.LoggerFactory;
 /**
  * Implements the {@link AuctionQueryService}.
  */
+@Named
 public class AuctionQueryServiceImpl implements AuctionQueryService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AuctionQueryServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AuctionQueryServiceImpl.class);
 
-    @Override
-    public final String getVersion() {
-        try {
-            return Utils.getProjectInfo(this.getClass(), "/auction-query-server.properties")
-                    .getVersion();
-        } catch (final FailedToLoadProjectInfoException ex) {
-            final String message = "Cannot retrieve version!";
-            LOG.error(message, ex);
-            throw new RuntimeException(message);
-        }
-    }
+	@Override
+	public final String getVersion() {
+		try {
+			return Utils.getProjectInfo(this.getClass(), "/auction-query-server.properties")
+			        .getVersion();
+		} catch (final FailedToLoadProjectInfoException ex) {
+			final String message = "Cannot retrieve version!";
+			LOG.error(message, ex);
+			throw new RuntimeException(message);
+		}
+	}
 
 }
