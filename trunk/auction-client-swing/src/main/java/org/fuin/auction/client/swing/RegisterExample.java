@@ -15,7 +15,6 @@
  */
 package org.fuin.auction.client.swing;
 
-import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 
 import com.caucho.hessian.client.HessianProxyFactory;
@@ -61,16 +60,16 @@ public final class RegisterExample {
 		final String peterId = cmdService.registerUser(peterName, peterPw, peterEmail);
 		System.out.println(peterName + "=" + peterId);
 
-		// Error because of a duplicate user id
-		try {
-			cmdService.registerUser(peterName, peterPw, peterEmail);
-		} catch (final UserIdEmailCombinationAlreadyExistException ex) {
-			System.out.println(ex.getMessage());
-		}
-
-		// Change password for peter
-		cmdService.changePassword(peterId, peterPw, "abc123def");
-		System.out.println("Password for " + peterName + " changed!");
+		// // Error because of a duplicate user id
+		// try {
+		// cmdService.registerUser(peterName, peterPw, peterEmail);
+		// } catch (final UserIdEmailCombinationAlreadyExistException ex) {
+		// System.out.println(ex.getMessage());
+		// }
+		//
+		// // Change password for peter
+		// cmdService.changePassword(peterId, peterPw, "abc123def");
+		// System.out.println("Password for " + peterName + " changed!");
 
 	}
 
