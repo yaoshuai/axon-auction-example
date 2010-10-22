@@ -58,4 +58,14 @@
 		</property>
 	</bean>
 
+	<bean id="searchProcessor" class="com.trg.search.jpa.JPASearchProcessor">
+		<constructor-arg ref="metadataUtil" />
+	</bean>
+	
+	<bean id="metadataUtil"
+		class="com.trg.search.jpa.hibernate.HibernateMetadataUtil"
+		factory-method="getInstanceForEntityManagerFactory">
+		<constructor-arg ref="entityManagerFactory" />
+	</bean>
+	
 </beans>

@@ -52,24 +52,30 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug(message.toString());
 		}
 
-		if (message instanceof ObjectMessage) {
-			final ObjectMessage objectMessage = (ObjectMessage) message;
-			try {
-				final Serializable obj = objectMessage.getObject();
-				if (obj instanceof UserCreatedMessage) {
-					handleMessage((UserCreatedMessage) obj);
-				} else if (obj instanceof UserEmailVerfiedMessage) {
-					handleMessage((UserEmailVerfiedMessage) obj);
-				} else if (obj instanceof UserPasswordChangedMessage) {
-					handleMessage((UserPasswordChangedMessage) obj);
-				} else {
-					LOG.warn("Received non-Auction message: " + obj);
+		try {
+
+			if (message instanceof ObjectMessage) {
+				final ObjectMessage objectMessage = (ObjectMessage) message;
+				try {
+					final Serializable obj = objectMessage.getObject();
+					if (obj instanceof UserCreatedMessage) {
+						handleMessage((UserCreatedMessage) obj);
+					} else if (obj instanceof UserEmailVerfiedMessage) {
+						handleMessage((UserEmailVerfiedMessage) obj);
+					} else if (obj instanceof UserPasswordChangedMessage) {
+						handleMessage((UserPasswordChangedMessage) obj);
+					} else {
+						LOG.warn("Received non-Auction message: " + obj);
+					}
+				} catch (final JMSException ex) {
+					LOG.error("Error reading object from message", ex);
 				}
-			} catch (final JMSException ex) {
-				LOG.error("Error reading object from message", ex);
+			} else {
+				LOG.warn("Received non-Object message: " + message);
 			}
-		} else {
-			LOG.warn("Received non-Object message: " + message);
+
+		} catch (final RuntimeException ex) {
+			LOG.error("Error handling message", ex);
 		}
 
 	}
@@ -93,7 +99,6 @@ public class AuctionMessageListener implements MessageListener {
 
 		final AuctionUser user = userDao.findByAggregateId(message.getUserAggregateId());
 		user.setState(UserState.ACTIVE);
-		userDao.save(user);
 
 	}
 

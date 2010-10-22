@@ -15,12 +15,14 @@
  */
 package org.fuin.auction.query.server;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.trg.dao.jpa.GenericDAOImpl;
 import com.trg.search.Search;
+import com.trg.search.jpa.JPASearchProcessor;
 
 /**
  * User Data Access Object (DAO) implementation.
@@ -33,6 +35,12 @@ public final class AuctionUserDaoImpl extends GenericDAOImpl<AuctionUser, Long> 
 	@Override
 	public final void setEntityManager(final EntityManager entityManager) {
 		super.setEntityManager(entityManager);
+	}
+
+	@Inject
+	@Override
+	public void setSearchProcessor(final JPASearchProcessor searchProcessor) {
+		super.setSearchProcessor(searchProcessor);
 	}
 
 	@Override
