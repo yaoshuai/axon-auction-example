@@ -16,6 +16,7 @@
 package org.fuin.auction.client.swing;
 
 import org.fuin.auction.command.api.exceptions.AuctionCmdService;
+import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 
 import com.caucho.hessian.client.HessianProxyFactory;
@@ -54,23 +55,23 @@ public final class RegisterExample {
 		final AuctionCmdService cmdService = new AuctionCmdServiceImpl(factory,
 		        "http://localhost:8080/auction-command-server/AuctionCommandService");
 
-		// Add three users
+		// Add user
 		final String peterName = "peter";
 		final String peterPw = "12345678";
 		final String peterEmail = "peter@nowhere.com";
 		final String peterId = cmdService.registerUser(peterName, peterPw, peterEmail);
 		System.out.println(peterName + "=" + peterId);
 
-		// // Error because of a duplicate user id
-		// try {
-		// cmdService.registerUser(peterName, peterPw, peterEmail);
-		// } catch (final UserIdEmailCombinationAlreadyExistException ex) {
-		// System.out.println(ex.getMessage());
-		// }
-		//
-		// // Change password for peter
-		// cmdService.changePassword(peterId, peterPw, "abc123def");
-		// System.out.println("Password for " + peterName + " changed!");
+		// Error because of a duplicate user id
+		try {
+			cmdService.registerUser(peterName, peterPw, peterEmail);
+		} catch (final UserNameEmailCombinationAlreadyExistException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		// Change password for peter
+		cmdService.changeUserPassword(peterId, peterPw, "abc123def");
+		System.out.println("Password for " + peterName + " changed!");
 
 	}
 

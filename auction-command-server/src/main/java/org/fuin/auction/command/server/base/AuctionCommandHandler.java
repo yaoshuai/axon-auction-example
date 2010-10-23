@@ -25,7 +25,7 @@ import org.axonframework.repository.Repository;
 import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
 import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
-import org.fuin.auction.command.api.exceptions.EmailAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
@@ -131,7 +131,7 @@ public class AuctionCommandHandler {
 		} catch (final UserNameAlreadyExistException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
-		} catch (final EmailAlreadyExistException ex) {
+		} catch (final UserEmailAlreadyExistException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		}

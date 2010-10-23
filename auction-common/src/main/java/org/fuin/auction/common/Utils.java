@@ -52,31 +52,50 @@ public final class Utils {
 	 *             The project properties resource relative to the given class
 	 *             was not found or could not be loaded for other reasons.
 	 */
-	public static final ProjectInfo getProjectInfo(final Class<?> clasz,
-	        final String propertiesFilename) throws FailedToLoadProjectInfoException {
+	public static ProjectInfo getProjectInfo(final Class<?> clasz, final String propertiesFilename)
+	        throws FailedToLoadProjectInfoException {
 
 		try {
-
-			final Properties props = new Properties();
-			final InputStream inStream = clasz.getResourceAsStream(propertiesFilename);
-			if (inStream == null) {
-				throw new FailedToLoadProjectInfoException(clasz, propertiesFilename,
-				        new IOException("Resource '" + propertiesFilename + "' not found!"));
-			}
-			try {
-				try {
-					props.load(inStream);
-				} finally {
-					inStream.close();
-				}
-			} catch (final IOException ex) {
-				throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
-			}
-			return new ProjectInfo(props);
-
+			return new ProjectInfo(loadProperties(clasz, propertiesFilename));
+		} catch (final IOException ex) {
+			throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, new IOException(
+			        "Resource '" + propertiesFilename + "' not found!"));
 		} catch (final RuntimeException ex) {
 			throw new FailedToLoadProjectInfoException(clasz, propertiesFilename, ex);
 		}
+
+	}
+
+	/**
+	 * Loads a properties file.
+	 * 
+	 * @param clasz
+	 *            Class to use for getting the project information resource
+	 *            from.
+	 * @param propertiesFilename
+	 *            Name and path of the properties file.
+	 * 
+	 * @return Properties.
+	 * 
+	 * @throws IOException
+	 *             Error loading the properties.
+	 */
+	public static Properties loadProperties(final Class<?> clasz, final String propertiesFilename)
+	        throws IOException {
+
+		final Properties props = new Properties();
+
+		final InputStream inStream = clasz.getResourceAsStream(propertiesFilename);
+		if (inStream == null) {
+			throw new IOException("Resource '" + propertiesFilename + "' not found!");
+		}
+		try {
+			props.load(inStream);
+		} finally {
+			inStream.close();
+		}
+
+		return props;
 
 	}
 
