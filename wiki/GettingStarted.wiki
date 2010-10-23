@@ -1,0 +1,19 @@
+#How to get started with the example application
+= Introduction =
+
+Explains how to run the example application.
+
+= Details =
+
+The application isn't complete yet in any way, but...
+
+You can run a "main(String[])" method example:
+
+ # Check out all projects from the SVN trunk
+ # Build the projects with Maven using the [http://code.google.com/p/axon-auction-example/source/browse/#svn/trunk/auction-root auction-root] project
+ # Start the local ActiveMQ, DerbyDB and SMTP Server using [http://code.google.com/p/axon-auction-example/source/browse/trunk/auction-infrastructure/src/main/java/org/fuin/auction/infrastructure/InfrastructureStart.java InfrastructureStart] class - If you use Eclipse you can use this [http://code.google.com/p/axon-auction-example/source/browse/trunk/auction-infrastructure/Start+Auction+Infrastructure.launch launch configuration]
+ # Start the [http://code.google.com/p/axon-auction-example/source/browse/trunk/#trunk/auction-command-server Command Server] and [http://code.google.com/p/axon-auction-example/source/browse/trunk/#trunk/auction-query-server Query Server] web applications (using Tomcat 6 for example)
+ # Run the [http://code.google.com/p/axon-auction-example/source/browse/trunk/auction-client-swing/src/main/java/org/fuin/auction/client/swing/RegisterExample.java Register example]
+ # Don't forget to shutdown the local ActiveMQ, DerbyDB and SMTP Server using [http://code.google.com/p/axon-auction-example/source/browse/trunk/auction-infrastructure/src/main/java/org/fuin/auction/infrastructure/InfrastructureStop.java InfrastructureStop] class when you're finished - If you use Eclipse you can use this [http://code.google.com/p/axon-auction-example/source/browse/trunk/auction-infrastructure/Stop+Auction+Infrastructure.launch launch configuration]
+
+That's it for now...
