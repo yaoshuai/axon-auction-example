@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dependencies>
-  <!-- Project dependency definition for use with AssertDependencies - http://www.fuin.org/units4j/ -->
-  
-  <!-- All classes are allowed to use this -->
-  <alwaysAllowed/>
-  
-  <!-- It's forbidden for all classes to use this (in production code) -->
-  <alwaysForbidden/>
-  
-  <!-- Packages are ONLY allowed to use the following packages (all other packages are forbidden) -->
-  <allowed/>
+	<!--
+		Project dependency definition for use with AssertDependencies -
+		http://www.fuin.org/units4j/
+	-->
 
-  <!-- Packages are NOT allowed to use the following ones (all other packages are allowed) -->  
-  <forbidden>
-    <package name="org.fuin.auction.common" comment="Common is not allowed to access any of the other projects">
-      <notDependsOn package="org.fuin.auction.command"/>
-      <notDependsOn package="org.fuin.auction.query"/>    
-      <notDependsOn package="org.fuin.auction.message"/>
-      <notDependsOn package="org.fuin.auction.client"/>
-    </package>
-  </forbidden>
-  
+	<!-- All classes are allowed to use this -->
+	<alwaysAllowed>
+		<dependsOn package="java.io" />
+		<dependsOn package="java.lang" />
+		<dependsOn package="java.security" />
+		<dependsOn package="java.text" />
+		<dependsOn package="java.util" />
+		<dependsOn package="javax.validation" />
+		<dependsOn package="org.apache.commons.lang.builder" />
+		<dependsOn package="org.fuin.objects4j" />
+	</alwaysAllowed>
+
+	<!-- It's forbidden for all classes to use this (in production code) -->
+	<alwaysForbidden />
+
+	<!--
+		Packages are ONLY allowed to use the following packages (all other
+		packages are forbidden)
+	-->
+	<allowed>
+		<package name="org.fuin.auction.common"/>
+	</allowed>
+
+	<!--
+		Packages are NOT allowed to use the following ones (all other packages
+		are allowed)
+	-->
+	<forbidden />
+
 </dependencies>

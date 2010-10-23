@@ -20,7 +20,7 @@ import java.util.Date;
 
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
-import org.fuin.auction.command.api.AuctionCommandService;
+import org.fuin.auction.command.api.base.AuctionCommandService;
 import org.fuin.auction.common.FailedToLoadProjectInfoException;
 import org.fuin.auction.common.Utils;
 import org.fuin.auction.query.api.AuctionQueryService;
