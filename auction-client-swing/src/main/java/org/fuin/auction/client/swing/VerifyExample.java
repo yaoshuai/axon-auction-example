@@ -57,7 +57,7 @@ public final class VerifyExample {
 		// Get this value from Command Server console
 		final String securityToken = "c97ff2874fa502e2023182f53a56cd8d8ef237ed";
 
-		cmdService.verifyUser(userAggregateId, securityToken);
+		cmdService.verifyUserEmail(userAggregateId, securityToken);
 
 		System.out.println("User verified!");
 
