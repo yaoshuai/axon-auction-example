@@ -17,20 +17,21 @@ package org.fuin.auction.client.swing;
 
 import java.net.MalformedURLException;
 
-import org.fuin.auction.command.api.AuctionCommandService;
-import org.fuin.auction.command.api.ChangeUserPasswordCommand;
-import org.fuin.auction.command.api.CommandResult;
-import org.fuin.auction.command.api.EmailAlreadyExistException;
-import org.fuin.auction.command.api.IdNotFoundException;
-import org.fuin.auction.command.api.InternalErrorException;
-import org.fuin.auction.command.api.InvalidCommandException;
-import org.fuin.auction.command.api.PasswordException;
-import org.fuin.auction.command.api.RegisterUserCommand;
-import org.fuin.auction.command.api.AggregateIdResult;
-import org.fuin.auction.command.api.UserIdAlreadyExistException;
-import org.fuin.auction.command.api.UserIdEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.UserEmailVerificationFailedException;
-import org.fuin.auction.command.api.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.base.AuctionCommandService;
+import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
+import org.fuin.auction.command.api.base.RegisterUserCommand;
+import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.exceptions.AuctionCmdService;
+import org.fuin.auction.command.api.exceptions.EmailAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.IdNotFoundException;
+import org.fuin.auction.command.api.exceptions.InternalErrorException;
+import org.fuin.auction.command.api.exceptions.InvalidCommandException;
+import org.fuin.auction.command.api.exceptions.PasswordException;
+import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
+import org.fuin.auction.command.api.exceptions.UserIdAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.support.AggregateIdResult;
+import org.fuin.auction.command.api.support.CommandResult;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 

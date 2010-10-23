@@ -15,6 +15,7 @@
  */
 package org.fuin.auction.client.swing;
 
+import org.fuin.auction.command.api.exceptions.AuctionCmdService;
 import org.fuin.auction.common.Utils;
 
 import com.caucho.hessian.client.HessianProxyFactory;

@@ -15,6 +15,8 @@
  */
 package org.fuin.auction.client.swing;
 
+import org.fuin.auction.command.api.exceptions.AuctionCmdService;
+
 import com.caucho.hessian.client.HessianProxyFactory;
 
 /**
@@ -50,10 +52,10 @@ public final class VerifyExample {
 		// Verify user
 
 		// Get this value from the RegisterExample console
-		final String userAggregateId = "48d2fab7-0c51-4bba-a3d3-cc532fb83dee";
+		final String userAggregateId = "1ce5fd28-d1e5-461a-8348-62102c5781c5";
 
 		// Get this value from Command Server console
-		final String securityToken = "277d7e5f322c78f31e4cbfaac7a87522f4e39f34";
+		final String securityToken = "c97ff2874fa502e2023182f53a56cd8d8ef237ed";
 
 		cmdService.verifyUser(userAggregateId, securityToken);
 

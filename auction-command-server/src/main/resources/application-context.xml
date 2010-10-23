@@ -30,7 +30,7 @@
 
 	<bean id="userRepository"
 		class="org.axonframework.eventsourcing.GenericEventSourcingRepository">
-		<constructor-arg value="org.fuin.auction.command.server.User" />
+		<constructor-arg value="org.fuin.auction.command.server.domain.User" />
 		<property name="eventBus" ref="eventBus" />
 		<property name="eventStore" ref="eventStore" />
 	</bean>
