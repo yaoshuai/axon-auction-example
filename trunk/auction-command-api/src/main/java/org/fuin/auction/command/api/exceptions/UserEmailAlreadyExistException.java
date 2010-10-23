@@ -15,11 +15,12 @@
  */
 package org.fuin.auction.command.api.exceptions;
 
+import org.fuin.objects4j.EmailAddress;
 
 /**
  * The email is already used for another user account.
  */
-public final class EmailAlreadyExistException extends CommandException {
+public final class UserEmailAlreadyExistException extends CommandException {
 
 	private static final long serialVersionUID = 6816047350134089626L;
 
@@ -32,8 +33,18 @@ public final class EmailAlreadyExistException extends CommandException {
 	 * @param message
 	 *            Error message.
 	 */
-	public EmailAlreadyExistException(final String message) {
+	public UserEmailAlreadyExistException(final String message) {
 		super(MESSAGE_ID, message);
+	}
+
+	/**
+	 * Constructor with email.
+	 * 
+	 * @param email
+	 *            Email address.
+	 */
+	public UserEmailAlreadyExistException(final EmailAddress email) {
+		this("The email address '" + email + "' is already assigned to another user!");
 	}
 
 }

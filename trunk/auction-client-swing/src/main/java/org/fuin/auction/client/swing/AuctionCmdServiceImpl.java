@@ -22,7 +22,7 @@ import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
 import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
 import org.fuin.auction.command.api.exceptions.AuctionCmdService;
-import org.fuin.auction.command.api.exceptions.EmailAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
@@ -69,7 +69,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	@Override
 	public final String registerUser(final String userName, final String password, final String email)
 	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        EmailAlreadyExistException, InternalErrorException, InvalidCommandException {
+	        UserEmailAlreadyExistException, InternalErrorException, InvalidCommandException {
 
 		final RegisterUserCommand cmd = new RegisterUserCommand(userName, password, email);
 
@@ -85,8 +85,8 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 			throw new UserNameEmailCombinationAlreadyExistException(result.getInternalMessage());
 		case UserNameAlreadyExistException.MESSAGE_ID:
 			throw new UserNameAlreadyExistException(result.getInternalMessage());
-		case EmailAlreadyExistException.MESSAGE_ID:
-			throw new EmailAlreadyExistException(result.getInternalMessage());
+		case UserEmailAlreadyExistException.MESSAGE_ID:
+			throw new UserEmailAlreadyExistException(result.getInternalMessage());
 		case InternalErrorException.MESSAGE_ID:
 			throw new InternalErrorException(result.getInternalMessage());
 		case InvalidCommandException.MESSAGE_ID:

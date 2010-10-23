@@ -15,7 +15,7 @@
  */
 package org.fuin.auction.command.server.base;
 
-import org.fuin.auction.command.api.exceptions.EmailAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
@@ -47,12 +47,12 @@ public interface ConstraintSet {
 	 *             Exact combination of user/email is already registered.
 	 * @throws UserNameAlreadyExistException
 	 *             The user id is already in use by another user.
-	 * @throws EmailAlreadyExistException
+	 * @throws UserEmailAlreadyExistException
 	 *             The email is already used for another user account.
 	 */
 	public void add(UserId userName, EmailAddress email)
 	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        EmailAlreadyExistException;
+	        UserEmailAlreadyExistException;
 
 	/**
 	 * Removes the user id and the email address) from the set.

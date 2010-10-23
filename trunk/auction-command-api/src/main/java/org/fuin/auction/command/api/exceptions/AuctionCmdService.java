@@ -48,12 +48,12 @@ public interface AuctionCmdService {
 	 *             The user/email combination is already registered.
 	 * @throws UserNameAlreadyExistException
 	 *             The user id is already registered for another user.
-	 * @throws EmailAlreadyExistException
+	 * @throws UserEmailAlreadyExistException
 	 *             The email is already assigned to another user.
 	 */
 	public String registerUser(String userName, String password, String email)
 	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        EmailAlreadyExistException;
+	        UserEmailAlreadyExistException;
 
 	/**
 	 * Change the user's password.
