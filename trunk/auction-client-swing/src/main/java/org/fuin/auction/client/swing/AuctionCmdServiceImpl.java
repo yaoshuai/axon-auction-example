@@ -98,7 +98,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public final void changePassword(final String userAggregateId, final String oldPassword,
+	public final void changeUserPassword(final String userAggregateId, final String oldPassword,
 	        final String newPassword) throws IdNotFoundException, PasswordException,
 	        InternalErrorException, InvalidCommandException {
 
@@ -127,7 +127,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public final void verifyUser(final String userAggregateId, final String securityToken)
+	public final void verifyUserEmail(final String userAggregateId, final String securityToken)
 	        throws IdNotFoundException, UserEmailVerificationFailedException, InternalErrorException,
 	        InvalidCommandException {
 

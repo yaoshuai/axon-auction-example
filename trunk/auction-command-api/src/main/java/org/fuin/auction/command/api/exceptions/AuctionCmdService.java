@@ -70,7 +70,7 @@ public interface AuctionCmdService {
 	 * @throws PasswordException
 	 *             The old password was wrong.
 	 */
-	public void changePassword(String userAggregateId, String oldPassword, String newPassword)
+	public void changeUserPassword(String userAggregateId, String oldPassword, String newPassword)
 	        throws IdNotFoundException, PasswordException;
 
 	/**
@@ -86,7 +86,7 @@ public interface AuctionCmdService {
 	 * @throws UserEmailVerificationFailedException
 	 *             The given security token was wrong.
 	 */
-	public void verifyUser(String userAggregateId, String securityToken)
+	public void verifyUserEmail(String userAggregateId, String securityToken)
 	        throws IdNotFoundException, UserEmailVerificationFailedException;
 
 }
