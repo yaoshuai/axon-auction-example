@@ -17,14 +17,14 @@ package org.fuin.auction.command.api.exceptions;
 
 
 /**
- * A user/email combination is already registered.
+ * A user id is already registered.
  */
-public final class UserIdEmailCombinationAlreadyExistException extends CommandException {
+public final class UserNameAlreadyExistException extends CommandException {
 
-	private static final long serialVersionUID = -5054752689224246974L;
+	private static final long serialVersionUID = 4532526714311215296L;
 
 	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 5;
+	public static final int MESSAGE_ID = 3;
 
 	/**
 	 * Constructor with message.
@@ -32,7 +32,7 @@ public final class UserIdEmailCombinationAlreadyExistException extends CommandEx
 	 * @param message
 	 *            Error message.
 	 */
-	public UserIdEmailCombinationAlreadyExistException(final String message) {
+	public UserNameAlreadyExistException(final String message) {
 		super(MESSAGE_ID, message);
 	}
 

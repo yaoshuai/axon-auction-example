@@ -56,17 +56,17 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 * 
 	 * @param identifier
 	 *            New id previously generated.
-	 * @param userId
+	 * @param userName
 	 *            Human readable unique name of the user.
 	 * @param password
 	 *            User password.
 	 * @param email
 	 *            Password.
 	 */
-	public User(final AggregateIdentifier identifier, final UserId userId, final Password password,
+	public User(final AggregateIdentifier identifier, final UserId userName, final Password password,
 	        final EmailAddress email) {
 		super(identifier);
-		apply(new UserCreatedEvent(userId, new PasswordSha512(password), email, Utils
+		apply(new UserCreatedEvent(userName, new PasswordSha512(password), email, Utils
 		        .createSecureRandom()));
 	}
 

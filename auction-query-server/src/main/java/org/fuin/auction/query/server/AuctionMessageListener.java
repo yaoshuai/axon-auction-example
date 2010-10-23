@@ -86,8 +86,8 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		userDao.persist(new AuctionUser(message.getUserAggregateId(), message.getUserId(), message
-		        .getEmail(), UserState.NEW));
+		userDao.persist(new AuctionUser(message.getUserAggregateId(), message.getUserName(), message
+		        .getEmail(), UserState.NEW, message.getPassword()));
 
 	}
 
@@ -97,7 +97,7 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		final AuctionUser user = userDao.findByAggregateId(message.getUserAggregateId());
+		final AuctionUser user = userDao.findByAggregateId(message.getUserAggregateId().toString());
 		user.setState(UserState.ACTIVE);
 
 	}

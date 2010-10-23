@@ -35,8 +35,8 @@ public interface AuctionCmdService {
 	/**
 	 * Register a user.
 	 * 
-	 * @param userId
-	 *            User ID.
+	 * @param userName
+	 *            User name.
 	 * @param password
 	 *            Password.
 	 * @param email
@@ -44,15 +44,15 @@ public interface AuctionCmdService {
 	 * 
 	 * @return New unique user id.
 	 * 
-	 * @throws UserIdEmailCombinationAlreadyExistException
+	 * @throws UserNameEmailCombinationAlreadyExistException
 	 *             The user/email combination is already registered.
-	 * @throws UserIdAlreadyExistException
+	 * @throws UserNameAlreadyExistException
 	 *             The user id is already registered for another user.
 	 * @throws EmailAlreadyExistException
 	 *             The email is already assigned to another user.
 	 */
-	public String registerUser(String userId, String password, String email)
-	        throws UserIdEmailCombinationAlreadyExistException, UserIdAlreadyExistException,
+	public String registerUser(String userName, String password, String email)
+	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        EmailAlreadyExistException;
 
 	/**

@@ -30,8 +30,8 @@ import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
 import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
-import org.fuin.auction.command.api.exceptions.UserIdAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.command.api.support.AggregateIdResult;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.api.support.VoidSuccessResult;
@@ -63,7 +63,7 @@ public class AuctionCommandHandler {
 
 	@Inject
 	@IdUUID
-	private AggregateIdentifierFactory userIdFactory;
+	private AggregateIdentifierFactory userAggregateIdFactory;
 
 	/**
 	 * Sets the constraint set.
@@ -88,11 +88,12 @@ public class AuctionCommandHandler {
 	/**
 	 * Sets the user aggregate identifier factory.
 	 * 
-	 * @param userIdFactory
+	 * @param userAggregateIdFactory
 	 *            User aggregate identifier factory to set.
 	 */
-	public final void setUserIdFactory(final AggregateIdentifierFactory userIdFactory) {
-		this.userIdFactory = userIdFactory;
+	public final void setUserAggregateIdFactory(
+	        final AggregateIdentifierFactory userAggregateIdFactory) {
+		this.userAggregateIdFactory = userAggregateIdFactory;
 	}
 
 	/**
@@ -112,21 +113,22 @@ public class AuctionCommandHandler {
 
 		try {
 
-			final UserId userId = new UserId(command.getUserId());
+			final UserId userName = new UserId(command.getUserName());
 			final EmailAddress emailAddress = new EmailAddress(command.getEmail());
 			final Password password = new Password(command.getPassword());
 
-			constraintSet.add(userId, emailAddress);
+			constraintSet.add(userName, emailAddress);
 
-			final User user = new User(userIdFactory.create(), userId, password, emailAddress);
+			final User user = new User(userAggregateIdFactory.create(), userName, password,
+			        emailAddress);
 			userRepository.add(user);
 
 			return createAndLogAggregateIdResult(user.getIdentifier());
 
-		} catch (final UserIdEmailCombinationAlreadyExistException ex) {
+		} catch (final UserNameEmailCombinationAlreadyExistException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
-		} catch (final UserIdAlreadyExistException ex) {
+		} catch (final UserNameAlreadyExistException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return ex.toResult();
 		} catch (final EmailAlreadyExistException ex) {
@@ -153,7 +155,8 @@ public class AuctionCommandHandler {
 
 		try {
 
-			final AggregateIdentifier id = userIdFactory.fromString(command.getUserAggregateId());
+			final AggregateIdentifier id = userAggregateIdFactory.fromString(command
+			        .getUserAggregateId());
 			final Password oldPw = new Password(command.getOldPassword());
 			final Password newPw = new Password(command.getNewPassword());
 
@@ -190,7 +193,8 @@ public class AuctionCommandHandler {
 
 		try {
 
-			final AggregateIdentifier id = userIdFactory.fromString(command.getUserAggregateId());
+			final AggregateIdentifier id = userAggregateIdFactory.fromString(command
+			        .getUserAggregateId());
 			final String securityToken = command.getSecurityToken();
 
 			final User user = userRepository.load(id);

@@ -16,8 +16,8 @@
 package org.fuin.auction.command.server.base;
 
 import org.fuin.auction.command.api.exceptions.EmailAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserIdAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserId;
 
@@ -33,35 +33,35 @@ public interface ConstraintSet {
 	 * <br>
 	 * The following conditions must be met:<br>
 	 * <ul>
-	 * <li>The user id / email couple does not exist</li>
-	 * <li>The user id (with a different email) does not exist</li>
+	 * <li>The user name / email couple does not exist</li>
+	 * <li>The user name (with a different email) does not exist</li>
 	 * <li>The email (with different user id) does not exist</li>
 	 * </ul>
 	 * 
-	 * @param userId
-	 *            User id to add.
+	 * @param userName
+	 *            User name to add.
 	 * @param email
 	 *            Email address to add.
 	 * 
-	 * @throws UserIdEmailCombinationAlreadyExistException
+	 * @throws UserNameEmailCombinationAlreadyExistException
 	 *             Exact combination of user/email is already registered.
-	 * @throws UserIdAlreadyExistException
+	 * @throws UserNameAlreadyExistException
 	 *             The user id is already in use by another user.
 	 * @throws EmailAlreadyExistException
 	 *             The email is already used for another user account.
 	 */
-	public void add(UserId userId, EmailAddress email)
-	        throws UserIdEmailCombinationAlreadyExistException, UserIdAlreadyExistException,
+	public void add(UserId userName, EmailAddress email)
+	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        EmailAlreadyExistException;
 
 	/**
 	 * Removes the user id and the email address) from the set.
 	 * 
-	 * @param userId
-	 *            User id to remove.
+	 * @param userName
+	 *            User name to remove.
 	 * @param email
 	 *            Email address to remove.
 	 */
-	public void remove(UserId userId, EmailAddress email);
+	public void remove(UserId userName, EmailAddress email);
 
 }

@@ -18,7 +18,8 @@ package org.fuin.auction.message.api;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.objects4j.validation.UUIDStr;
+import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.PasswordSha512;
 
 /**
  * A user changed the password.
@@ -30,25 +31,25 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	private static final int VERSION = 1;
 
 	@NotNull
-	@UUIDStr
-	private String userAggregateId;
+	private final AuctionAggregateId userAggregateId;
 
-	/**
-	 * Default constructor.
-	 */
-	public UserPasswordChangedMessage() {
-		super();
-	}
+	@NotNull
+	private final PasswordSha512 password;
 
 	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userAggregateId
 	 *            User's aggregate id
+	 * @param password
+	 *            The new password.
 	 */
-	public UserPasswordChangedMessage(final String userAggregateId) {
+	public UserPasswordChangedMessage(final AuctionAggregateId userAggregateId,
+	        final PasswordSha512 password) {
 		super();
 		this.userAggregateId = userAggregateId;
+		this.password = password;
+		Contract.requireValid(this);
 	}
 
 	@Override
@@ -61,14 +62,23 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	 * 
 	 * @return Unique id.
 	 */
-	public final String getUserAggregateId() {
+	public final AuctionAggregateId getUserAggregateId() {
 		return userAggregateId;
+	}
+
+	/**
+	 * Returns the hashed password.
+	 * 
+	 * @return SHA-512 password hash.
+	 */
+	public final PasswordSha512 getPassword() {
+		return password;
 	}
 
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "version", getVersion()).toString();
+		        "password", password).append("version", getVersion()).toString();
 	}
 
 }
