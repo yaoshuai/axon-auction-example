@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.inject.Named;
 
 import org.fuin.auction.command.api.exceptions.EmailAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserIdAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserId;
 
@@ -35,31 +35,31 @@ public final class ConstraintSetInMemory implements ConstraintSet {
 	private Map<UserId, EmailAddress> map = new HashMap<UserId, EmailAddress>();
 
 	@Override
-	public final void add(final UserId userId, final EmailAddress email)
-	        throws UserIdEmailCombinationAlreadyExistException, UserIdAlreadyExistException,
+	public final void add(final UserId userName, final EmailAddress email)
+	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        EmailAlreadyExistException {
 
-		final EmailAddress value = map.get(userId);
+		final EmailAddress value = map.get(userName);
 		if (value == null) {
 			if (map.containsValue(email)) {
 				throw new EmailAlreadyExistException("The email '" + email
 				        + "' is already in use by another user account!");
 			}
-			map.put(userId, email);
+			map.put(userName, email);
 		} else {
 			if (value.equals(email)) {
-				throw new UserIdEmailCombinationAlreadyExistException(
-				        "The combination of user id '" + userId + "' and email '" + email
+				throw new UserNameEmailCombinationAlreadyExistException(
+				        "The combination of user id '" + userName + "' and email '" + email
 				                + "' already exists!");
 			}
-			throw new UserIdAlreadyExistException("The user id '" + userId + "' already exists!");
+			throw new UserNameAlreadyExistException("The user id '" + userName + "' already exists!");
 		}
 
 	}
 
 	@Override
-	public final void remove(final UserId userId, final EmailAddress email) {
-		map.remove(userId);
+	public final void remove(final UserId userName, final EmailAddress email) {
+		map.remove(userName);
 	}
 
 }

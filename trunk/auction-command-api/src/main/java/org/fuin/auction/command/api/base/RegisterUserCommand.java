@@ -34,7 +34,7 @@ public final class RegisterUserCommand implements Command {
 
 	@NotNull
 	@UserIdStr
-	private String userId;
+	private String userName;
 
 	@NotNull
 	@PasswordStr
@@ -54,16 +54,16 @@ public final class RegisterUserCommand implements Command {
 	/**
 	 * Constructor with all attributes.
 	 * 
-	 * @param userId
+	 * @param userName
 	 *            User ID.
 	 * @param password
 	 *            Password.
 	 * @param email
 	 *            Email address.
 	 */
-	public RegisterUserCommand(final String userId, final String password, final String email) {
+	public RegisterUserCommand(final String userName, final String password, final String email) {
 		super();
-		this.userId = userId;
+		this.userName = userName;
 		this.password = password;
 		this.email = email;
 	}
@@ -74,22 +74,22 @@ public final class RegisterUserCommand implements Command {
 	}
 
 	/**
-	 * Returns the user id.
+	 * Returns the user name.
 	 * 
-	 * @return User id.
+	 * @return User name.
 	 */
-	public final String getUserId() {
-		return userId;
+	public final String getUserName() {
+		return userName;
 	}
 
 	/**
-	 * Sets the user id to a new value.
+	 * Sets the user name to a new value.
 	 * 
-	 * @param userId
-	 *            User id to set.
+	 * @param userName
+	 *            User name to set.
 	 */
-	public final void setUserId(final String userId) {
-		this.userId = userId;
+	public final void setUserName(final String userName) {
+		this.userName = userName;
 	}
 
 	/**
@@ -134,8 +134,8 @@ public final class RegisterUserCommand implements Command {
 	public final String toTraceString() {
 		// We don't want to include the clear text password for security
 		// reasons here
-		return new ToStringBuilder(this).append("userId", userId).append("email", email).append(
-		        "version", getVersion()).toString();
+		return new ToStringBuilder(this).append("userName", userName).append("email", email)
+		        .append("version", getVersion()).toString();
 	}
 
 }

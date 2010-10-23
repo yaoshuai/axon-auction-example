@@ -18,7 +18,7 @@ package org.fuin.auction.message.api;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.objects4j.validation.UUIDStr;
+import org.fuin.objects4j.Contract;
 
 /**
  * A user was activated.
@@ -30,15 +30,7 @@ public final class UserEmailVerfiedMessage implements AuctionMessage {
 	private static final int VERSION = 1;
 
 	@NotNull
-	@UUIDStr
-	private String userAggregateId;
-
-	/**
-	 * Default constructor.
-	 */
-	public UserEmailVerfiedMessage() {
-		super();
-	}
+	private final AuctionAggregateId userAggregateId;
 
 	/**
 	 * Constructor with all attributes.
@@ -46,9 +38,10 @@ public final class UserEmailVerfiedMessage implements AuctionMessage {
 	 * @param userAggregateId
 	 *            User's aggregate id
 	 */
-	public UserEmailVerfiedMessage(final String userAggregateId) {
+	public UserEmailVerfiedMessage(final AuctionAggregateId userAggregateId) {
 		super();
 		this.userAggregateId = userAggregateId;
+		Contract.requireValid(this);
 	}
 
 	@Override
@@ -61,7 +54,7 @@ public final class UserEmailVerfiedMessage implements AuctionMessage {
 	 * 
 	 * @return Unique id.
 	 */
-	public final String getUserAggregateId() {
+	public final AuctionAggregateId getUserAggregateId() {
 		return userAggregateId;
 	}
 

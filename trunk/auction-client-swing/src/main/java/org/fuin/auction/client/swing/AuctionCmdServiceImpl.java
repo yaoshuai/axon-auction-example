@@ -28,8 +28,8 @@ import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
 import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
-import org.fuin.auction.command.api.exceptions.UserIdAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserIdEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
+import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.command.api.support.AggregateIdResult;
 import org.fuin.auction.command.api.support.CommandResult;
 
@@ -67,11 +67,11 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public final String registerUser(final String userId, final String password, final String email)
-	        throws UserIdEmailCombinationAlreadyExistException, UserIdAlreadyExistException,
+	public final String registerUser(final String userName, final String password, final String email)
+	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        EmailAlreadyExistException, InternalErrorException, InvalidCommandException {
 
-		final RegisterUserCommand cmd = new RegisterUserCommand(userId, password, email);
+		final RegisterUserCommand cmd = new RegisterUserCommand(userName, password, email);
 
 		final CommandResult result = commandService.send(cmd);
 		if (result.isSuccess()) {
@@ -81,10 +81,10 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 
 		// Error handling
 		switch (result.getMessageId()) {
-		case UserIdEmailCombinationAlreadyExistException.MESSAGE_ID:
-			throw new UserIdEmailCombinationAlreadyExistException(result.getInternalMessage());
-		case UserIdAlreadyExistException.MESSAGE_ID:
-			throw new UserIdAlreadyExistException(result.getInternalMessage());
+		case UserNameEmailCombinationAlreadyExistException.MESSAGE_ID:
+			throw new UserNameEmailCombinationAlreadyExistException(result.getInternalMessage());
+		case UserNameAlreadyExistException.MESSAGE_ID:
+			throw new UserNameAlreadyExistException(result.getInternalMessage());
 		case EmailAlreadyExistException.MESSAGE_ID:
 			throw new EmailAlreadyExistException(result.getInternalMessage());
 		case InternalErrorException.MESSAGE_ID:

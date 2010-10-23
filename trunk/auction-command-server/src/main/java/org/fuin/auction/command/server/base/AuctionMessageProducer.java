@@ -26,6 +26,7 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.fuin.auction.command.server.events.UserCreatedEvent;
 import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
 import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
+import org.fuin.auction.message.api.AuctionAggregateId;
 import org.fuin.auction.message.api.AuctionMessage;
 import org.fuin.auction.message.api.UserCreatedMessage;
 import org.fuin.auction.message.api.UserEmailVerfiedMessage;
@@ -66,8 +67,8 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
-		publish(new UserCreatedMessage(event.getAggregateIdentifier().toString(), event.getUserId()
-		        .toString(), event.getEmail().toString()));
+		publish(new UserCreatedMessage(new AuctionAggregateId(event.getAggregateIdentifier()
+		        .toString()), event.getUserName(), event.getEmail(), event.getPassword()));
 	}
 
 	/**
@@ -78,7 +79,8 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleUserEmailVerifiedEvent(final UserEmailVerifiedEvent event) {
-		publish(new UserEmailVerfiedMessage(event.getAggregateIdentifier().toString()));
+		publish(new UserEmailVerfiedMessage(new AuctionAggregateId(event.getAggregateIdentifier()
+		        .toString())));
 	}
 
 	/**
@@ -89,7 +91,8 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleUserPasswordChangedEvent(final UserPasswordChangedEvent event) {
-		publish(new UserPasswordChangedMessage(event.getAggregateIdentifier().toString()));
+		publish(new UserPasswordChangedMessage(new AuctionAggregateId(event
+		        .getAggregateIdentifier().toString()), event.getNewPassword()));
 	}
 
 	/**

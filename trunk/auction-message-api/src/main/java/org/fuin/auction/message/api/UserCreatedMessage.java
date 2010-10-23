@@ -18,9 +18,10 @@ package org.fuin.auction.message.api;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.objects4j.validation.EmailAddressStr;
-import org.fuin.objects4j.validation.UUIDStr;
-import org.fuin.objects4j.validation.UserIdStr;
+import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.EmailAddress;
+import org.fuin.objects4j.PasswordSha512;
+import org.fuin.objects4j.UserId;
 
 /**
  * A new user was created.
@@ -32,39 +33,37 @@ public final class UserCreatedMessage implements AuctionMessage {
 	private static final int VERSION = 1;
 
 	@NotNull
-	@UUIDStr
-	private String userAggregateId;
+	private final AuctionAggregateId userAggregateId;
 
 	@NotNull
-	@UserIdStr
-	private String userId;
+	private final UserId userName;
 
 	@NotNull
-	@EmailAddressStr
-	private String email;
+	private final EmailAddress email;
 
-	/**
-	 * Default constructor.
-	 */
-	public UserCreatedMessage() {
-		super();
-	}
+	@NotNull
+	private final PasswordSha512 password;
 
 	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userAggregateId
 	 *            User's aggregate id
-	 * @param userId
-	 *            User id.
+	 * @param userName
+	 *            User's name.
 	 * @param email
 	 *            Email address.
+	 * @param password
+	 *            Password.
 	 */
-	public UserCreatedMessage(final String userAggregateId, final String userId, final String email) {
+	public UserCreatedMessage(final AuctionAggregateId userAggregateId, final UserId userName,
+	        final EmailAddress email, final PasswordSha512 password) {
 		super();
 		this.userAggregateId = userAggregateId;
-		this.userId = userId;
+		this.userName = userName;
 		this.email = email;
+		this.password = password;
+		Contract.requireValid(this);
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public final class UserCreatedMessage implements AuctionMessage {
 	 * 
 	 * @return Unique id.
 	 */
-	public final String getUserAggregateId() {
+	public final AuctionAggregateId getUserAggregateId() {
 		return userAggregateId;
 	}
 
@@ -86,8 +85,8 @@ public final class UserCreatedMessage implements AuctionMessage {
 	 * 
 	 * @return User id.
 	 */
-	public final String getUserId() {
-		return userId;
+	public final UserId getUserName() {
+		return userName;
 	}
 
 	/**
@@ -95,14 +94,24 @@ public final class UserCreatedMessage implements AuctionMessage {
 	 * 
 	 * @return Email.
 	 */
-	public final String getEmail() {
+	public final EmailAddress getEmail() {
 		return email;
+	}
+
+	/**
+	 * Returns the hashed password.
+	 * 
+	 * @return SHA-512 password hash.
+	 */
+	public final PasswordSha512 getPassword() {
+		return password;
 	}
 
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "userId", userId).append("email", email).append("version", getVersion()).toString();
+		        "userName", userName).append("email", email).append("password", password).append(
+		        "version", getVersion()).toString();
 	}
 
 }

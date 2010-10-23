@@ -22,12 +22,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.common.TraceStringCapable;
 import org.fuin.auction.common.UserState;
+import org.fuin.auction.message.api.AuctionAggregateId;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.EmailAddress;
+import org.fuin.objects4j.PasswordSha512;
+import org.fuin.objects4j.UserId;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.UUIDStr;
 import org.fuin.objects4j.validation.UserIdStr;
@@ -47,22 +52,26 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 
 	@NotNull
 	@UUIDStr
-	@Column(name = "AGGREGATE_ID", nullable = false)
+	@Column(name = "AGGREGATE_ID", length = 37, nullable = false)
 	private String aggregateId;
 
 	@NotNull
 	@UserIdStr
-	@Column(name = "USER_NAME", nullable = false)
+	@Column(name = "USER_NAME", length = 20, nullable = false)
 	private String userName;
 
 	@NotNull
 	@EmailAddressStr
-	@Column(name = "EMAIL", nullable = false)
+	@Column(name = "EMAIL", length = 320, nullable = false)
 	private String email;
 
 	@NotNull
 	@Column(name = "STATE", nullable = false)
 	private UserState state;
+
+	@NotNull
+	@Column(name = "PASSWORD", length = 130, nullable = false)
+	private String password;
 
 	/**
 	 * Package visible default constructor for persistence.
@@ -82,14 +91,17 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	 *            Email address.
 	 * @param state
 	 *            Current state of the user.
+	 * @param password
+	 *            SHA512 hashed password.
 	 */
-	public AuctionUser(final String aggregateId, final String userName, final String email,
-	        final UserState state) {
+	public AuctionUser(final AuctionAggregateId aggregateId, final UserId userName,
+	        final EmailAddress email, final UserState state, final PasswordSha512 password) {
 		super();
-		this.aggregateId = aggregateId;
-		this.userName = userName;
-		this.email = email;
+		this.aggregateId = aggregateId.toString();
+		this.userName = userName.toString();
+		this.email = email.toString();
 		this.state = state;
+		this.password = password.toString();
 		Contract.requireValid(this);
 	}
 
@@ -146,7 +158,7 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	 * @param userName
 	 *            User name to set.
 	 */
-	public final void setUserId(final String userName) {
+	public final void setUserName(final String userName) {
 		this.userName = userName;
 	}
 
@@ -188,10 +200,30 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 		this.state = state;
 	}
 
+	/**
+	 * Returns the password.
+	 * 
+	 * @return SHA-512 hash that is Base64 encoded.
+	 */
+	public final String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Sets the password to a new value.
+	 * 
+	 * @param password
+	 *            SHA-512 hash that is Base64 encoded.
+	 */
+	public final void setPassword(final String password) {
+		this.password = password;
+	}
+
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("aggregateId", aggregateId).append("userName",
-		        userName).append("email", email).toString();
+		        userName).append("email", email).append("state", state)
+		        .append("password", password).toString();
 	}
 
 }
