@@ -7,13 +7,19 @@
 
 	<!-- All classes are allowed to use this -->
 	<alwaysAllowed>
+	    <dependsOn package="com.mchange.v2.c3p0"/>
+		<dependsOn package="java.beans" />
 		<dependsOn package="java.lang" />
 		<dependsOn package="java.io" />
+		<dependsOn package="java.sql" />
 		<dependsOn package="java.util" />
 		<dependsOn package="javax.inject" />
 		<dependsOn package="javax.jms" />
+		<dependsOn package="javax.mail" />
+		<dependsOn package="javax.sql" />
 		<dependsOn package="javax.validation" />
 		<dependsOn package="org.apache.commons.lang.builder" />
+		<dependsOn package="org.apache.velocity" />
 		<dependsOn package="org.axonframework"/>
 		<dependsOn package="org.fuin.auction.common" />
 		<dependsOn package="org.fuin.objects4j" />
