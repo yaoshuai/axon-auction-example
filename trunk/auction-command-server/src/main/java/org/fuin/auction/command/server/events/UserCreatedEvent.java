@@ -32,7 +32,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	private static final int VERSION = 1;
 
 	/** Version to be serialized. */
-	private int version;
+	private int instanceVersion;
 
 	private final UserName userName;
 
@@ -57,7 +57,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	public UserCreatedEvent(final UserName userName, final PasswordSha512 password,
 	        final EmailAddress email, final String securityToken) {
 		super();
-		this.version = VERSION;
+		this.instanceVersion = VERSION;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
@@ -103,12 +103,23 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userName", userName).append("email", email)
-		        .append("securityToken", securityToken).append("version", getVersion()).toString();
+		        .append("securityToken", securityToken).append("version", getInstanceVersion())
+		        .toString();
 	}
 
 	@Override
-	public final int getVersion() {
-		return version;
+	public final int getInstanceVersion() {
+		return instanceVersion;
+	}
+
+	@Override
+	public final int getClassVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public final boolean isSameVersion() {
+		return VERSION == instanceVersion;
 	}
 
 }

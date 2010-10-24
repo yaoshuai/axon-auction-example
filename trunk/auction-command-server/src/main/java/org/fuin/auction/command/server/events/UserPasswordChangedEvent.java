@@ -30,7 +30,7 @@ public final class UserPasswordChangedEvent extends DomainEvent implements Exten
 	private static final int VERSION = 1;
 
 	/** Version to be serialized. */
-	private int version;
+	private int instanceVersion;
 
 	private final PasswordSha512 oldPassword;
 
@@ -47,7 +47,7 @@ public final class UserPasswordChangedEvent extends DomainEvent implements Exten
 	public UserPasswordChangedEvent(final PasswordSha512 oldPassword,
 	        final PasswordSha512 newPassword) {
 		super();
-		this.version = VERSION;
+		this.instanceVersion = VERSION;
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
 	}
@@ -73,12 +73,22 @@ public final class UserPasswordChangedEvent extends DomainEvent implements Exten
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("oldPassword", oldPassword).append("newPassword",
-		        newPassword).append("version", getVersion()).toString();
+		        newPassword).append("version", getInstanceVersion()).toString();
 	}
 
 	@Override
-	public final int getVersion() {
-		return version;
+	public final int getInstanceVersion() {
+		return instanceVersion;
+	}
+
+	@Override
+	public final int getClassVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public final boolean isSameVersion() {
+		return VERSION == instanceVersion;
 	}
 
 }
