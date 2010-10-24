@@ -7,7 +7,6 @@
 
 	<!-- All classes are allowed to use this -->
 	<alwaysAllowed>
-		<dependsOn package="java.lang" />
 		<dependsOn package="java.io" />
 		<dependsOn package="java.util" />
 		<dependsOn package="javax.validation" />
