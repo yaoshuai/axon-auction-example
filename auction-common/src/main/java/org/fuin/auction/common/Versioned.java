@@ -25,11 +25,25 @@ import java.io.Serializable;
 public interface Versioned {
 
 	/**
-	 * Returns the version of the class. When a class is changed, it's version
-	 * is incremented by one.
+	 * Returns the version of the instance.
 	 * 
 	 * @return Version number.
 	 */
-	public int getVersion();
+	public int getInstanceVersion();
+
+	/**
+	 * Returns the version of the class.
+	 * 
+	 * @return Version number.
+	 */
+	public int getClassVersion();
+
+	/**
+	 * Returns if class and instance version are the same.
+	 * 
+	 * @return If both have the same value <code>true</code> else
+	 *         <code>false</code>.
+	 */
+	public boolean isSameVersion();
 
 }

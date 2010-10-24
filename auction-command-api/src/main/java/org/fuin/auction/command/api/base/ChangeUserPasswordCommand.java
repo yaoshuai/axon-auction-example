@@ -40,7 +40,7 @@ public final class ChangeUserPasswordCommand implements Command {
 	private static final int VERSION = 1;
 
 	/** Version to be serialized. */
-	private int version;
+	private int instanceVersion;
 
 	@NotNull
 	@UUIDStr
@@ -67,15 +67,10 @@ public final class ChangeUserPasswordCommand implements Command {
 	public ChangeUserPasswordCommand(final String userAggregateId, final String oldPassword,
 	        final String newPassword) {
 		super();
-		this.version = VERSION;
+		this.instanceVersion = VERSION;
 		this.userAggregateId = userAggregateId;
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
-	}
-
-	@Override
-	public final int getVersion() {
-		return version;
 	}
 
 	/**
@@ -140,7 +135,7 @@ public final class ChangeUserPasswordCommand implements Command {
 		// We don't want to include the clear text passwords for security
 		// reasons here
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "version", getVersion()).toString();
+		        "version", getInstanceVersion()).toString();
 	}
 
 	@Override
@@ -152,6 +147,21 @@ public final class ChangeUserPasswordCommand implements Command {
 		list.add(InvalidCommandException.class);
 		list.add(InternalErrorException.class);
 		return list;
+	}
+
+	@Override
+	public final int getInstanceVersion() {
+		return instanceVersion;
+	}
+
+	@Override
+	public final int getClassVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public final boolean isSameVersion() {
+		return VERSION == instanceVersion;
 	}
 
 }

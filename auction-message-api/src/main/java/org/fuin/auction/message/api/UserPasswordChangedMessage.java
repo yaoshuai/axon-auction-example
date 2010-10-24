@@ -33,7 +33,7 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	private static final int VERSION = 1;
 
 	/** Version to be serialized. */
-	private int version;
+	private int instanceVersion;
 
 	@NotNull
 	private final UUID userAggregateId;
@@ -51,15 +51,10 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	 */
 	public UserPasswordChangedMessage(final UUID userAggregateId, final PasswordSha512 password) {
 		super();
-		this.version = VERSION;
+		this.instanceVersion = VERSION;
 		this.userAggregateId = userAggregateId;
 		this.password = password;
 		Contract.requireValid(this);
-	}
-
-	@Override
-	public final int getVersion() {
-		return version;
 	}
 
 	/**
@@ -83,7 +78,22 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "password", password).append("version", getVersion()).toString();
+		        "password", password).append("version", getInstanceVersion()).toString();
+	}
+
+	@Override
+	public final int getInstanceVersion() {
+		return instanceVersion;
+	}
+
+	@Override
+	public final int getClassVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public final boolean isSameVersion() {
+		return VERSION == instanceVersion;
 	}
 
 }

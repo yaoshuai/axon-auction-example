@@ -41,7 +41,7 @@ public final class RegisterUserCommand implements Command {
 	private static final int VERSION = 1;
 
 	/** Version to be serialized. */
-	private int version;
+	private int instanceVersion;
 
 	@NotNull
 	@UserNameStr
@@ -67,15 +67,10 @@ public final class RegisterUserCommand implements Command {
 	 */
 	public RegisterUserCommand(final String userName, final String password, final String email) {
 		super();
-		this.version = VERSION;
+		this.instanceVersion = VERSION;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-	}
-
-	@Override
-	public final int getVersion() {
-		return version;
 	}
 
 	/**
@@ -140,7 +135,7 @@ public final class RegisterUserCommand implements Command {
 		// We don't want to include the clear text password for security
 		// reasons here
 		return new ToStringBuilder(this).append("userName", userName).append("email", email)
-		        .append("version", getVersion()).toString();
+		        .append("version", getInstanceVersion()).toString();
 	}
 
 	@Override
@@ -152,6 +147,21 @@ public final class RegisterUserCommand implements Command {
 		list.add(InvalidCommandException.class);
 		list.add(InternalErrorException.class);
 		return list;
+	}
+
+	@Override
+	public final int getInstanceVersion() {
+		return instanceVersion;
+	}
+
+	@Override
+	public final int getClassVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public final boolean isSameVersion() {
+		return VERSION == instanceVersion;
 	}
 
 }
