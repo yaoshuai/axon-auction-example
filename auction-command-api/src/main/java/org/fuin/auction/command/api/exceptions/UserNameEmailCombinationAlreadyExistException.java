@@ -21,7 +21,7 @@ import org.fuin.objects4j.UserName;
 /**
  * A user/email combination is already registered.
  */
-public final class UserNameEmailCombinationAlreadyExistException extends CommandException {
+public final class UserNameEmailCombinationAlreadyExistException extends CommandCheckedException {
 
 	private static final long serialVersionUID = -5054752689224246974L;
 

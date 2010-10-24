@@ -20,7 +20,7 @@ import org.fuin.objects4j.EmailAddress;
 /**
  * The email is already used for another user account.
  */
-public final class UserEmailAlreadyExistException extends CommandException {
+public final class UserEmailAlreadyExistException extends CommandCheckedException {
 
 	private static final long serialVersionUID = 6816047350134089626L;
 

@@ -20,7 +20,7 @@ import org.fuin.objects4j.UserName;
 /**
  * A user id is already registered.
  */
-public final class UserNameAlreadyExistException extends CommandException {
+public final class UserNameAlreadyExistException extends CommandCheckedException {
 
 	private static final long serialVersionUID = 4532526714311215296L;
 

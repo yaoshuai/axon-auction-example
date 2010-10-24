@@ -16,7 +16,9 @@
 package org.fuin.auction.command.api.support;
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.fuin.auction.command.api.exceptions.CommandException;
 import org.fuin.auction.common.TraceStringCapable;
 import org.fuin.auction.common.Versioned;
 
@@ -24,5 +26,12 @@ import org.fuin.auction.common.Versioned;
  * Common behavior shared by all commands.
  */
 public interface Command extends Serializable, TraceStringCapable, Versioned {
+
+	/**
+	 * Returns a list of possible exceptions.
+	 * 
+	 * @return Array of exceptions.
+	 */
+	public List<Class<? extends CommandException>> getExceptions();
 
 }

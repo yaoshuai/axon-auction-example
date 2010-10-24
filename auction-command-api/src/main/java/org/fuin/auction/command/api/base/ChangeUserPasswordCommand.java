@@ -15,9 +15,17 @@
  */
 package org.fuin.auction.command.api.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.fuin.auction.command.api.exceptions.CommandException;
+import org.fuin.auction.command.api.exceptions.IdNotFoundException;
+import org.fuin.auction.command.api.exceptions.InternalErrorException;
+import org.fuin.auction.command.api.exceptions.InvalidCommandException;
+import org.fuin.auction.command.api.exceptions.PasswordException;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.objects4j.validation.PasswordStr;
 import org.fuin.objects4j.validation.UUIDStr;
@@ -129,6 +137,17 @@ public final class ChangeUserPasswordCommand implements Command {
 		// reasons here
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
 		        "version", getVersion()).toString();
+	}
+
+	@Override
+	public final List<Class<? extends CommandException>> getExceptions() {
+		final List<Class<? extends CommandException>> list;
+		list = new ArrayList<Class<? extends CommandException>>();
+		list.add(IdNotFoundException.class);
+		list.add(PasswordException.class);
+		list.add(InvalidCommandException.class);
+		list.add(InternalErrorException.class);
+		return list;
 	}
 
 }

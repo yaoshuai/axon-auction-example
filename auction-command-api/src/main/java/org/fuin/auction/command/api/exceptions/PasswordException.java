@@ -19,7 +19,7 @@ package org.fuin.auction.command.api.exceptions;
 /**
  * A password is wrong.
  */
-public final class PasswordException extends CommandException {
+public final class PasswordException extends CommandCheckedException {
 
 	private static final long serialVersionUID = 5942862403217066457L;
 
