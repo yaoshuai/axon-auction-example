@@ -25,52 +25,45 @@ import org.fuin.auction.command.api.exceptions.CommandException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
-import org.fuin.auction.command.api.exceptions.PasswordException;
+import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
 import org.fuin.auction.command.api.support.Command;
-import org.fuin.objects4j.validation.PasswordStr;
+import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.validation.UUIDStr;
 
 /**
- * Change the user's password.
+ * Verify the user's email address with a given security token.
  */
-public final class ChangeUserPasswordCommand implements Command {
+public final class VerifyUserEmailCommandV1 implements Command {
 
-	private static final long serialVersionUID = -7557765676459176985L;
-
-	private static final int VERSION = 1;
-
-	/** Version to be serialized. */
-	private int instanceVersion;
+	private static final long serialVersionUID = 7178665113651928567L;
 
 	@NotNull
 	@UUIDStr
 	private String userAggregateId;
 
 	@NotNull
-	@PasswordStr
-	private String oldPassword;
+	private String securityToken;
 
-	@NotNull
-	@PasswordStr
-	private String newPassword;
+	/**
+	 * Default constructor for serialization.
+	 */
+	protected VerifyUserEmailCommandV1() {
+		super();
+	}
 
 	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userAggregateId
 	 *            Aggregate id of the user.
-	 * @param oldPassword
-	 *            Old clear text password.
-	 * @param newPassword
-	 *            New clear text password.
+	 * @param securityToken
+	 *            Security token.
 	 */
-	public ChangeUserPasswordCommand(final String userAggregateId, final String oldPassword,
-	        final String newPassword) {
+	public VerifyUserEmailCommandV1(final String userAggregateId, final String securityToken) {
 		super();
-		this.instanceVersion = VERSION;
 		this.userAggregateId = userAggregateId;
-		this.oldPassword = oldPassword;
-		this.newPassword = newPassword;
+		this.securityToken = securityToken;
+		Contract.requireValid(this);
 	}
 
 	/**
@@ -83,7 +76,7 @@ public final class ChangeUserPasswordCommand implements Command {
 	}
 
 	/**
-	 * Sets the aggregate id of the user.
+	 * Sets the aggregate id of the user to a new value.
 	 * 
 	 * @param userAggregateId
 	 *            Unique id to set.
@@ -93,49 +86,28 @@ public final class ChangeUserPasswordCommand implements Command {
 	}
 
 	/**
-	 * Returns the old password.
+	 * Returns the security token.
 	 * 
-	 * @return Old clear text password.
+	 * @return Base64 encoded security token.
 	 */
-	public final String getOldPassword() {
-		return oldPassword;
+	public final String getSecurityToken() {
+		return securityToken;
 	}
 
 	/**
-	 * Sets the old password.
+	 * Sets the security token to a new value.
 	 * 
-	 * @param oldPassword
-	 *            Clear text password to set.
+	 * @param securityToken
+	 *            Base64 encoded security token.
 	 */
-	public final void setOldPassword(final String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
-
-	/**
-	 * Returns the new password.
-	 * 
-	 * @return New clear text password.
-	 */
-	public final String getNewPassword() {
-		return newPassword;
-	}
-
-	/**
-	 * Sets the new password.
-	 * 
-	 * @param newPassword
-	 *            Clear text password to set.
-	 */
-	public void setNewPassword(final String newPassword) {
-		this.newPassword = newPassword;
+	public final void setSecurityToken(final String securityToken) {
+		this.securityToken = securityToken;
 	}
 
 	@Override
 	public final String toTraceString() {
-		// We don't want to include the clear text passwords for security
-		// reasons here
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "version", getInstanceVersion()).toString();
+		        "securityToken", securityToken).toString();
 	}
 
 	@Override
@@ -143,25 +115,10 @@ public final class ChangeUserPasswordCommand implements Command {
 		final List<Class<? extends CommandException>> list;
 		list = new ArrayList<Class<? extends CommandException>>();
 		list.add(IdNotFoundException.class);
-		list.add(PasswordException.class);
+		list.add(UserEmailVerificationFailedException.class);
 		list.add(InvalidCommandException.class);
 		list.add(InternalErrorException.class);
 		return list;
-	}
-
-	@Override
-	public final int getInstanceVersion() {
-		return instanceVersion;
-	}
-
-	@Override
-	public final int getClassVersion() {
-		return VERSION;
-	}
-
-	@Override
-	public final boolean isSameVersion() {
-		return VERSION == instanceVersion;
 	}
 
 }

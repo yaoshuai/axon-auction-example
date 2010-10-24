@@ -18,11 +18,10 @@ package org.fuin.auction.message.api;
 import java.io.Serializable;
 
 import org.fuin.auction.common.TraceStringCapable;
-import org.fuin.auction.common.Versioned;
 
 /**
  * Bas behavior for all messages.
  */
-public interface AuctionMessage extends Serializable, TraceStringCapable, Versioned {
+public interface AuctionMessage extends Serializable, TraceStringCapable {
 
 }

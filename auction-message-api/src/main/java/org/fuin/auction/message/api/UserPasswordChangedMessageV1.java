@@ -21,32 +21,40 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.PasswordSha512;
 
 /**
- * A user was activated.
+ * A user changed the password.
  */
-public final class UserEmailVerfiedMessage implements AuctionMessage {
+public final class UserPasswordChangedMessageV1 implements AuctionMessage {
 
-	private static final long serialVersionUID = -4888511874340301410L;
-
-	private static final int VERSION = 1;
-
-	/** Version to be serialized. */
-	private int instanceVersion;
+	private static final long serialVersionUID = -4988175758627577689L;
 
 	@NotNull
-	private final UUID userAggregateId;
+	private UUID userAggregateId;
+
+	@NotNull
+	private PasswordSha512 password;
+
+	/**
+	 * Default constructor for serialization.
+	 */
+	protected UserPasswordChangedMessageV1() {
+		super();
+	}
 
 	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userAggregateId
 	 *            User's aggregate id
+	 * @param password
+	 *            The new password.
 	 */
-	public UserEmailVerfiedMessage(final UUID userAggregateId) {
+	public UserPasswordChangedMessageV1(final UUID userAggregateId, final PasswordSha512 password) {
 		super();
-		this.instanceVersion = VERSION;
 		this.userAggregateId = userAggregateId;
+		this.password = password;
 		Contract.requireValid(this);
 	}
 
@@ -59,25 +67,19 @@ public final class UserEmailVerfiedMessage implements AuctionMessage {
 		return userAggregateId;
 	}
 
+	/**
+	 * Returns the hashed password.
+	 * 
+	 * @return SHA-512 password hash.
+	 */
+	public final PasswordSha512 getPassword() {
+		return password;
+	}
+
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "version", getInstanceVersion()).toString();
-	}
-
-	@Override
-	public final int getInstanceVersion() {
-		return instanceVersion;
-	}
-
-	@Override
-	public final int getClassVersion() {
-		return VERSION;
-	}
-
-	@Override
-	public final boolean isSameVersion() {
-		return VERSION == instanceVersion;
+		        "password", password).toString();
 	}
 
 }

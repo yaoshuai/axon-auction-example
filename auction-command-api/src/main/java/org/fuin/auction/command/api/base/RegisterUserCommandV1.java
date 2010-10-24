@@ -27,6 +27,7 @@ import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.support.Command;
+import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.PasswordStr;
 import org.fuin.objects4j.validation.UserNameStr;
@@ -34,14 +35,9 @@ import org.fuin.objects4j.validation.UserNameStr;
 /**
  * Register a new user.
  */
-public final class RegisterUserCommand implements Command {
+public final class RegisterUserCommandV1 implements Command {
 
 	private static final long serialVersionUID = 5381295115581408651L;
-
-	private static final int VERSION = 1;
-
-	/** Version to be serialized. */
-	private int instanceVersion;
 
 	@NotNull
 	@UserNameStr
@@ -56,6 +52,13 @@ public final class RegisterUserCommand implements Command {
 	private String email;
 
 	/**
+	 * Default constructor for serialization.
+	 */
+	protected RegisterUserCommandV1() {
+		super();
+	}
+
+	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userName
@@ -65,12 +68,12 @@ public final class RegisterUserCommand implements Command {
 	 * @param email
 	 *            Email address.
 	 */
-	public RegisterUserCommand(final String userName, final String password, final String email) {
+	public RegisterUserCommandV1(final String userName, final String password, final String email) {
 		super();
-		this.instanceVersion = VERSION;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+		Contract.requireValid(this);
 	}
 
 	/**
@@ -135,7 +138,7 @@ public final class RegisterUserCommand implements Command {
 		// We don't want to include the clear text password for security
 		// reasons here
 		return new ToStringBuilder(this).append("userName", userName).append("email", email)
-		        .append("version", getInstanceVersion()).toString();
+		        .toString();
 	}
 
 	@Override
@@ -147,21 +150,6 @@ public final class RegisterUserCommand implements Command {
 		list.add(InvalidCommandException.class);
 		list.add(InternalErrorException.class);
 		return list;
-	}
-
-	@Override
-	public final int getInstanceVersion() {
-		return instanceVersion;
-	}
-
-	@Override
-	public final int getClassVersion() {
-		return VERSION;
-	}
-
-	@Override
-	public final boolean isSameVersion() {
-		return VERSION == instanceVersion;
 	}
 
 }

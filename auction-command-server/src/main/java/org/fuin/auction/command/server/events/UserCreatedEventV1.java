@@ -15,9 +15,12 @@
  */
 package org.fuin.auction.command.server.events;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.DomainEvent;
 import org.fuin.auction.command.server.support.ExtendedDomainEvent;
+import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.PasswordSha512;
 import org.fuin.objects4j.UserName;
@@ -25,22 +28,28 @@ import org.fuin.objects4j.UserName;
 /**
  * A user was created.
  */
-public final class UserCreatedEvent extends DomainEvent implements ExtendedDomainEvent {
+public final class UserCreatedEventV1 extends DomainEvent implements ExtendedDomainEvent {
 
 	private static final long serialVersionUID = 8303845111764138148L;
 
-	private static final int VERSION = 1;
+	@NotNull
+	private UserName userName;
 
-	/** Version to be serialized. */
-	private int instanceVersion;
+	@NotNull
+	private PasswordSha512 password;
 
-	private final UserName userName;
+	@NotNull
+	private EmailAddress email;
 
-	private final PasswordSha512 password;
+	@NotNull
+	private String securityToken;
 
-	private final EmailAddress email;
-
-	private final String securityToken;
+	/**
+	 * Default constructor for serialization.
+	 */
+	protected UserCreatedEventV1() {
+		super();
+	}
 
 	/**
 	 * Constructor with all data.
@@ -54,14 +63,14 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	 * @param securityToken
 	 *            Base64 encoded security token.
 	 */
-	public UserCreatedEvent(final UserName userName, final PasswordSha512 password,
+	public UserCreatedEventV1(final UserName userName, final PasswordSha512 password,
 	        final EmailAddress email, final String securityToken) {
 		super();
-		this.instanceVersion = VERSION;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
 		this.securityToken = securityToken;
+		Contract.requireValid(this);
 	}
 
 	/**
@@ -103,23 +112,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userName", userName).append("email", email)
-		        .append("securityToken", securityToken).append("version", getInstanceVersion())
-		        .toString();
-	}
-
-	@Override
-	public final int getInstanceVersion() {
-		return instanceVersion;
-	}
-
-	@Override
-	public final int getClassVersion() {
-		return VERSION;
-	}
-
-	@Override
-	public final boolean isSameVersion() {
-		return VERSION == instanceVersion;
+		        .append("securityToken", securityToken).toString();
 	}
 
 }
