@@ -29,6 +29,9 @@ public final class UserPasswordChangedEvent extends DomainEvent implements Exten
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	private final PasswordSha512 oldPassword;
 
 	private final PasswordSha512 newPassword;
@@ -44,6 +47,7 @@ public final class UserPasswordChangedEvent extends DomainEvent implements Exten
 	public UserPasswordChangedEvent(final PasswordSha512 oldPassword,
 	        final PasswordSha512 newPassword) {
 		super();
+		this.version = VERSION;
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
 	}
@@ -74,7 +78,7 @@ public final class UserPasswordChangedEvent extends DomainEvent implements Exten
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 }

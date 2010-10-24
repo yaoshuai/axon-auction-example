@@ -31,6 +31,9 @@ public final class UserEmailVerfiedMessage implements AuctionMessage {
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	@NotNull
 	private final UUID userAggregateId;
 
@@ -42,13 +45,14 @@ public final class UserEmailVerfiedMessage implements AuctionMessage {
 	 */
 	public UserEmailVerfiedMessage(final UUID userAggregateId) {
 		super();
+		this.version = VERSION;
 		this.userAggregateId = userAggregateId;
 		Contract.requireValid(this);
 	}
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 	/**
