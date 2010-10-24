@@ -19,10 +19,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.UUID;
 
 import org.fuin.auction.command.api.exceptions.AuctionCmdService;
 import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
+import org.fuin.objects4j.EmailAddress;
+import org.fuin.objects4j.Password;
+import org.fuin.objects4j.UserName;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
@@ -56,8 +60,8 @@ public final class RegisterExample {
 		System.out.println("java.io.tmpdir=" + tmpDir);
 
 		// Delete old mail if it exists
-		final String peterEmail = "peter@nowhere.com";
-		final File mailFile = new File(tmpDir, peterEmail);
+		final EmailAddress peterEmail = new EmailAddress("peter@nowhere.com");
+		final File mailFile = new File(tmpDir, peterEmail.toString());
 		if (mailFile.exists()) {
 			if (!mailFile.delete()) {
 				throw new RuntimeException("Cannot delete: " + mailFile);
@@ -75,9 +79,9 @@ public final class RegisterExample {
 		        "http://localhost:8080/auction-command-server/AuctionCommandService");
 
 		// Add user
-		final String peterName = "peter";
-		final String peterPw = "12345678";
-		final String peterId = cmdService.registerUser(peterName, peterPw, peterEmail);
+		final UserName peterName = new UserName("peter");
+		final Password peterPw = new Password("12345678");
+		final UUID peterId = cmdService.registerUser(peterName, peterPw, peterEmail);
 		System.out.println("REGISTERED " + peterName + "=" + peterId);
 
 		// Test duplicate registration
@@ -88,7 +92,7 @@ public final class RegisterExample {
 		}
 
 		// Change password for peter
-		cmdService.changeUserPassword(peterId, peterPw, "abc123def");
+		cmdService.changeUserPassword(peterId, peterPw, new Password("abc123def"));
 		System.out.println("CHANGE PASSWORD: " + peterName);
 
 		// Wait for the welcome mail to arrive

@@ -32,7 +32,7 @@ import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +71,7 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	}
 
 	@Override
-	public final void add(final UserId userName, final EmailAddress email)
+	public final void add(final UserName userName, final EmailAddress email)
 	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        UserEmailAlreadyExistException {
 
@@ -110,7 +110,7 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	}
 
 	@Override
-	public final void remove(final UserId userName, final EmailAddress email) {
+	public final void remove(final UserName userName, final EmailAddress email) {
 
 		try {
 			final Connection con = dataSource.getConnection();
@@ -152,7 +152,7 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	 * @throws SQLException
 	 *             Other error than "duplicate primary key".
 	 */
-	private boolean insert(final UserId userName, final EmailAddress email) throws SQLException {
+	private boolean insert(final UserName userName, final EmailAddress email) throws SQLException {
 		final Connection con = dataSource.getConnection();
 		try {
 			final PreparedStatement stmt = con
@@ -192,7 +192,7 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	 * @throws SQLException
 	 *             Error executing the select statement.
 	 */
-	private UserNameEmail select(final UserId userName, final EmailAddress email)
+	private UserNameEmail select(final UserName userName, final EmailAddress email)
 	        throws SQLException {
 		final Connection con = dataSource.getConnection();
 		try {

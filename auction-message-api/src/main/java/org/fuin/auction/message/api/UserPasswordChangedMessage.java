@@ -15,6 +15,8 @@
  */
 package org.fuin.auction.message.api;
 
+import java.util.UUID;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -31,7 +33,7 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	private static final int VERSION = 1;
 
 	@NotNull
-	private final AuctionAggregateId userAggregateId;
+	private final UUID userAggregateId;
 
 	@NotNull
 	private final PasswordSha512 password;
@@ -44,8 +46,7 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	 * @param password
 	 *            The new password.
 	 */
-	public UserPasswordChangedMessage(final AuctionAggregateId userAggregateId,
-	        final PasswordSha512 password) {
+	public UserPasswordChangedMessage(final UUID userAggregateId, final PasswordSha512 password) {
 		super();
 		this.userAggregateId = userAggregateId;
 		this.password = password;
@@ -62,7 +63,7 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	 * 
 	 * @return Unique id.
 	 */
-	public final AuctionAggregateId getUserAggregateId() {
+	public final UUID getUserAggregateId() {
 		return userAggregateId;
 	}
 

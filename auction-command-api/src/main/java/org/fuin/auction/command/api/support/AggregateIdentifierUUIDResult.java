@@ -24,7 +24,7 @@ import org.fuin.objects4j.validation.UUIDStr;
 /**
  * Result of successfully creating a new aggregate.
  */
-public final class AggregateIdResult extends AbstractCommandResult {
+public final class AggregateIdentifierUUIDResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = 7124123040949548640L;
 
@@ -35,7 +35,7 @@ public final class AggregateIdResult extends AbstractCommandResult {
 	/**
 	 * Default constructor.
 	 */
-	public AggregateIdResult() {
+	public AggregateIdentifierUUIDResult() {
 		super();
 	}
 
@@ -45,7 +45,7 @@ public final class AggregateIdResult extends AbstractCommandResult {
 	 * @param id
 	 *            Unique internal id of the user.
 	 */
-	public AggregateIdResult(final String id) {
+	public AggregateIdentifierUUIDResult(final String id) {
 		super(CommandResultType.SUCCESS, 0, "");
 		this.id = id;
 		Contract.requireValid(this);

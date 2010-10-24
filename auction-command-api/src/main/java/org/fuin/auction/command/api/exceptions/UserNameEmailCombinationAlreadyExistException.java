@@ -16,7 +16,7 @@
 package org.fuin.auction.command.api.exceptions;
 
 import org.fuin.objects4j.EmailAddress;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 
 /**
  * A user/email combination is already registered.
@@ -46,7 +46,7 @@ public final class UserNameEmailCombinationAlreadyExistException extends Command
 	 * @param email
 	 *            User's email address.
 	 */
-	public UserNameEmailCombinationAlreadyExistException(final UserId userName,
+	public UserNameEmailCombinationAlreadyExistException(final UserName userName,
 	        final EmailAddress email) {
 		this("The combination of user name '" + userName + "' and email '" + email
 		        + "' already exists!");

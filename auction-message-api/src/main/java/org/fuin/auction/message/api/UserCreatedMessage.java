@@ -15,13 +15,15 @@
  */
 package org.fuin.auction.message.api;
 
+import java.util.UUID;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.PasswordSha512;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 
 /**
  * A new user was created.
@@ -33,10 +35,10 @@ public final class UserCreatedMessage implements AuctionMessage {
 	private static final int VERSION = 1;
 
 	@NotNull
-	private final AuctionAggregateId userAggregateId;
+	private final UUID userAggregateId;
 
 	@NotNull
-	private final UserId userName;
+	private final UserName userName;
 
 	@NotNull
 	private final EmailAddress email;
@@ -56,7 +58,7 @@ public final class UserCreatedMessage implements AuctionMessage {
 	 * @param password
 	 *            Password.
 	 */
-	public UserCreatedMessage(final AuctionAggregateId userAggregateId, final UserId userName,
+	public UserCreatedMessage(final UUID userAggregateId, final UserName userName,
 	        final EmailAddress email, final PasswordSha512 password) {
 		super();
 		this.userAggregateId = userAggregateId;
@@ -76,7 +78,7 @@ public final class UserCreatedMessage implements AuctionMessage {
 	 * 
 	 * @return Unique id.
 	 */
-	public final AuctionAggregateId getUserAggregateId() {
+	public final UUID getUserAggregateId() {
 		return userAggregateId;
 	}
 
@@ -85,7 +87,7 @@ public final class UserCreatedMessage implements AuctionMessage {
 	 * 
 	 * @return User id.
 	 */
-	public final UserId getUserName() {
+	public final UserName getUserName() {
 		return userName;
 	}
 

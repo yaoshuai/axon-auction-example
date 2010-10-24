@@ -16,26 +16,25 @@
 package org.fuin.auction.query.server;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.common.TraceStringCapable;
 import org.fuin.auction.common.UserState;
-import org.fuin.auction.message.api.AuctionAggregateId;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.PasswordSha512;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.UUIDStr;
-import org.fuin.objects4j.validation.UserIdStr;
+import org.fuin.objects4j.validation.UserNameStr;
 
 /**
  * User object.
@@ -56,7 +55,7 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	private String aggregateId;
 
 	@NotNull
-	@UserIdStr
+	@UserNameStr
 	@Column(name = "USER_NAME", length = 20, nullable = false)
 	private String userName;
 
@@ -94,8 +93,8 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	 * @param password
 	 *            SHA512 hashed password.
 	 */
-	public AuctionUser(final AuctionAggregateId aggregateId, final UserId userName,
-	        final EmailAddress email, final UserState state, final PasswordSha512 password) {
+	public AuctionUser(final UUID aggregateId, final UserName userName, final EmailAddress email,
+	        final UserState state, final PasswordSha512 password) {
 		super();
 		this.aggregateId = aggregateId.toString();
 		this.userName = userName.toString();

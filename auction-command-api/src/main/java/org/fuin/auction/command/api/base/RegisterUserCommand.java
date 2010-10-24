@@ -21,7 +21,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.PasswordStr;
-import org.fuin.objects4j.validation.UserIdStr;
+import org.fuin.objects4j.validation.UserNameStr;
 
 /**
  * Register a new user.
@@ -33,7 +33,7 @@ public final class RegisterUserCommand implements Command {
 	private static final int VERSION = 1;
 
 	@NotNull
-	@UserIdStr
+	@UserNameStr
 	private String userName;
 
 	@NotNull
