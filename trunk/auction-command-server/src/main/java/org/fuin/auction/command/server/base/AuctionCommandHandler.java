@@ -25,14 +25,14 @@ import org.axonframework.repository.Repository;
 import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
 import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
-import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
+import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
 import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.support.AggregateIdResult;
+import org.fuin.auction.command.api.support.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.api.support.VoidSuccessResult;
 import org.fuin.auction.command.server.domain.IllegalUserStateException;
@@ -42,7 +42,7 @@ import org.fuin.auction.command.server.support.IdUUID;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,7 +113,7 @@ public class AuctionCommandHandler {
 
 		try {
 
-			final UserId userName = new UserId(command.getUserName());
+			final UserName userName = new UserName(command.getUserName());
 			final EmailAddress emailAddress = new EmailAddress(command.getEmail());
 			final Password password = new Password(command.getPassword());
 
@@ -225,7 +225,7 @@ public class AuctionCommandHandler {
 	}
 
 	private CommandResult createAndLogAggregateIdResult(final AggregateIdentifier id) {
-		final CommandResult result = new AggregateIdResult(id.toString());
+		final CommandResult result = new AggregateIdentifierUUIDResult(id.toString());
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Result: " + result.toTraceString());
 		}

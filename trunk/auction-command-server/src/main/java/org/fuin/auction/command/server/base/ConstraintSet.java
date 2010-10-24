@@ -19,7 +19,7 @@ import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 
 /**
  * Internal service for checking constraints that are not enforceable by the
@@ -50,7 +50,7 @@ public interface ConstraintSet {
 	 * @throws UserEmailAlreadyExistException
 	 *             The email is already used for another user account.
 	 */
-	public void add(UserId userName, EmailAddress email)
+	public void add(UserName userName, EmailAddress email)
 	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        UserEmailAlreadyExistException;
 
@@ -62,6 +62,6 @@ public interface ConstraintSet {
 	 * @param email
 	 *            Email address to remove.
 	 */
-	public void remove(UserId userName, EmailAddress email);
+	public void remove(UserName userName, EmailAddress email);
 
 }

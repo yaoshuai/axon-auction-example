@@ -15,7 +15,12 @@
  */
 package org.fuin.auction.command.api.exceptions;
 
+import java.util.UUID;
+
 import org.fuin.auction.command.api.base.AuctionCommandService;
+import org.fuin.objects4j.EmailAddress;
+import org.fuin.objects4j.Password;
+import org.fuin.objects4j.UserName;
 
 /**
  * Maps the result codes from the original {@link AuctionCommandService} back to
@@ -51,7 +56,7 @@ public interface AuctionCmdService {
 	 * @throws UserEmailAlreadyExistException
 	 *             The email is already assigned to another user.
 	 */
-	public String registerUser(String userName, String password, String email)
+	public UUID registerUser(UserName userName, Password password, EmailAddress email)
 	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
 	        UserEmailAlreadyExistException;
 
@@ -70,7 +75,7 @@ public interface AuctionCmdService {
 	 * @throws PasswordException
 	 *             The old password was wrong.
 	 */
-	public void changeUserPassword(String userAggregateId, String oldPassword, String newPassword)
+	public void changeUserPassword(UUID userAggregateId, Password oldPassword, Password newPassword)
 	        throws IdNotFoundException, PasswordException;
 
 	/**
@@ -86,7 +91,7 @@ public interface AuctionCmdService {
 	 * @throws UserEmailVerificationFailedException
 	 *             The given security token was wrong.
 	 */
-	public void verifyUserEmail(String userAggregateId, String securityToken)
+	public void verifyUserEmail(UUID userAggregateId, String securityToken)
 	        throws IdNotFoundException, UserEmailVerificationFailedException;
 
 }

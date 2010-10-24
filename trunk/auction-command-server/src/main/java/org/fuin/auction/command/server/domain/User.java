@@ -28,7 +28,7 @@ import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.PasswordSha512;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 
 /**
  * Represents a user in the auction system.
@@ -63,8 +63,8 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 * @param email
 	 *            Password.
 	 */
-	public User(final AggregateIdentifier identifier, final UserId userName, final Password password,
-	        final EmailAddress email) {
+	public User(final AggregateIdentifier identifier, final UserName userName,
+	        final Password password, final EmailAddress email) {
 		super(identifier);
 		apply(new UserCreatedEvent(userName, new PasswordSha512(password), email, Utils
 		        .createSecureRandom()));

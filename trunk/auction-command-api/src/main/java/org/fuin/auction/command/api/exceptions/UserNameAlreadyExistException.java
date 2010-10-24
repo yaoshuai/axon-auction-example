@@ -15,7 +15,7 @@
  */
 package org.fuin.auction.command.api.exceptions;
 
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 
 /**
  * A user id is already registered.
@@ -43,7 +43,7 @@ public final class UserNameAlreadyExistException extends CommandException {
 	 * @param userName
 	 *            User name.
 	 */
-	public UserNameAlreadyExistException(final UserId userName) {
+	public UserNameAlreadyExistException(final UserName userName) {
 		this("The user name '" + userName + "' is already assigned to another user!");
 	}
 

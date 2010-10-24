@@ -15,7 +15,11 @@
  */
 
 /**
- * Base API directly related to the auction example.
+ * Base API directly related to the auction example. The design is by intention 
+ * language independent. Commands should therefore mostly contain simple attributes 
+ * like {@link String}, {@link Integer} or {@link Boolean}. To make some type checking
+ * possible the attributes are annotated with javax validation constraints. Attributes 
+ * are by intention not final because this is not supported by all serialization methods.
  */
 package org.fuin.auction.command.api.base;
 

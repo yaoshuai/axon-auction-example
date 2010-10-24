@@ -20,7 +20,7 @@ import org.axonframework.domain.DomainEvent;
 import org.fuin.auction.command.server.support.ExtendedDomainEvent;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.PasswordSha512;
-import org.fuin.objects4j.UserId;
+import org.fuin.objects4j.UserName;
 
 /**
  * A user was created.
@@ -31,7 +31,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 
 	private static final int VERSION = 1;
 
-	private final UserId userName;
+	private final UserName userName;
 
 	private final PasswordSha512 password;
 
@@ -51,7 +51,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	 * @param securityToken
 	 *            Base64 encoded security token.
 	 */
-	public UserCreatedEvent(final UserId userName, final PasswordSha512 password,
+	public UserCreatedEvent(final UserName userName, final PasswordSha512 password,
 	        final EmailAddress email, final String securityToken) {
 		super();
 		this.userName = userName;
@@ -65,7 +65,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	 * 
 	 * @return User name.
 	 */
-	public final UserId getUserName() {
+	public final UserName getUserName() {
 		return userName;
 	}
 

@@ -15,7 +15,9 @@
  */
 
 /**
- * Method and exception based API directly related with the auction example.
+ * Method and exception based API directly related with the auction example. 
+ * This part of the API is Java specific and therefore not intended to be use
+ * by other language clients.
  */
 package org.fuin.auction.command.api.exceptions;
 

@@ -16,22 +16,26 @@
 package org.fuin.auction.client.swing;
 
 import java.net.MalformedURLException;
+import java.util.UUID;
 
 import org.fuin.auction.command.api.base.AuctionCommandService;
 import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
 import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
 import org.fuin.auction.command.api.exceptions.AuctionCmdService;
-import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
+import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
 import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.support.AggregateIdResult;
+import org.fuin.auction.command.api.support.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.objects4j.EmailAddress;
+import org.fuin.objects4j.Password;
+import org.fuin.objects4j.UserName;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
@@ -67,16 +71,17 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public final String registerUser(final String userName, final String password, final String email)
-	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        UserEmailAlreadyExistException, InternalErrorException, InvalidCommandException {
+	public final UUID registerUser(final UserName userName, final Password password,
+	        final EmailAddress email) throws UserNameEmailCombinationAlreadyExistException,
+	        UserNameAlreadyExistException, UserEmailAlreadyExistException {
 
-		final RegisterUserCommand cmd = new RegisterUserCommand(userName, password, email);
+		final RegisterUserCommand cmd = new RegisterUserCommand(userName.toString(), password
+		        .toString(), email.toString());
 
 		final CommandResult result = commandService.send(cmd);
 		if (result.isSuccess()) {
-			final AggregateIdResult rucr = (AggregateIdResult) result;
-			return rucr.getId();
+			final AggregateIdentifierUUIDResult rucr = (AggregateIdentifierUUIDResult) result;
+			return UUID.fromString(rucr.getId());
 		}
 
 		// Error handling
@@ -98,12 +103,11 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public final void changeUserPassword(final String userAggregateId, final String oldPassword,
-	        final String newPassword) throws IdNotFoundException, PasswordException,
-	        InternalErrorException, InvalidCommandException {
+	public final void changeUserPassword(final UUID userAggregateId, final Password oldPassword,
+	        final Password newPassword) throws IdNotFoundException, PasswordException {
 
-		final ChangeUserPasswordCommand cmd = new ChangeUserPasswordCommand(userAggregateId, oldPassword,
-		        newPassword);
+		final ChangeUserPasswordCommand cmd = new ChangeUserPasswordCommand(userAggregateId
+		        .toString(), oldPassword.toString(), newPassword.toString());
 
 		final CommandResult result = commandService.send(cmd);
 		if (!result.isSuccess()) {
@@ -127,11 +131,11 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	}
 
 	@Override
-	public final void verifyUserEmail(final String userAggregateId, final String securityToken)
-	        throws IdNotFoundException, UserEmailVerificationFailedException, InternalErrorException,
-	        InvalidCommandException {
+	public final void verifyUserEmail(final UUID userAggregateId, final String securityToken)
+	        throws IdNotFoundException, UserEmailVerificationFailedException {
 
-		final VerifyUserEmailCommand cmd = new VerifyUserEmailCommand(userAggregateId, securityToken);
+		final VerifyUserEmailCommand cmd = new VerifyUserEmailCommand(userAggregateId.toString(),
+		        securityToken);
 		final CommandResult result = commandService.send(cmd);
 		if (!result.isSuccess()) {
 
