@@ -21,38 +21,54 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.PasswordSha512;
+import org.fuin.objects4j.UserName;
 
 /**
- * A user changed the password.
+ * A new user was created.
  */
-public final class UserPasswordChangedMessage implements AuctionMessage {
+public final class UserCreatedMessageV1 implements AuctionMessage {
 
-	private static final long serialVersionUID = -4988175758627577689L;
-
-	private static final int VERSION = 1;
-
-	/** Version to be serialized. */
-	private int instanceVersion;
+	private static final long serialVersionUID = -6123698701339149529L;
 
 	@NotNull
-	private final UUID userAggregateId;
+	private UUID userAggregateId;
 
 	@NotNull
-	private final PasswordSha512 password;
+	private UserName userName;
+
+	@NotNull
+	private EmailAddress email;
+
+	@NotNull
+	private PasswordSha512 password;
+
+	/**
+	 * Default constructor for serialization.
+	 */
+	protected UserCreatedMessageV1() {
+		super();
+	}
 
 	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userAggregateId
 	 *            User's aggregate id
+	 * @param userName
+	 *            User's name.
+	 * @param email
+	 *            Email address.
 	 * @param password
-	 *            The new password.
+	 *            Password.
 	 */
-	public UserPasswordChangedMessage(final UUID userAggregateId, final PasswordSha512 password) {
+	public UserCreatedMessageV1(final UUID userAggregateId, final UserName userName,
+	        final EmailAddress email, final PasswordSha512 password) {
 		super();
-		this.instanceVersion = VERSION;
 		this.userAggregateId = userAggregateId;
+		this.userName = userName;
+		this.email = email;
 		this.password = password;
 		Contract.requireValid(this);
 	}
@@ -67,6 +83,24 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	}
 
 	/**
+	 * Returns the user id.
+	 * 
+	 * @return User id.
+	 */
+	public final UserName getUserName() {
+		return userName;
+	}
+
+	/**
+	 * Returns the email address.
+	 * 
+	 * @return Email.
+	 */
+	public final EmailAddress getEmail() {
+		return email;
+	}
+
+	/**
 	 * Returns the hashed password.
 	 * 
 	 * @return SHA-512 password hash.
@@ -78,22 +112,8 @@ public final class UserPasswordChangedMessage implements AuctionMessage {
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "password", password).append("version", getInstanceVersion()).toString();
-	}
-
-	@Override
-	public final int getInstanceVersion() {
-		return instanceVersion;
-	}
-
-	@Override
-	public final int getClassVersion() {
-		return VERSION;
-	}
-
-	@Override
-	public final boolean isSameVersion() {
-		return VERSION == instanceVersion;
+		        "userName", userName).append("email", email).append("password", password)
+		        .toString();
 	}
 
 }

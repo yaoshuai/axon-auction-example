@@ -22,9 +22,9 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
-import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
-import org.fuin.auction.command.api.base.RegisterUserCommand;
-import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.base.ChangeUserPasswordCommandV1;
+import org.fuin.auction.command.api.base.RegisterUserCommandV1;
+import org.fuin.auction.command.api.base.VerifyUserEmailCommandV1;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
@@ -105,7 +105,7 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final RegisterUserCommand command) {
+	public final CommandResult handle(final RegisterUserCommandV1 command) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
@@ -147,7 +147,7 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final ChangeUserPasswordCommand command) {
+	public final CommandResult handle(final ChangeUserPasswordCommandV1 command) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
@@ -185,7 +185,7 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final VerifyUserEmailCommand command) {
+	public final CommandResult handle(final VerifyUserEmailCommandV1 command) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());

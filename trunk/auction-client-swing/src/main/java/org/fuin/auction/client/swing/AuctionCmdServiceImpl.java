@@ -19,9 +19,9 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
-import org.fuin.auction.command.api.base.RegisterUserCommand;
-import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.base.ChangeUserPasswordCommandV1;
+import org.fuin.auction.command.api.base.RegisterUserCommandV1;
+import org.fuin.auction.command.api.base.VerifyUserEmailCommandV1;
 import org.fuin.auction.command.api.exceptions.AuctionCmdService;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
@@ -75,7 +75,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	        final EmailAddress email) throws UserNameEmailCombinationAlreadyExistException,
 	        UserNameAlreadyExistException, UserEmailAlreadyExistException {
 
-		final RegisterUserCommand cmd = new RegisterUserCommand(userName.toString(), password
+		final RegisterUserCommandV1 cmd = new RegisterUserCommandV1(userName.toString(), password
 		        .toString(), email.toString());
 
 		final CommandResult result = commandService.send(cmd);
@@ -106,7 +106,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	public final void changeUserPassword(final UUID userAggregateId, final Password oldPassword,
 	        final Password newPassword) throws IdNotFoundException, PasswordException {
 
-		final ChangeUserPasswordCommand cmd = new ChangeUserPasswordCommand(userAggregateId
+		final ChangeUserPasswordCommandV1 cmd = new ChangeUserPasswordCommandV1(userAggregateId
 		        .toString(), oldPassword.toString(), newPassword.toString());
 
 		final CommandResult result = commandService.send(cmd);
@@ -134,7 +134,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	public final void verifyUserEmail(final UUID userAggregateId, final String securityToken)
 	        throws IdNotFoundException, UserEmailVerificationFailedException {
 
-		final VerifyUserEmailCommand cmd = new VerifyUserEmailCommand(userAggregateId.toString(),
+		final VerifyUserEmailCommandV1 cmd = new VerifyUserEmailCommandV1(userAggregateId.toString(),
 		        securityToken);
 		final CommandResult result = commandService.send(cmd);
 		if (!result.isSuccess()) {

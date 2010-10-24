@@ -18,11 +18,10 @@ package org.fuin.auction.command.server.support;
 import java.io.Serializable;
 
 import org.fuin.auction.common.TraceStringCapable;
-import org.fuin.auction.common.Versioned;
 
 /**
  * Common behavior of all events.
  */
-public interface ExtendedDomainEvent extends Serializable, TraceStringCapable, Versioned {
+public interface ExtendedDomainEvent extends Serializable, TraceStringCapable {
 
 }

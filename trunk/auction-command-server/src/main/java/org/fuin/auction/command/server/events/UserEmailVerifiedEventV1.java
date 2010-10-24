@@ -18,45 +18,26 @@ package org.fuin.auction.command.server.events;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.DomainEvent;
 import org.fuin.auction.command.server.support.ExtendedDomainEvent;
+import org.fuin.objects4j.Contract;
 
 /**
  * A user was activated.
  */
-public final class UserEmailVerifiedEvent extends DomainEvent implements ExtendedDomainEvent {
+public final class UserEmailVerifiedEventV1 extends DomainEvent implements ExtendedDomainEvent {
 
 	private static final long serialVersionUID = -3180886093274054695L;
-
-	private static final int VERSION = 1;
-
-	/** Version to be serialized. */
-	private int instanceVersion;
 
 	/**
 	 * Default constructor.
 	 */
-	public UserEmailVerifiedEvent() {
+	public UserEmailVerifiedEventV1() {
 		super();
-		this.instanceVersion = VERSION;
+		Contract.requireValid(this);
 	}
 
 	@Override
 	public final String toTraceString() {
-		return new ToStringBuilder(this).append("version", getInstanceVersion()).toString();
-	}
-
-	@Override
-	public final int getInstanceVersion() {
-		return instanceVersion;
-	}
-
-	@Override
-	public final int getClassVersion() {
-		return VERSION;
-	}
-
-	@Override
-	public final boolean isSameVersion() {
-		return VERSION == instanceVersion;
+		return new ToStringBuilder(this).toString();
 	}
 
 }

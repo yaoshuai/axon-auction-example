@@ -27,7 +27,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.axonframework.eventhandling.FullConcurrencyPolicy;
 import org.axonframework.eventhandling.annotation.AsynchronousEventListener;
 import org.axonframework.eventhandling.annotation.EventHandler;
-import org.fuin.auction.command.server.events.UserCreatedEvent;
+import org.fuin.auction.command.server.events.UserCreatedEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -92,7 +92,7 @@ public class MailManager {
 	 *            Event to handle.
 	 */
 	@EventHandler
-	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
+	public final void handleUserCreatedEvent(final UserCreatedEventV1 event) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("SEND user created mail to " + event.getEmail() + " [securityToken='"
