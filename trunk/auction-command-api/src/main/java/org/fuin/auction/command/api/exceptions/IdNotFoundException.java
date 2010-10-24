@@ -19,7 +19,7 @@ package org.fuin.auction.command.api.exceptions;
 /**
  * The unique id was not found in the repository.
  */
-public final class IdNotFoundException extends CommandException {
+public final class IdNotFoundException extends CommandCheckedException {
 
 	private static final long serialVersionUID = -8464648384688149062L;
 

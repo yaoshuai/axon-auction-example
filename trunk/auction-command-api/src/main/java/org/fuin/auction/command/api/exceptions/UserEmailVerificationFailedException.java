@@ -18,7 +18,7 @@ package org.fuin.auction.command.api.exceptions;
 /**
  * The verification of the user's email failed.
  */
-public class UserEmailVerificationFailedException extends CommandException {
+public class UserEmailVerificationFailedException extends CommandCheckedException {
 
 	private static final long serialVersionUID = -1014595618427359399L;
 

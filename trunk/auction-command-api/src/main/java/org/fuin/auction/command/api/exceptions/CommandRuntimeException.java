@@ -20,7 +20,7 @@ import org.fuin.auction.command.api.support.VoidExceptionResult;
 /**
  * Base class for command related runtime exceptions.
  */
-public abstract class CommandRuntimeException extends RuntimeException {
+public abstract class CommandRuntimeException extends RuntimeException implements CommandException {
 
 	private static final long serialVersionUID = 9075649745717739379L;
 
