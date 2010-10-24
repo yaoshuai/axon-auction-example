@@ -40,6 +40,9 @@ public final class RegisterUserCommand implements Command {
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	@NotNull
 	@UserNameStr
 	private String userName;
@@ -53,13 +56,6 @@ public final class RegisterUserCommand implements Command {
 	private String email;
 
 	/**
-	 * Default constructor.
-	 */
-	public RegisterUserCommand() {
-		super();
-	}
-
-	/**
 	 * Constructor with all attributes.
 	 * 
 	 * @param userName
@@ -71,6 +67,7 @@ public final class RegisterUserCommand implements Command {
 	 */
 	public RegisterUserCommand(final String userName, final String password, final String email) {
 		super();
+		this.version = VERSION;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
@@ -78,7 +75,7 @@ public final class RegisterUserCommand implements Command {
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 	/**

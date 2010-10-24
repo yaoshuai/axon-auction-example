@@ -28,11 +28,15 @@ public final class UserEmailVerifiedEvent extends DomainEvent implements Extende
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	/**
 	 * Default constructor.
 	 */
 	public UserEmailVerifiedEvent() {
 		super();
+		this.version = VERSION;
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public final class UserEmailVerifiedEvent extends DomainEvent implements Extende
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 }

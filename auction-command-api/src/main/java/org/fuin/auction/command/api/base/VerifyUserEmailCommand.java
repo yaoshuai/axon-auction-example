@@ -38,19 +38,15 @@ public final class VerifyUserEmailCommand implements Command {
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	@NotNull
 	@UUIDStr
 	private String userAggregateId;
 
 	@NotNull
 	private String securityToken;
-
-	/**
-	 * Default constructor.
-	 */
-	public VerifyUserEmailCommand() {
-		super();
-	}
 
 	/**
 	 * Constructor with all attributes.
@@ -62,13 +58,14 @@ public final class VerifyUserEmailCommand implements Command {
 	 */
 	public VerifyUserEmailCommand(final String userAggregateId, final String securityToken) {
 		super();
+		this.version = VERSION;
 		this.userAggregateId = userAggregateId;
 		this.securityToken = securityToken;
 	}
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 	/**

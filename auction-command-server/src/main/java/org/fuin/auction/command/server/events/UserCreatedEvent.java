@@ -31,6 +31,9 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	private final UserName userName;
 
 	private final PasswordSha512 password;
@@ -54,6 +57,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	public UserCreatedEvent(final UserName userName, final PasswordSha512 password,
 	        final EmailAddress email, final String securityToken) {
 		super();
+		this.version = VERSION;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
@@ -104,7 +108,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 }

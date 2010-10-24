@@ -34,6 +34,9 @@ public final class UserCreatedMessage implements AuctionMessage {
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	@NotNull
 	private final UUID userAggregateId;
 
@@ -61,6 +64,7 @@ public final class UserCreatedMessage implements AuctionMessage {
 	public UserCreatedMessage(final UUID userAggregateId, final UserName userName,
 	        final EmailAddress email, final PasswordSha512 password) {
 		super();
+		this.version = VERSION;
 		this.userAggregateId = userAggregateId;
 		this.userName = userName;
 		this.email = email;
@@ -70,7 +74,7 @@ public final class UserCreatedMessage implements AuctionMessage {
 
 	@Override
 	public final int getVersion() {
-		return VERSION;
+		return version;
 	}
 
 	/**

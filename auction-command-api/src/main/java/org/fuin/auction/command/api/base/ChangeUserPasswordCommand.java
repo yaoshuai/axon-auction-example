@@ -39,6 +39,9 @@ public final class ChangeUserPasswordCommand implements Command {
 
 	private static final int VERSION = 1;
 
+	/** Version to be serialized. */
+	private int version;
+
 	@NotNull
 	@UUIDStr
 	private String userAggregateId;
@@ -50,11 +53,6 @@ public final class ChangeUserPasswordCommand implements Command {
 	@NotNull
 	@PasswordStr
 	private String newPassword;
-
-	@Override
-	public final int getVersion() {
-		return VERSION;
-	}
 
 	/**
 	 * Constructor with all attributes.
@@ -69,9 +67,15 @@ public final class ChangeUserPasswordCommand implements Command {
 	public ChangeUserPasswordCommand(final String userAggregateId, final String oldPassword,
 	        final String newPassword) {
 		super();
+		this.version = VERSION;
 		this.userAggregateId = userAggregateId;
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
+	}
+
+	@Override
+	public final int getVersion() {
+		return version;
 	}
 
 	/**
