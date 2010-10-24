@@ -9,7 +9,6 @@
 	<alwaysAllowed>
 	    <dependsOn package="com.mchange.v2.c3p0"/>
 		<dependsOn package="java.beans" />
-		<dependsOn package="java.lang" />
 		<dependsOn package="java.io" />
 		<dependsOn package="java.sql" />
 		<dependsOn package="java.util" />

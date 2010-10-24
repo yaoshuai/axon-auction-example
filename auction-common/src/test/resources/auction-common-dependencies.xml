@@ -8,7 +8,6 @@
 	<!-- All classes are allowed to use this -->
 	<alwaysAllowed>
 		<dependsOn package="java.io" />
-		<dependsOn package="java.lang" />
 		<dependsOn package="java.security" />
 		<dependsOn package="java.text" />
 		<dependsOn package="java.util" />
