@@ -25,13 +25,13 @@ import javax.jms.Session;
 import org.axonframework.eventhandling.FullConcurrencyPolicy;
 import org.axonframework.eventhandling.annotation.AsynchronousEventListener;
 import org.axonframework.eventhandling.annotation.EventHandler;
-import org.fuin.auction.command.server.events.UserCreatedEventV1;
-import org.fuin.auction.command.server.events.UserEmailVerifiedEventV1;
-import org.fuin.auction.command.server.events.UserPasswordChangedEventV1;
+import org.fuin.auction.command.server.events.UserCreatedEvent;
+import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
+import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
 import org.fuin.auction.message.api.AuctionMessage;
-import org.fuin.auction.message.api.UserCreatedMessageV1;
-import org.fuin.auction.message.api.UserEmailVerfiedMessageV1;
-import org.fuin.auction.message.api.UserPasswordChangedMessageV1;
+import org.fuin.auction.message.api.UserCreatedMessage;
+import org.fuin.auction.message.api.UserEmailVerfiedMessage;
+import org.fuin.auction.message.api.UserPasswordChangedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,38 +61,38 @@ public class AuctionMessageProducer {
 	}
 
 	/**
-	 * Publish {@link UserCreatedEventV1} as JMS message.
+	 * Publish {@link UserCreatedEvent} as JMS message.
 	 * 
 	 * @param event
 	 *            Event to publish.
 	 */
 	@EventHandler
-	public final void handleUserCreatedEvent(final UserCreatedEventV1 event) {
-		publish(new UserCreatedMessageV1(UUID.fromString(event.getAggregateIdentifier().toString()),
+	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
+		publish(new UserCreatedMessage(UUID.fromString(event.getAggregateIdentifier().toString()),
 		        event.getUserName(), event.getEmail(), event.getPassword()));
 	}
 
 	/**
-	 * Publish {@link UserEmailVerifiedEventV1} as JMS message.
+	 * Publish {@link UserEmailVerifiedEvent} as JMS message.
 	 * 
 	 * @param event
 	 *            Event to publish.
 	 */
 	@EventHandler
-	public final void handleUserEmailVerifiedEvent(final UserEmailVerifiedEventV1 event) {
-		publish(new UserEmailVerfiedMessageV1(UUID.fromString(event.getAggregateIdentifier()
+	public final void handleUserEmailVerifiedEvent(final UserEmailVerifiedEvent event) {
+		publish(new UserEmailVerfiedMessage(UUID.fromString(event.getAggregateIdentifier()
 		        .toString())));
 	}
 
 	/**
-	 * Publish {@link UserPasswordChangedEventV1} as JMS message.
+	 * Publish {@link UserPasswordChangedEvent} as JMS message.
 	 * 
 	 * @param event
 	 *            Event to publish.
 	 */
 	@EventHandler
-	public final void handleUserPasswordChangedEvent(final UserPasswordChangedEventV1 event) {
-		publish(new UserPasswordChangedMessageV1(UUID.fromString(event.getAggregateIdentifier()
+	public final void handleUserPasswordChangedEvent(final UserPasswordChangedEvent event) {
+		publish(new UserPasswordChangedMessage(UUID.fromString(event.getAggregateIdentifier()
 		        .toString()), event.getNewPassword()));
 	}
 

@@ -28,7 +28,7 @@ import org.fuin.objects4j.UserName;
 /**
  * A user was created.
  */
-public final class UserCreatedEventV1 extends DomainEvent implements ExtendedDomainEvent {
+public final class UserCreatedEvent extends DomainEvent implements ExtendedDomainEvent {
 
 	private static final long serialVersionUID = 8303845111764138148L;
 
@@ -47,7 +47,7 @@ public final class UserCreatedEventV1 extends DomainEvent implements ExtendedDom
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected UserCreatedEventV1() {
+	protected UserCreatedEvent() {
 		super();
 	}
 
@@ -63,7 +63,7 @@ public final class UserCreatedEventV1 extends DomainEvent implements ExtendedDom
 	 * @param securityToken
 	 *            Base64 encoded security token.
 	 */
-	public UserCreatedEventV1(final UserName userName, final PasswordSha512 password,
+	public UserCreatedEvent(final UserName userName, final PasswordSha512 password,
 	        final EmailAddress email, final String securityToken) {
 		super();
 		this.userName = userName;

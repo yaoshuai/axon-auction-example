@@ -21,12 +21,12 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.exceptions.CommandException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
 import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.PasswordStr;
@@ -35,7 +35,7 @@ import org.fuin.objects4j.validation.UserNameStr;
 /**
  * Register a new user.
  */
-public final class RegisterUserCommandV1 implements Command {
+public final class RegisterUserCommand implements Command {
 
 	private static final long serialVersionUID = 5381295115581408651L;
 
@@ -54,7 +54,7 @@ public final class RegisterUserCommandV1 implements Command {
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected RegisterUserCommandV1() {
+	protected RegisterUserCommand() {
 		super();
 	}
 
@@ -68,7 +68,7 @@ public final class RegisterUserCommandV1 implements Command {
 	 * @param email
 	 *            Email address.
 	 */
-	public RegisterUserCommandV1(final String userName, final String password, final String email) {
+	public RegisterUserCommand(final String userName, final String password, final String email) {
 		super();
 		this.userName = userName;
 		this.password = password;

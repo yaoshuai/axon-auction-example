@@ -18,7 +18,6 @@ package org.fuin.auction.command.api.support;
 import java.io.Serializable;
 import java.util.List;
 
-import org.fuin.auction.command.api.exceptions.CommandException;
 import org.fuin.auction.common.TraceStringCapable;
 
 /**

@@ -28,7 +28,7 @@ import org.fuin.objects4j.UserName;
 /**
  * A new user was created.
  */
-public final class UserCreatedMessageV1 implements AuctionMessage {
+public final class UserCreatedMessage implements AuctionMessage {
 
 	private static final long serialVersionUID = -6123698701339149529L;
 
@@ -47,7 +47,7 @@ public final class UserCreatedMessageV1 implements AuctionMessage {
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected UserCreatedMessageV1() {
+	protected UserCreatedMessage() {
 		super();
 	}
 
@@ -63,7 +63,7 @@ public final class UserCreatedMessageV1 implements AuctionMessage {
 	 * @param password
 	 *            Password.
 	 */
-	public UserCreatedMessageV1(final UUID userAggregateId, final UserName userName,
+	public UserCreatedMessage(final UUID userAggregateId, final UserName userName,
 	        final EmailAddress email, final PasswordSha512 password) {
 		super();
 		this.userAggregateId = userAggregateId;

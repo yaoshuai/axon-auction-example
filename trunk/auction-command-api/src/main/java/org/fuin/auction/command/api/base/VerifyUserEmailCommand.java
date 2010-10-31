@@ -21,19 +21,19 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.exceptions.CommandException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
 import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.validation.UUIDStr;
 
 /**
  * Verify the user's email address with a given security token.
  */
-public final class VerifyUserEmailCommandV1 implements Command {
+public final class VerifyUserEmailCommand implements Command {
 
 	private static final long serialVersionUID = 7178665113651928567L;
 
@@ -47,7 +47,7 @@ public final class VerifyUserEmailCommandV1 implements Command {
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected VerifyUserEmailCommandV1() {
+	protected VerifyUserEmailCommand() {
 		super();
 	}
 
@@ -59,7 +59,7 @@ public final class VerifyUserEmailCommandV1 implements Command {
 	 * @param securityToken
 	 *            Security token.
 	 */
-	public VerifyUserEmailCommandV1(final String userAggregateId, final String securityToken) {
+	public VerifyUserEmailCommand(final String userAggregateId, final String securityToken) {
 		super();
 		this.userAggregateId = userAggregateId;
 		this.securityToken = securityToken;

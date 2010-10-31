@@ -20,9 +20,9 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.fuin.auction.command.api.exceptions.PasswordException;
 import org.fuin.auction.command.api.exceptions.UserEmailVerificationFailedException;
-import org.fuin.auction.command.server.events.UserCreatedEventV1;
-import org.fuin.auction.command.server.events.UserEmailVerifiedEventV1;
-import org.fuin.auction.command.server.events.UserPasswordChangedEventV1;
+import org.fuin.auction.command.server.events.UserCreatedEvent;
+import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
+import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
 import org.fuin.auction.common.UserState;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
@@ -52,7 +52,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	}
 
 	/**
-	 * Constructor that fires a {@link UserCreatedEventV1}.
+	 * Constructor that fires a {@link UserCreatedEvent}.
 	 * 
 	 * @param identifier
 	 *            New id previously generated.
@@ -66,12 +66,12 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	public User(final AggregateIdentifier identifier, final UserName userName,
 	        final Password password, final EmailAddress email) {
 		super(identifier);
-		apply(new UserCreatedEventV1(userName, new PasswordSha512(password), email, Utils
+		apply(new UserCreatedEvent(userName, new PasswordSha512(password), email, Utils
 		        .createSecureRandom()));
 	}
 
 	/**
-	 * Changes the password and fires a {@link UserPasswordChangedEventV1}.
+	 * Changes the password and fires a {@link UserPasswordChangedEvent}.
 	 * 
 	 * @param oldPw
 	 *            Old clear text password.
@@ -89,7 +89,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 			throw new PasswordException("The old password is wrong!");
 		}
 
-		apply(new UserPasswordChangedEventV1(new PasswordSha512(oldPw), new PasswordSha512(newPw)));
+		apply(new UserPasswordChangedEvent(new PasswordSha512(oldPw), new PasswordSha512(newPw)));
 
 	}
 
@@ -116,7 +116,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 			throw new UserEmailVerificationFailedException();
 		}
 
-		apply(new UserEmailVerifiedEventV1());
+		apply(new UserEmailVerifiedEvent());
 
 	}
 
@@ -127,7 +127,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 *            Event.
 	 */
 	@EventHandler
-	protected final void handleUserCreatedEvent(final UserCreatedEventV1 event) {
+	protected final void handleUserCreatedEvent(final UserCreatedEvent event) {
 		this.password = event.getPassword();
 		this.verificationToken = event.getSecurityToken();
 	}
@@ -139,7 +139,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 *            Event.
 	 */
 	@EventHandler
-	protected final void handlePasswordChangedEvent(final UserPasswordChangedEventV1 event) {
+	protected final void handlePasswordChangedEvent(final UserPasswordChangedEvent event) {
 		this.password = event.getNewPassword();
 	}
 
@@ -150,7 +150,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 *            Event.
 	 */
 	@EventHandler
-	protected final void handleUserVerifiedEvent(final UserEmailVerifiedEventV1 event) {
+	protected final void handleUserVerifiedEvent(final UserEmailVerifiedEvent event) {
 		this.userState = UserState.ACTIVE;
 	}
 

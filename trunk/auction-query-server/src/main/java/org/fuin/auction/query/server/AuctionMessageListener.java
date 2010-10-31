@@ -25,9 +25,9 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
 import org.fuin.auction.common.UserState;
-import org.fuin.auction.message.api.UserCreatedMessageV1;
-import org.fuin.auction.message.api.UserEmailVerfiedMessageV1;
-import org.fuin.auction.message.api.UserPasswordChangedMessageV1;
+import org.fuin.auction.message.api.UserCreatedMessage;
+import org.fuin.auction.message.api.UserEmailVerfiedMessage;
+import org.fuin.auction.message.api.UserPasswordChangedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -58,12 +58,12 @@ public class AuctionMessageListener implements MessageListener {
 				final ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
 					final Serializable obj = objectMessage.getObject();
-					if (obj instanceof UserCreatedMessageV1) {
-						handleMessage((UserCreatedMessageV1) obj);
-					} else if (obj instanceof UserEmailVerfiedMessageV1) {
-						handleMessage((UserEmailVerfiedMessageV1) obj);
-					} else if (obj instanceof UserPasswordChangedMessageV1) {
-						handleMessage((UserPasswordChangedMessageV1) obj);
+					if (obj instanceof UserCreatedMessage) {
+						handleMessage((UserCreatedMessage) obj);
+					} else if (obj instanceof UserEmailVerfiedMessage) {
+						handleMessage((UserEmailVerfiedMessage) obj);
+					} else if (obj instanceof UserPasswordChangedMessage) {
+						handleMessage((UserPasswordChangedMessage) obj);
 					} else {
 						LOG.warn("Received non-Auction message: " + obj);
 					}
@@ -80,7 +80,7 @@ public class AuctionMessageListener implements MessageListener {
 
 	}
 
-	private void handleMessage(final UserCreatedMessageV1 message) {
+	private void handleMessage(final UserCreatedMessage message) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle: " + message.toTraceString());
@@ -91,7 +91,7 @@ public class AuctionMessageListener implements MessageListener {
 
 	}
 
-	private void handleMessage(final UserEmailVerfiedMessageV1 message) {
+	private void handleMessage(final UserEmailVerfiedMessage message) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle: " + message.toTraceString());
@@ -102,7 +102,7 @@ public class AuctionMessageListener implements MessageListener {
 
 	}
 
-	private void handleMessage(final UserPasswordChangedMessageV1 message) {
+	private void handleMessage(final UserPasswordChangedMessage message) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle: " + message.toTraceString());
