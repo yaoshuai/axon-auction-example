@@ -18,6 +18,7 @@ package org.fuin.auction.command.api.exceptions;
 import java.util.Arrays;
 import java.util.List;
 
+import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.auction.command.api.support.MessageKeyValue;
 import org.fuin.auction.command.api.support.VoidExceptionResult;
 

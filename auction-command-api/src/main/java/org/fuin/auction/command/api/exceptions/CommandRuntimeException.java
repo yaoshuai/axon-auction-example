@@ -15,6 +15,7 @@
  */
 package org.fuin.auction.command.api.exceptions;
 
+import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.auction.command.api.support.VoidExceptionResult;
 
 /**

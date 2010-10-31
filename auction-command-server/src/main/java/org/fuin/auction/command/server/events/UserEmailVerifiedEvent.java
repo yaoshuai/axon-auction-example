@@ -13,56 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.message.api;
-
-import java.util.UUID;
-
-import javax.validation.constraints.NotNull;
+package org.fuin.auction.command.server.events;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.axonframework.domain.DomainEvent;
+import org.fuin.auction.command.server.support.ExtendedDomainEvent;
 import org.fuin.objects4j.Contract;
 
 /**
  * A user was activated.
  */
-public final class UserEmailVerfiedMessageV1 implements AuctionMessage {
+public final class UserEmailVerifiedEvent extends DomainEvent implements ExtendedDomainEvent {
 
-	private static final long serialVersionUID = -4888511874340301410L;
-
-	@NotNull
-	private UUID userAggregateId;
+	private static final long serialVersionUID = -3180886093274054695L;
 
 	/**
-	 * Default constructor for serialization.
+	 * Default constructor.
 	 */
-	protected UserEmailVerfiedMessageV1() {
+	public UserEmailVerifiedEvent() {
 		super();
-	}
-
-	/**
-	 * Constructor with all attributes.
-	 * 
-	 * @param userAggregateId
-	 *            User's aggregate id
-	 */
-	public UserEmailVerfiedMessageV1(final UUID userAggregateId) {
-		super();
-		this.userAggregateId = userAggregateId;
 		Contract.requireValid(this);
-	}
-
-	/**
-	 * Returns the user's aggregate id.
-	 * 
-	 * @return Unique id.
-	 */
-	public final UUID getUserAggregateId() {
-		return userAggregateId;
 	}
 
 	@Override
 	public final String toTraceString() {
-		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).toString();
+		return new ToStringBuilder(this).toString();
 	}
 
 }

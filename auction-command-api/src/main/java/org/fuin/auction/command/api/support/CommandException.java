@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.exceptions;
+package org.fuin.auction.command.api.support;
 
-import org.fuin.auction.command.api.support.VoidExceptionResult;
 
 /**
  * Shared behavior for all command excaptions.

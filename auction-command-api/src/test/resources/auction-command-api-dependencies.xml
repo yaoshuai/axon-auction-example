@@ -24,6 +24,7 @@
 	<allowed>
 		<package name="org.fuin.auction.command.api.base" comment="Only depends on support package">
 			<dependsOn package="org.fuin.auction.command.api.support" />
+			<dependsOn package="org.fuin.auction.command.api.exceptions" comment="No nice dependency (cycle) - Refactor this later!"/>
 		</package>
 		<package name="org.fuin.auction.command.api.support" comment="Only depends on auction-common">
 			<dependsOn package="org.fuin.auction.common" />

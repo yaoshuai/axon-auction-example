@@ -26,7 +26,7 @@ import org.fuin.objects4j.PasswordSha512;
 /**
  * A user was created.
  */
-public final class UserPasswordChangedEventV1 extends DomainEvent implements ExtendedDomainEvent {
+public final class UserPasswordChangedEvent extends DomainEvent implements ExtendedDomainEvent {
 
 	private static final long serialVersionUID = -4632580190706565637L;
 
@@ -39,7 +39,7 @@ public final class UserPasswordChangedEventV1 extends DomainEvent implements Ext
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected UserPasswordChangedEventV1() {
+	protected UserPasswordChangedEvent() {
 		super();
 	}
 
@@ -51,7 +51,7 @@ public final class UserPasswordChangedEventV1 extends DomainEvent implements Ext
 	 * @param newPassword
 	 *            New SHA-512 hashed password.
 	 */
-	public UserPasswordChangedEventV1(final PasswordSha512 oldPassword,
+	public UserPasswordChangedEvent(final PasswordSha512 oldPassword,
 	        final PasswordSha512 newPassword) {
 		super();
 		this.oldPassword = oldPassword;

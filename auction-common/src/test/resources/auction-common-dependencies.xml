@@ -24,7 +24,7 @@
 		packages are forbidden)
 	-->
 	<allowed>
-		<package name="org.fuin.auction.common"/>
+		<package name="org.fuin.auction.common" comment="Common only depends on itself"/>
 	</allowed>
 
 	<!--

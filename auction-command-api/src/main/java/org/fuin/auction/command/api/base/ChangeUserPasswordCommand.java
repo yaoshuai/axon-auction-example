@@ -21,12 +21,12 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.exceptions.CommandException;
 import org.fuin.auction.command.api.exceptions.IdNotFoundException;
 import org.fuin.auction.command.api.exceptions.InternalErrorException;
 import org.fuin.auction.command.api.exceptions.InvalidCommandException;
 import org.fuin.auction.command.api.exceptions.PasswordException;
 import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.validation.PasswordStr;
 import org.fuin.objects4j.validation.UUIDStr;
@@ -34,7 +34,7 @@ import org.fuin.objects4j.validation.UUIDStr;
 /**
  * Change the user's password.
  */
-public final class ChangeUserPasswordCommandV1 implements Command {
+public final class ChangeUserPasswordCommand implements Command {
 
 	private static final long serialVersionUID = -7557765676459176985L;
 
@@ -53,7 +53,7 @@ public final class ChangeUserPasswordCommandV1 implements Command {
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected ChangeUserPasswordCommandV1() {
+	protected ChangeUserPasswordCommand() {
 		super();
 	}
 
@@ -67,7 +67,7 @@ public final class ChangeUserPasswordCommandV1 implements Command {
 	 * @param newPassword
 	 *            New clear text password.
 	 */
-	public ChangeUserPasswordCommandV1(final String userAggregateId, final String oldPassword,
+	public ChangeUserPasswordCommand(final String userAggregateId, final String oldPassword,
 	        final String newPassword) {
 		super();
 		this.userAggregateId = userAggregateId;

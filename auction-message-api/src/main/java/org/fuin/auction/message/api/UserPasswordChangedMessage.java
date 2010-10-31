@@ -26,7 +26,7 @@ import org.fuin.objects4j.PasswordSha512;
 /**
  * A user changed the password.
  */
-public final class UserPasswordChangedMessageV1 implements AuctionMessage {
+public final class UserPasswordChangedMessage implements AuctionMessage {
 
 	private static final long serialVersionUID = -4988175758627577689L;
 
@@ -39,7 +39,7 @@ public final class UserPasswordChangedMessageV1 implements AuctionMessage {
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected UserPasswordChangedMessageV1() {
+	protected UserPasswordChangedMessage() {
 		super();
 	}
 
@@ -51,7 +51,7 @@ public final class UserPasswordChangedMessageV1 implements AuctionMessage {
 	 * @param password
 	 *            The new password.
 	 */
-	public UserPasswordChangedMessageV1(final UUID userAggregateId, final PasswordSha512 password) {
+	public UserPasswordChangedMessage(final UUID userAggregateId, final PasswordSha512 password) {
 		super();
 		this.userAggregateId = userAggregateId;
 		this.password = password;
