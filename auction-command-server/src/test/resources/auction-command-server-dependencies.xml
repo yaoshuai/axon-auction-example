@@ -47,6 +47,11 @@
 		Packages are NOT allowed to use the following ones (all other packages
 		are allowed)
 	-->
-	<forbidden />
+	<forbidden>
+		<package name="org.fuin.auction.command.server.domain">
+			<notDependsOn package="org.fuin.auction.command.api" comment="Domain should not depends on commands" />
+			<notDependsOn package="org.fuin.auction.message.api" comment="Domain should not depends on messages" />
+		</package>
+	</forbidden>
 
 </dependencies>

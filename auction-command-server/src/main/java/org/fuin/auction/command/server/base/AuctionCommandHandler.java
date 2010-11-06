@@ -36,6 +36,8 @@ import org.fuin.auction.command.api.support.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.api.support.VoidSuccessResult;
 import org.fuin.auction.command.server.domain.IllegalUserStateException;
+import org.fuin.auction.command.server.domain.PasswordMismatchException;
+import org.fuin.auction.command.server.domain.SecurityTokenException;
 import org.fuin.auction.command.server.domain.User;
 import org.fuin.auction.command.server.support.AggregateIdentifierFactory;
 import org.fuin.auction.command.server.support.IdUUID;
@@ -166,9 +168,9 @@ public class AuctionCommandHandler {
 
 			return createAndLogVoidSuccessResult();
 
-		} catch (final PasswordException ex) {
+		} catch (final PasswordMismatchException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return ex.toResult();
+			return new PasswordException(ex.getMessage()).toResult();
 		} catch (final AggregateNotFoundException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
@@ -206,9 +208,9 @@ public class AuctionCommandHandler {
 		} catch (final AggregateNotFoundException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
-		} catch (final UserEmailVerificationFailedException ex) {
+		} catch (final SecurityTokenException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return ex.toResult();
+			return new UserEmailVerificationFailedException().toResult();
 		} catch (final IllegalUserStateException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
 			return new InvalidCommandException(ex.getMessage()).toResult();
