@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>../auction-parent</module>
+		<module>../axon-support</module>
 		<module>../auction-common</module>
 		<module>../auction-command-api</module>
 		<module>../auction-message-api</module>
