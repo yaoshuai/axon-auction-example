@@ -18,8 +18,6 @@ package org.fuin.auction.command.server.domain;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
-import org.fuin.auction.command.api.extended.PasswordException;
-import org.fuin.auction.command.api.extended.UserEmailVerificationFailedException;
 import org.fuin.auction.command.server.events.UserCreatedEvent;
 import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
 import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
@@ -78,15 +76,15 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 * @param newPw
 	 *            New clear text password.
 	 * 
-	 * @throws PasswordException
+	 * @throws PasswordMismatchException
 	 *             The old password is not equal to the stored password.
 	 */
 	public final void changePassword(final Password oldPw, final Password newPw)
-	        throws PasswordException {
+	        throws PasswordMismatchException {
 
 		final PasswordSha512 oldPassword = new PasswordSha512(oldPw);
 		if (!password.equals(oldPassword)) {
-			throw new PasswordException("The old password is wrong!");
+			throw new PasswordMismatchException();
 		}
 
 		apply(new UserPasswordChangedEvent(new PasswordSha512(oldPw), new PasswordSha512(newPw)));
@@ -102,18 +100,18 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 * @throws IllegalUserStateException
 	 *             The state was not {@link UserState#NEW} or
 	 *             {@link UserState#RESET}.
-	 * @throws UserEmailVerificationFailedException
+	 * @throws SecurityTokenException
 	 *             The given token was not equal to the user's verification
 	 *             token.
 	 */
 	public final void verifyEmail(final String token) throws IllegalUserStateException,
-	        UserEmailVerificationFailedException {
+	        SecurityTokenException {
 
 		if (!(userState.equals(UserState.NEW) || userState.equals(UserState.RESET))) {
 			throw new IllegalUserStateException(userState, UserState.NEW, UserState.RESET);
 		}
 		if (!verificationToken.equals(token)) {
-			throw new UserEmailVerificationFailedException();
+			throw new SecurityTokenException();
 		}
 
 		apply(new UserEmailVerifiedEvent());
