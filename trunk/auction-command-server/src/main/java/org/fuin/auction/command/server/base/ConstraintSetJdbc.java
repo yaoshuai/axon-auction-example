@@ -26,10 +26,10 @@ import java.util.Properties;
 import javax.inject.Named;
 import javax.sql.DataSource;
 
-import org.fuin.auction.command.api.exceptions.InternalErrorException;
-import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.extended.InternalErrorException;
+import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
+import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
+import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;
