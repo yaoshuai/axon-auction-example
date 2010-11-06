@@ -24,12 +24,12 @@
 	<allowed>
 		<package name="org.fuin.auction.command.api.base" comment="Only depends on support package">
 			<dependsOn package="org.fuin.auction.command.api.support" />
-			<dependsOn package="org.fuin.auction.command.api.exceptions" comment="No nice dependency (cycle) - Refactor this later!"/>
+			<dependsOn package="org.fuin.auction.command.api.extended" comment="Dependency (cycle) - Refactor this!?"/>
 		</package>
 		<package name="org.fuin.auction.command.api.support" comment="Only depends on auction-common">
 			<dependsOn package="org.fuin.auction.common" />
 		</package>
-		<package name="org.fuin.auction.command.api.exceptions">
+		<package name="org.fuin.auction.command.api.extended">
 			<dependsOn package="org.fuin.auction.command.api.base" />
 			<dependsOn package="org.fuin.auction.command.api.support" />
 		</package>

@@ -21,10 +21,10 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.exceptions.IdNotFoundException;
-import org.fuin.auction.command.api.exceptions.InternalErrorException;
-import org.fuin.auction.command.api.exceptions.InvalidCommandException;
-import org.fuin.auction.command.api.exceptions.PasswordException;
+import org.fuin.auction.command.api.extended.IdNotFoundException;
+import org.fuin.auction.command.api.extended.InternalErrorException;
+import org.fuin.auction.command.api.extended.InvalidCommandException;
+import org.fuin.auction.command.api.extended.PasswordException;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;

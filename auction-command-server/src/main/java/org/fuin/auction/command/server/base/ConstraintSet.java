@@ -15,9 +15,9 @@
  */
 package org.fuin.auction.command.server.base;
 
-import org.fuin.auction.command.api.exceptions.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.exceptions.UserNameEmailCombinationAlreadyExistException;
+import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
+import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
+import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;
 
