@@ -21,7 +21,8 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.UUID;
 
-import org.fuin.auction.command.api.extended.AuctionCmdService;
+import org.fuin.auction.client.common.AuctionCmdService;
+import org.fuin.auction.client.common.AuctionCmdServiceImpl;
 import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
