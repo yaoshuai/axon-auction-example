@@ -1,0 +1,20 @@
+html {
+     overflow: auto;
+}
+
+html, body {
+  height: 95%;
+}
+
+body {
+	font-family: Arial, Helvetica, "Sans Serif";
+}
+
+#msg {
+	background-color: #f0f0f0;
+	border: thin solid navy;
+	margin: 1em;
+	margin-left: 0em;
+	margin-right: 2em;
+	padding: 1em;
+}

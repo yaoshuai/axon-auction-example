@@ -29,6 +29,12 @@
 		
 		<dependency>
 			<groupId>org.fuin.auction</groupId>
+			<artifactId>auction-client-common</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.fuin.auction</groupId>
 			<artifactId>auction-message-api</artifactId>
 			<version>0.1.0</version>
 		</dependency>
