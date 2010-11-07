@@ -107,6 +107,7 @@ public class MailManager {
 				final Map<String, String> varMap = new HashMap<String, String>();
 				varMap.put("email", event.getEmail().toString());
 				varMap.put("userName", event.getUserName().toString());
+				varMap.put("userAggregateId", event.getAggregateIdentifier().toString());
 				varMap.put("securityToken", event.getSecurityToken());
 				final String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
 				        "user-created-mail.vm", varMap);
