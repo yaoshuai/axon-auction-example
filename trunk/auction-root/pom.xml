@@ -18,6 +18,7 @@
 		<module>../auction-command-api</module>
 		<module>../auction-message-api</module>
 		<module>../auction-query-api</module>
+		<module>../auction-client-common</module>
 		<module>../auction-client-click</module>
 		<module>../auction-client-swing</module>
 		<module>../auction-command-server</module>
