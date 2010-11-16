@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.command.api.extended.InternalErrorException;
@@ -28,6 +29,8 @@ import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.Label;
+import org.fuin.objects4j.TextField;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.PasswordStr;
 import org.fuin.objects4j.validation.UserNameStr;
@@ -35,20 +38,28 @@ import org.fuin.objects4j.validation.UserNameStr;
 /**
  * Register a new user.
  */
+@Label("New User Registration")
 public final class RegisterUserCommand implements Command {
 
 	private static final long serialVersionUID = 5381295115581408651L;
 
 	@NotNull
 	@UserNameStr
+	@Label("User name")
+	@TextField(width = 50)
 	private String userName;
 
 	@NotNull
 	@PasswordStr
+	@Label("Password")
+	@TextField(width = 50)
 	private String password;
 
 	@NotNull
+	@Size(min = 1, max = 320)
 	@EmailAddressStr
+	@Label("Email address")
+	@TextField(width = 50)
 	private String email;
 
 	/**
