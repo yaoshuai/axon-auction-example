@@ -15,15 +15,12 @@
  */
 package org.fuin.auction.client.click;
 
-import java.util.UUID;
-
 import org.apache.click.control.Form;
 import org.apache.click.control.Submit;
-import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
-import org.fuin.auction.command.api.extended.IdNotFoundException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.UserEmailVerificationFailedException;
+import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.objects4j.RenderClassInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +32,9 @@ public final class VerifyEmailPage extends AuctionPage {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOG = LoggerFactory.getLogger(VerifyEmailPage.class);
+
+	/** Message code for an successful registration. */
+	protected static final String SUCCESS = "0010";
 
 	@Bindable
 	protected String userId;
@@ -52,16 +52,13 @@ public final class VerifyEmailPage extends AuctionPage {
 	 * Default constructor.
 	 */
 	public VerifyEmailPage() {
-		super("Verify Email");
+		super();
 
-		final TextField tfUserId = new TextField("userId", "User ID", true);
-		tfUserId.setSize(50);
-		form.add(tfUserId);
-
-		final TextField tfToken = new TextField("securityToken", "Security Token", true);
-		tfToken.setSize(50);
-		form.add(tfToken);
-
+		final RenderClassInfo<VerifyUserEmailCommand> renderClassInfo;
+		renderClassInfo = new RenderClassInfo<VerifyUserEmailCommand>(VerifyUserEmailCommand.class,
+		        getContext().getLocale());
+		setTitle(renderClassInfo, "Verify Email");
+		renderToForm(renderClassInfo, form);
 		form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
 
 	}
@@ -79,19 +76,18 @@ public final class VerifyEmailPage extends AuctionPage {
 		}
 
 		try {
-			getCmdService().verifyUserEmail(getUserAggregateId(), getSecurityToken());
+			final VerifyUserEmailCommand cmd = new VerifyUserEmailCommand(getUserAggregateId(),
+			        getSecurityToken());
+			final CommandResult result = getCommandService().send(cmd);
 			form.clearErrors();
-			form.clearValues();
-			msg = getMessage("Success");
-			return true;
-		} catch (final InvalidCommandException ex) {
-			form.setError(ex.getMessage());
-		} catch (final IdNotFoundException ex) {
-			form.setError(getMessage("IdNotFound"));
-		} catch (final UserEmailVerificationFailedException ex) {
-			form.setError(getMessage("UserEmailVerificationFailed"));
+			if (result.isSuccess()) {
+				msg = getMessage(SUCCESS);
+				form.clearValues();
+			} else {
+				form.setError(getMessage(result));
+			}
 		} catch (final RuntimeException ex) {
-			final String msg = getMessage("InternalError");
+			final String msg = getMessage(INTERNAL_ERROR);
 			LOG.error(msg, ex);
 			form.setError(msg);
 		}
@@ -102,8 +98,9 @@ public final class VerifyEmailPage extends AuctionPage {
 	@Override
 	public void onRender() {
 		super.onRender();
-		if ((userId != null) && ((getUserId() == null) || (getUserId().length() == 0))) {
-			setUserId(userId);
+		if ((userId != null)
+		        && ((getUserAggregateId() == null) || (getUserAggregateId().length() == 0))) {
+			setUserAggregateId(userId);
 		}
 		if ((token != null) && ((getSecurityToken() == null) || (getSecurityToken().length() == 0))) {
 			setSecurityToken(token);
@@ -121,24 +118,12 @@ public final class VerifyEmailPage extends AuctionPage {
 		form.getField("securityToken").setValue(securityToken);
 	}
 
-	private String getUserId() {
-		return form.getField("userId").getValue();
+	private String getUserAggregateId() {
+		return form.getField("userAggregateId").getValue();
 	}
 
-	private void setUserId(final String userId) {
-		form.getField("userId").setValue(userId);
-	}
-
-	private UUID getUserAggregateId() throws IdNotFoundException {
-		final String str = getUserId();
-		if (str == null) {
-			return null;
-		}
-		try {
-			return UUID.fromString(str);
-		} catch (final IllegalArgumentException ex) {
-			throw new IdNotFoundException("No valid UUID: " + str);
-		}
+	private void setUserAggregateId(final String userId) {
+		form.getField("userAggregateId").setValue(userId);
 	}
 
 }

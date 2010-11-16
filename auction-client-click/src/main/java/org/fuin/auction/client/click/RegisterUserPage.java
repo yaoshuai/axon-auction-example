@@ -16,18 +16,11 @@
 package org.fuin.auction.client.click;
 
 import org.apache.click.control.Form;
-import org.apache.click.control.PasswordField;
 import org.apache.click.control.Submit;
-import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
-import org.fuin.objects4j.ContractViolationException;
-import org.fuin.objects4j.EmailAddress;
-import org.fuin.objects4j.Password;
-import org.fuin.objects4j.UserName;
+import org.fuin.auction.command.api.base.RegisterUserCommand;
+import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.objects4j.RenderClassInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +33,9 @@ public class RegisterUserPage extends AuctionPage {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RegisterUserPage.class);
 
+	/** Message code for an successful registration. */
+	protected static final String SUCCESS = "0009";
+
 	@Bindable
 	protected Form form = new Form();
 
@@ -50,25 +46,15 @@ public class RegisterUserPage extends AuctionPage {
 	 * Default constructor.
 	 */
 	public RegisterUserPage() {
-		super("New User Registration");
+		super();
 
-		final TextField tfUserName = new TextField("userName", "User Name", true);
-		tfUserName.setMinLength(3);
-		tfUserName.setMaxLength(20);
-		form.add(tfUserName);
-
-		final TextField tfPassword = new PasswordField("password", "Password", true);
-		tfPassword.setMinLength(8);
-		tfPassword.setMaxLength(20);
-		form.add(tfPassword);
-
-		final TextField tfEmail = new TextField("email", "Email Address", true);
-		tfPassword.setMinLength(3);
-		tfPassword.setMaxLength(300);
-		tfEmail.setSize(50);
-		form.add(tfEmail);
-
+		final RenderClassInfo<RegisterUserCommand> renderClassInfo;
+		renderClassInfo = new RenderClassInfo<RegisterUserCommand>(RegisterUserCommand.class,
+		        getContext().getLocale());
+		setTitle(renderClassInfo, "New User Registration");
+		renderToForm(renderClassInfo, form);
 		form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
+
 	}
 
 	/**
@@ -84,43 +70,26 @@ public class RegisterUserPage extends AuctionPage {
 		}
 
 		try {
-			getCmdService().registerUser(getUserName(), getPassword(), getEmail());
+			final RegisterUserCommand cmd = new RegisterUserCommand(form.getField("userName")
+			        .getValue(), form.getField("password").getValue(), form.getField("email")
+			        .getValue());
+
+			final CommandResult result = getCommandService().send(cmd);
 			form.clearErrors();
-			form.clearValues();
-			msg = getMessage("Success");
-		} catch (final ContractViolationException ex) {
-			// TODO michael 07.11.2010 Handle form validation with JSR-303
-			form.setError(ex.getMessage());
-		} catch (final InvalidCommandException ex) {
-			form.setError(ex.getMessage());
-		} catch (final UserNameEmailCombinationAlreadyExistException ex) {
-			form.setError(getMessage("UserNameEmailCombinationAlreadyExist"));
-		} catch (final UserNameAlreadyExistException ex) {
-			form.setError(getMessage("UserNameAlreadyExist"));
-		} catch (final UserEmailAlreadyExistException ex) {
-			form.setError(getMessage("UserEmailAlreadyExist"));
+			if (result.isSuccess()) {
+				msg = getMessage(SUCCESS);
+				form.clearValues();
+			} else {
+				form.setError(getMessage(result));
+			}
 		} catch (final RuntimeException ex) {
-			final String msg = getMessage("InternalError");
+			final String msg = getMessage(INTERNAL_ERROR);
 			LOG.error(msg, ex);
 			form.setError(msg);
 		}
 
 		return false;
 
-	}
-
-	// TODO michael 07.11.2010 Handle form validation with JSR-303
-
-	private UserName getUserName() {
-		return new UserName(form.getField("userName").getValue());
-	}
-
-	private Password getPassword() {
-		return new Password(form.getField("password").getValue());
-	}
-
-	private EmailAddress getEmail() {
-		return new EmailAddress(form.getField("email").getValue());
 	}
 
 }
