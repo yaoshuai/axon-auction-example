@@ -28,6 +28,8 @@ import org.fuin.auction.command.api.extended.UserEmailVerificationFailedExceptio
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.Label;
+import org.fuin.objects4j.TextField;
 import org.fuin.objects4j.validation.UUIDStr;
 
 /**
@@ -39,9 +41,13 @@ public final class VerifyUserEmailCommand implements Command {
 
 	@NotNull
 	@UUIDStr
+	@Label("User ID")
+	@TextField(width = 100)
 	private String userAggregateId;
 
 	@NotNull
+	@Label("Security Token")
+	@TextField(width = 100)
 	private String securityToken;
 
 	/**
