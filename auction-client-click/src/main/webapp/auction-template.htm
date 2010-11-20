@@ -11,9 +11,23 @@
      <div class="page">
      
 	     <div id="header">
+	        <div id="menu">
             #if (${rootMenu})
               #writeMenu(${rootMenu})
             #end
+	        </div>
+			<div id="top">
+			  <span id="logo">
+			     <img src="$context/assets/auction-logo.png" alt="Axon Auction Example"><br>
+			     Axon Auction Example
+			  </span>
+			  <span id="state">              
+                 Welcome! <a href="#">Sign in</a> or <a href="$context/register-user.htm">register</a>.
+              </span>
+			</div>
+            <div id="search">
+              $searchForm
+            </div>            
 	     </div>
 	     
 	     <div class="content">

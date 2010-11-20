@@ -16,6 +16,7 @@
 package org.fuin.auction.client.click;
 
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Validation;
@@ -23,8 +24,12 @@ import javax.validation.Validator;
 
 import org.apache.click.Page;
 import org.apache.click.control.Form;
+import org.apache.click.control.Option;
 import org.apache.click.control.PasswordField;
+import org.apache.click.control.Select;
+import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
+import org.apache.click.util.Bindable;
 import org.apache.commons.lang.StringUtils;
 import org.fuin.auction.command.api.base.AuctionCommandService;
 import org.fuin.auction.command.api.support.CommandResult;
@@ -49,6 +54,9 @@ public abstract class AuctionPage extends Page {
 
 	private final Validator validator;
 
+	@Bindable
+	protected Form searchForm = new Form();
+
 	/**
 	 * Default constructor.
 	 */
@@ -64,6 +72,53 @@ public abstract class AuctionPage extends Page {
 		} catch (final MalformedURLException ex) {
 			throw new RuntimeException(ex);
 		}
+
+		final TextField textField = new TextField("searchText");
+		searchForm.add(textField);
+
+		final Select select = new Select("searchCategory");
+		select.setId("searchCategory");
+		select.add(new Option(0, "All Categories"));
+		select.add(new Option(1, "Antiques"));
+		select.add(new Option(2, "Art"));
+		select.add(new Option(3, "Baby"));
+		select.add(new Option(4, "Books"));
+		select.add(new Option(5, "Business & Industrial"));
+		select.add(new Option(6, "Cameras & Photo"));
+		select.add(new Option(7, "Cars, Boats, Vehicles & Parts"));
+		select.add(new Option(8, "Cell Phones & PDAs"));
+		select.add(new Option(9, "Clothing, Shoes & Accessories"));
+		select.add(new Option(10, "Coins & Paper Money"));
+		select.add(new Option(11, "Collectibles"));
+		select.add(new Option(12, "Computers & Networking"));
+		select.add(new Option(13, "Crafts"));
+		select.add(new Option(14, "Dolls & Bears"));
+		select.add(new Option(15, "DVDs & Movies"));
+		select.add(new Option(16, "Electronics"));
+		select.add(new Option(17, "Entertainment Memorabilia"));
+		select.add(new Option(18, "Gift Cards & Coupons"));
+		select.add(new Option(19, "Health & Beauty"));
+		select.add(new Option(20, "Home & Garden"));
+		select.add(new Option(21, "Jewelry & Watches"));
+		select.add(new Option(22, "Music"));
+		select.add(new Option(23, "Musical Instruments"));
+		select.add(new Option(24, "Pet Supplies"));
+		select.add(new Option(25, "Pottery & Glass"));
+		select.add(new Option(26, "Real Estate"));
+		select.add(new Option(27, "Specialty Services"));
+		select.add(new Option(28, "Sporting Goods"));
+		select.add(new Option(29, "Sports Mem, Cards & Fan Shop"));
+		select.add(new Option(30, "Stamps"));
+		select.add(new Option(31, "Tickets"));
+		select.add(new Option(32, "Toys & Hobbies"));
+		select.add(new Option(33, "Travel"));
+		select.add(new Option(34, "Video Games"));
+		select.add(new Option(99, "Everything Else"));
+		select.setSelectedValues(Arrays.asList(new int[] { 0 }));
+		searchForm.add(select);
+
+		searchForm.add(new Submit("searchBtn", "  Search  ", this, "onSearchClick"));
+
 	}
 
 	@Override
@@ -154,6 +209,22 @@ public abstract class AuctionPage extends Page {
 				form.add(textField);
 			}
 		}
+
+	}
+
+	/**
+	 * Submits the data.
+	 * 
+	 * @return If the action was successful <code>true</code> else
+	 *         <code>false</code>.
+	 */
+	public final boolean onSearchClick() {
+
+		if (!searchForm.isValid()) {
+			return true;
+		}
+
+		return false;
 
 	}
 
