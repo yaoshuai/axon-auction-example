@@ -78,6 +78,8 @@ public abstract class AuctionPage extends Page {
 
 		final Select select = new Select("searchCategory");
 		select.setId("searchCategory");
+		// TODO michael Move the categories into DB and create commands &
+		// queries for it
 		select.add(new Option(0, "All Categories"));
 		select.add(new Option(1, "Antiques"));
 		select.add(new Option(2, "Art"));
