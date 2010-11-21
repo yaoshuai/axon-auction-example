@@ -40,6 +40,10 @@ import org.springframework.jms.core.MessageCreator;
 
 /**
  * Sends events as JMS messages.
+ * 
+ * FIXME michael Transaction handling for messages! Problem: Unexpected runtime
+ * exceptions that occur AFTER the message has been published. This should be
+ * handled together with database transactions (storing the event).
  */
 @Named
 @AsynchronousEventListener(sequencingPolicyClass = FullConcurrencyPolicy.class)
