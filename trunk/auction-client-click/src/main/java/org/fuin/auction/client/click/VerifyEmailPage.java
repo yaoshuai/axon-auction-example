@@ -79,13 +79,7 @@ public final class VerifyEmailPage extends AuctionPage {
 			final VerifyUserEmailCommand cmd = new VerifyUserEmailCommand(getUserAggregateId(),
 			        getSecurityToken());
 			final CommandResult result = getCommandService().send(cmd);
-			form.clearErrors();
-			if (result.isSuccess()) {
-				msg = getMessage(SUCCESS);
-				form.clearValues();
-			} else {
-				form.setError(getMessage(result));
-			}
+			msg = getMessage(form, result);
 		} catch (final RuntimeException ex) {
 			final String msg = getMessage(INTERNAL_ERROR);
 			LOG.error(msg, ex);

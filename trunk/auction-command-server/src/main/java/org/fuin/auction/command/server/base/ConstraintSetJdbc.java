@@ -26,10 +26,7 @@ import java.util.Properties;
 import javax.inject.Named;
 import javax.sql.DataSource;
 
-import org.fuin.auction.command.api.extended.InternalErrorException;
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
+import org.fuin.auction.common.CategoryName;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;
@@ -41,7 +38,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 /**
  * Pure JDBC constraint service (Apache Derby!). Could be done more nice
  * (database independent for example...) but it's just to show that there is no
- * need that for "full-blown" Hibernate or JPA here...
+ * need that a "full-blown" Hibernate or JPA here...
  */
 @Named
 public final class ConstraintSetJdbc implements ConstraintSet {
@@ -72,8 +69,8 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 
 	@Override
 	public final void add(final UserName userName, final EmailAddress email)
-	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        UserEmailAlreadyExistException {
+	        throws UserNameEmailCombinationAlreadyExistsException, UserNameAlreadyExistsException,
+	        UserEmailAlreadyExistsException {
 
 		try {
 
@@ -85,16 +82,16 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 				final UserNameEmail row = select(userName, email);
 				if (row.getUserName().equals(userNameStr)) {
 					if (row.getEmail().equals(emailStr)) {
-						throw new UserNameEmailCombinationAlreadyExistException(userName, email);
+						throw new UserNameEmailCombinationAlreadyExistsException(userName, email);
 					}
-					throw new UserNameAlreadyExistException(userName);
+					throw new UserNameAlreadyExistsException(userName);
 				} else {
 					if (row.getEmail().equals(emailStr)) {
-						throw new UserEmailAlreadyExistException(email);
+						throw new UserEmailAlreadyExistsException(email);
 					}
 					// This should never happen because it doesn't fit to there
 					// where clause.
-					throw new InternalErrorException("Unexpected result - Requested: userName='"
+					throw new RuntimeException("Unexpected result - Requested: userName='"
 					        + userName + "', email='" + email + "' / Returned: userName='"
 					        + row.getUserName() + "', email='" + row.getEmail() + "'");
 				}
@@ -104,7 +101,7 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 			final String message = "Error adding userName/email constraint!";
 			LOG.error(message + " [SQLState=" + ex.getSQLState() + ", ErrorCode="
 			        + ex.getErrorCode() + "]", ex);
-			throw new InternalErrorException(message);
+			throw new RuntimeException(message);
 		}
 
 	}
@@ -132,9 +129,20 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 			final String message = "Error removing userName/email constraint!";
 			LOG.error(message + " [SQLState=" + ex.getSQLState() + ", ErrorCode="
 			        + ex.getErrorCode() + "]", ex);
-			throw new InternalErrorException(message);
+			throw new RuntimeException(message);
 		}
 
+	}
+
+	@Override
+	public final void add(final CategoryName categoryName) throws CategoryNameAlreadyExistException {
+		// TODO michael Auto-generated method stub
+
+	}
+
+	@Override
+	public final void remove(final CategoryName categoryName) {
+		// TODO michael Auto-generated method stub
 	}
 
 	/**
@@ -192,31 +200,36 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	 * @throws SQLException
 	 *             Error executing the select statement.
 	 */
-	private UserNameEmail select(final UserName userName, final EmailAddress email)
-	        throws SQLException {
-		final Connection con = dataSource.getConnection();
+	private UserNameEmail select(final UserName userName, final EmailAddress email) {
 		try {
-			final PreparedStatement stmt = con
-			        .prepareStatement("select * from COMMANDSERVER.USERNAME_EMAIL where "
-			                + "USER_NAME=? or EMAIL=?");
+			final Connection con = dataSource.getConnection();
 			try {
-				stmt.setString(1, userName.toString());
-				stmt.setString(2, email.toString());
-				final ResultSet rs = stmt.executeQuery();
+				final PreparedStatement stmt = con
+				        .prepareStatement("select * from COMMANDSERVER.USERNAME_EMAIL where "
+				                + "USER_NAME=? or EMAIL=?");
 				try {
-					if (!rs.next()) {
-						throw new InternalErrorException("Neither user name '" + userName
-						        + "' nor email '" + email + "' found!");
+					stmt.setString(1, userName.toString());
+					stmt.setString(2, email.toString());
+					final ResultSet rs = stmt.executeQuery();
+					try {
+						if (!rs.next()) {
+							throw new RuntimeException("Neither user name '" + userName
+							        + "' nor email '" + email + "' found!");
+						}
+						return new UserNameEmail(rs.getString("USER_NAME"), rs.getString("EMAIL"));
+					} finally {
+						rs.close();
 					}
-					return new UserNameEmail(rs.getString("USER_NAME"), rs.getString("EMAIL"));
 				} finally {
-					rs.close();
+					stmt.close();
 				}
 			} finally {
-				stmt.close();
+				con.close();
 			}
-		} finally {
-			con.close();
+		} catch (final SQLException ex) {
+			final String msg = ex.getMessage();
+			LOG.error(msg, ex);
+			throw new RuntimeException(msg);
 		}
 	}
 

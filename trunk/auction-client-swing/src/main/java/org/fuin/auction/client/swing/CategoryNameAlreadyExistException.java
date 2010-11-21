@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.extended;
+package org.fuin.auction.client.swing;
 
+import org.fuin.auction.common.CategoryName;
 
 /**
- * A password is wrong.
+ * The name is already assigned to another category.
  */
-public final class PasswordException extends CommandCheckedException {
+public class CategoryNameAlreadyExistException extends Exception {
 
-	private static final long serialVersionUID = 5942862403217066457L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 6;
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with message.
+	 * Constructor with name.
 	 * 
-	 * @param message
-	 *            Error message.
+	 * @param categoryName
+	 *            Category name.
 	 */
-	public PasswordException(final String message) {
-		super(MESSAGE_ID, message);
+	public CategoryNameAlreadyExistException(final CategoryName categoryName) {
+		super();
 	}
 
 }

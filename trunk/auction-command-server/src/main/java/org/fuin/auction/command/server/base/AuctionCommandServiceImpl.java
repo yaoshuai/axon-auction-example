@@ -20,11 +20,10 @@ import javax.inject.Inject;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.callbacks.FutureCallback;
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.extended.InternalErrorException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
+import org.fuin.auction.command.api.base.ResultCode;
+import org.fuin.auction.command.api.base.VoidResult;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,10 +64,10 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
 		} catch (final InvalidCommandException ex) {
 			LOG.error("Invalid command: " + ex.getMessage());
-			return ex.toResult();
+			return new VoidResult(ResultCode.INVALID_COMMAND);
 		} catch (final Exception ex) {
 			LOG.error("Internal error: " + command.toTraceString(), ex);
-			return new InternalErrorException(Utils.createMessage(ex)).toResult();
+			return new VoidResult(ResultCode.INTERNAL_ERROR);
 		}
 
 	}
@@ -90,7 +89,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 			// Don't let invalid commands get through
 			Contract.requireValid(command);
 		} catch (final IllegalStateException ex) {
-			throw new InvalidCommandException(Utils.createMessage(ex));
+			throw new InvalidCommandException(ex);
 		}
 	}
 

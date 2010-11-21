@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.client.common;
+package org.fuin.auction.client.swing;
 
 import java.util.UUID;
 
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.extended.IdNotFoundException;
-import org.fuin.auction.command.api.extended.InternalErrorException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.PasswordException;
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserEmailVerificationFailedException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserName;
@@ -57,16 +49,16 @@ public interface AuctionCmdService {
 	 * 
 	 * @return New unique user id.
 	 * 
-	 * @throws UserNameEmailCombinationAlreadyExistException
+	 * @throws UserNameEmailCombinationAlreadyExistsException
 	 *             The user/email combination is already registered.
-	 * @throws UserNameAlreadyExistException
+	 * @throws UserNameAlreadyExistsException
 	 *             The user id is already registered for another user.
-	 * @throws UserEmailAlreadyExistException
+	 * @throws UserEmailAlreadyExistsException
 	 *             The email is already assigned to another user.
 	 */
 	public UUID registerUser(UserName userName, Password password, EmailAddress email)
-	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        UserEmailAlreadyExistException;
+	        throws UserNameEmailCombinationAlreadyExistsException, UserNameAlreadyExistsException,
+	        UserEmailAlreadyExistsException;
 
 	/**
 	 * Change the user's password.

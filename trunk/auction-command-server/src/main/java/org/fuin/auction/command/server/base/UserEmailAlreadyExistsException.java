@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.support;
+package org.fuin.auction.command.server.base;
+
+import org.fuin.objects4j.EmailAddress;
 
 /**
- * Type of a command result.
+ * The email is already used for another user account.
  */
-public enum CommandResultType {
+public final class UserEmailAlreadyExistsException extends Exception {
 
-	/** The operation was successful. */
-	SUCCESS,
+	private static final long serialVersionUID = 1L;
 
-	/** The operation was partially successful. */
-	WARNING,
-
-	/** The operation failed for some reason. */
-	ERROR
+	/**
+	 * Constructor with email.
+	 * 
+	 * @param email
+	 *            Email address.
+	 */
+	public UserEmailAlreadyExistsException(final EmailAddress email) {
+		super("The email address '" + email + "' is already assigned to another user!");
+	}
 
 }

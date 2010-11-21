@@ -15,18 +15,13 @@
  */
 package org.fuin.auction.command.api.base;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.extended.IdNotFoundException;
-import org.fuin.auction.command.api.extended.InternalErrorException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.UserEmailVerificationFailedException;
 import org.fuin.auction.command.api.support.Command;
-import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
@@ -38,6 +33,8 @@ import org.fuin.objects4j.validation.UUIDStr;
 public final class VerifyUserEmailCommand implements Command {
 
 	private static final long serialVersionUID = 7178665113651928567L;
+
+	private long version = serialVersionUID;
 
 	@NotNull
 	@UUIDStr
@@ -113,18 +110,23 @@ public final class VerifyUserEmailCommand implements Command {
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("userAggregateId", userAggregateId).append(
-		        "securityToken", securityToken).toString();
+		        "securityToken", securityToken).append("version", version).toString();
 	}
 
 	@Override
-	public final List<Class<? extends CommandException>> getExceptions() {
-		final List<Class<? extends CommandException>> list;
-		list = new ArrayList<Class<? extends CommandException>>();
-		list.add(IdNotFoundException.class);
-		list.add(UserEmailVerificationFailedException.class);
-		list.add(InvalidCommandException.class);
-		list.add(InternalErrorException.class);
-		return list;
+	public final long getVersion() {
+		return version;
+	}
+
+	@Override
+	public final Set<Integer> getResultCodes() {
+		final Set<Integer> codes = new HashSet<Integer>();
+		codes.add(ResultCode.CATEGORY_ALREADY_EXISTS.getCode());
+		codes.add(ResultCode.ID_NOT_FOUND.getCode());
+		codes.add(ResultCode.USER_EMAIL_VERIFICATION_FAILED.getCode());
+		codes.add(ResultCode.INVALID_COMMAND.getCode());
+		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		return codes;
 	}
 
 }

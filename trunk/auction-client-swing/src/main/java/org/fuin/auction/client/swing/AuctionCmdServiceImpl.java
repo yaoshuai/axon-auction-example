@@ -13,25 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.client.common;
+package org.fuin.auction.client.swing;
 
 import java.net.MalformedURLException;
 import java.util.UUID;
 
-import org.fuin.auction.client.common.AuctionCmdService;
+import org.fuin.auction.command.api.base.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.base.AuctionCommandService;
 import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
+import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
-import org.fuin.auction.command.api.extended.IdNotFoundException;
-import org.fuin.auction.command.api.extended.InternalErrorException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.PasswordException;
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserEmailVerificationFailedException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.support.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.ContractViolationException;
@@ -74,8 +66,8 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 
 	@Override
 	public final UUID registerUser(final UserName userName, final Password password,
-	        final EmailAddress email) throws UserNameEmailCombinationAlreadyExistException,
-	        UserNameAlreadyExistException, UserEmailAlreadyExistException {
+	        final EmailAddress email) throws UserNameEmailCombinationAlreadyExistsException,
+	        UserNameAlreadyExistsException, UserEmailAlreadyExistsException {
 
 		final RegisterUserCommand cmd = new RegisterUserCommand(userName.toString(), password
 		        .toString(), email.toString());
@@ -87,19 +79,23 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 		}
 
 		// Error handling
-		switch (result.getMessageId()) {
-		case UserNameEmailCombinationAlreadyExistException.MESSAGE_ID:
-			throw new UserNameEmailCombinationAlreadyExistException(result.getInternalMessage());
-		case UserNameAlreadyExistException.MESSAGE_ID:
-			throw new UserNameAlreadyExistException(result.getInternalMessage());
-		case UserEmailAlreadyExistException.MESSAGE_ID:
-			throw new UserEmailAlreadyExistException(result.getInternalMessage());
-		case InternalErrorException.MESSAGE_ID:
-			throw new InternalErrorException(result.getInternalMessage());
-		case InvalidCommandException.MESSAGE_ID:
-			throw new InvalidCommandException(result.getInternalMessage());
+		if (!ResultCode.exists(result.getCode())) {
+			throw new IllegalStateException("Unknown code: " + result.getCode());
+		}
+		final ResultCode resultCode = ResultCode.forCode(result.getCode());
+		switch (resultCode) {
+		case DUPLICATE_USERNAME_EMAIL_COMBINATION:
+			throw new UserNameEmailCombinationAlreadyExistsException();
+		case DUPLICATE_USERNAME:
+			throw new UserNameAlreadyExistsException();
+		case DUPLICATE_EMAIL:
+			throw new UserEmailAlreadyExistsException();
+		case INVALID_COMMAND:
+			throw new RuntimeException(result.getText());
+		case INTERNAL_ERROR:
+			throw new RuntimeException(result.getText());
 		default:
-			throw new IllegalStateException("Unknown message id: " + result.getMessageId());
+			throw new IllegalStateException("Unhandled code: " + result.getCode());
 		}
 
 	}
@@ -115,17 +111,21 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 		if (!result.isSuccess()) {
 
 			// Error handling
-			switch (result.getMessageId()) {
-			case IdNotFoundException.MESSAGE_ID:
-				throw new IdNotFoundException(result.getInternalMessage());
-			case PasswordException.MESSAGE_ID:
-				throw new PasswordException(result.getInternalMessage());
-			case InternalErrorException.MESSAGE_ID:
-				throw new InternalErrorException(result.getInternalMessage());
-			case InvalidCommandException.MESSAGE_ID:
-				throw new InvalidCommandException(result.getInternalMessage());
+			if (!ResultCode.exists(result.getCode())) {
+				throw new IllegalStateException("Unknown code: " + result.getCode());
+			}
+			final ResultCode resultCode = ResultCode.forCode(result.getCode());
+			switch (resultCode) {
+			case ID_NOT_FOUND:
+				throw new IdNotFoundException();
+			case PASSWORD_WRONG:
+				throw new PasswordException();
+			case INVALID_COMMAND:
+				throw new RuntimeException(result.getText());
+			case INTERNAL_ERROR:
+				throw new RuntimeException(result.getText());
 			default:
-				throw new IllegalStateException("Unknown message id: " + result.getMessageId());
+				throw new IllegalStateException("Unhandled code: " + result.getCode());
 			}
 
 		}
@@ -149,24 +149,28 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 		try {
 			cmd = new VerifyUserEmailCommand(userAggregateId.toString(), securityToken);
 		} catch (final ContractViolationException ex) {
-			throw new InvalidCommandException(ex.getMessage());
+			throw new RuntimeException(ex.getMessage());
 		}
 
 		final CommandResult result = commandService.send(cmd);
 		if (!result.isSuccess()) {
 
 			// Error handling
-			switch (result.getMessageId()) {
-			case IdNotFoundException.MESSAGE_ID:
-				throw new IdNotFoundException(result.getInternalMessage());
-			case UserEmailVerificationFailedException.MESSAGE_ID:
+			if (!ResultCode.exists(result.getCode())) {
+				throw new IllegalStateException("Unknown code: " + result.getCode());
+			}
+			final ResultCode resultCode = ResultCode.forCode(result.getCode());
+			switch (resultCode) {
+			case ID_NOT_FOUND:
+				throw new IdNotFoundException();
+			case USER_EMAIL_VERIFICATION_FAILED:
 				throw new UserEmailVerificationFailedException();
-			case InternalErrorException.MESSAGE_ID:
-				throw new InternalErrorException(result.getInternalMessage());
-			case InvalidCommandException.MESSAGE_ID:
-				throw new InvalidCommandException(result.getInternalMessage());
+			case INVALID_COMMAND:
+				throw new RuntimeException(result.getText());
+			case INTERNAL_ERROR:
+				throw new RuntimeException(result.getText());
 			default:
-				throw new IllegalStateException("Unknown message id: " + result.getMessageId());
+				throw new IllegalStateException("Unhandled code: " + result.getCode());
 			}
 
 		}

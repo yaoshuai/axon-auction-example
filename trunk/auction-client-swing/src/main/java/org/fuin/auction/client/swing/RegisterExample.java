@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.UUID;
 
-import org.fuin.auction.client.common.AuctionCmdService;
-import org.fuin.auction.client.common.AuctionCmdServiceImpl;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
 import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
@@ -88,7 +85,7 @@ public final class RegisterExample {
 		// Test duplicate registration
 		try {
 			cmdService.registerUser(peterName, peterPw, peterEmail);
-		} catch (final UserNameEmailCombinationAlreadyExistException ex) {
+		} catch (final UserNameEmailCombinationAlreadyExistsException ex) {
 			System.out.println("REGISTERING AGAIN: " + ex.getMessage());
 		}
 
@@ -107,7 +104,7 @@ public final class RegisterExample {
 		}
 
 		final String message = readMessage(mailFile);
-		final String securityToken = extractToken(message, "?token=", "\"");
+		final String securityToken = extractToken(message, "&token=", "\"");
 		System.out.println("securityToken: " + securityToken);
 
 		cmdService.verifyUserEmail(peterId, securityToken);

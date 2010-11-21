@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.common;
-
-import org.fuin.objects4j.Ensures;
+package org.fuin.auction.command.api.base;
 
 /**
- * Tags objects that can create a trace string representation.
+ * Type of a command result.
  */
-public interface TraceStringCapable {
+public enum CommandResultType {
 
-	/**
-	 * Creates a representation of the command for tracing.
-	 * 
-	 * @return A string for a technical log.
-	 */
-	@Ensures("\result!=null")
-	public String toTraceString();
+	/** The operation was successful. */
+	SUCCESS,
+
+	/** The operation was partially successful. */
+	WARNING,
+
+	/** The operation failed for some reason. */
+	ERROR
 
 }

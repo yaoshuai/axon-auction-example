@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.extended;
+package org.fuin.auction.client.swing;
 
 /**
- * Something unexpected happened inside the server.
+ * An aggregate with a given id was not found.
  */
-public class InternalErrorException extends CommandRuntimeException {
+public class IdNotFoundException extends Exception {
 
-	private static final long serialVersionUID = -7275119395188816338L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with message.
-	 * 
-	 * @param message
-	 *            Error message.
+	 * Default constructor.
 	 */
-	public InternalErrorException(final String message) {
-		super(MESSAGE_ID, message);
+	public IdNotFoundException() {
+		super("The aggregate id does not exist");
 	}
 
 }

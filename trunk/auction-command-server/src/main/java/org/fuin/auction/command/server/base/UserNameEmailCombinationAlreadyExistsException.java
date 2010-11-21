@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.extended;
+package org.fuin.auction.command.server.base;
 
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;
@@ -21,22 +21,9 @@ import org.fuin.objects4j.UserName;
 /**
  * A user/email combination is already registered.
  */
-public final class UserNameEmailCombinationAlreadyExistException extends CommandCheckedException {
+public final class UserNameEmailCombinationAlreadyExistsException extends Exception {
 
-	private static final long serialVersionUID = -5054752689224246974L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 5;
-
-	/**
-	 * Constructor with message.
-	 * 
-	 * @param message
-	 *            Error message.
-	 */
-	public UserNameEmailCombinationAlreadyExistException(final String message) {
-		super(MESSAGE_ID, message);
-	}
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor with user name and email.
@@ -46,9 +33,9 @@ public final class UserNameEmailCombinationAlreadyExistException extends Command
 	 * @param email
 	 *            User's email address.
 	 */
-	public UserNameEmailCombinationAlreadyExistException(final UserName userName,
+	public UserNameEmailCombinationAlreadyExistsException(final UserName userName,
 	        final EmailAddress email) {
-		this("The combination of user name '" + userName + "' and email '" + email
+		super("The combination of user name '" + userName + "' and email '" + email
 		        + "' already exists!");
 	}
 

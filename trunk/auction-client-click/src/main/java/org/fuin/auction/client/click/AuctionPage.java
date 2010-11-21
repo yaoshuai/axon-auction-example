@@ -32,6 +32,7 @@ import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
 import org.apache.commons.lang.StringUtils;
 import org.fuin.auction.command.api.base.AuctionCommandService;
+import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.api.support.MessageKeyValue;
 import org.fuin.objects4j.RenderClassInfo;
@@ -158,6 +159,28 @@ public abstract class AuctionPage extends Page {
 	}
 
 	/**
+	 * Returns a formatted message for form page.
+	 * 
+	 * @param form
+	 *            The current form.
+	 * @param result
+	 *            Command result.
+	 * 
+	 * @return Formatted and localized message or <code>null</code>.
+	 */
+	protected final String getMessage(final Form form, final CommandResult result) {
+
+		form.clearErrors();
+		if (result.isSuccess()) {
+			form.clearValues();
+			return getMessage(result);
+		}
+		form.setError(getMessage(result));
+		return null;
+
+	}
+
+	/**
 	 * Returns a formatted message.
 	 * 
 	 * @param result
@@ -166,11 +189,17 @@ public abstract class AuctionPage extends Page {
 	 * @return Formatted and localized message.
 	 */
 	protected final String getMessage(final CommandResult result) {
-		final int msgId = result.getMessageId();
+
+		if (!ResultCode.exists(result.getCode())) {
+			// We received an unknown (newer) message code.
+			// Seems as if this client is not up-to-date
+			return result.getText();
+		}
 		final List<MessageKeyValue> msgKeyValues = result.getMessageKeyValues();
-		final String msg = getMessage(StringUtils.leftPad("" + msgId, 4, "0"));
+		final String msg = getMessage(StringUtils.leftPad("" + result.getCode(), 4, "0"));
 		// FIXME michael Handle key/values
 		return msg;
+
 	}
 
 	/**

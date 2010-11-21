@@ -15,9 +15,7 @@
  */
 package org.fuin.auction.command.server.base;
 
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
+import org.fuin.auction.common.CategoryName;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;
 
@@ -43,16 +41,16 @@ public interface ConstraintSet {
 	 * @param email
 	 *            Email address to add.
 	 * 
-	 * @throws UserNameEmailCombinationAlreadyExistException
+	 * @throws UserNameEmailCombinationAlreadyExistsException
 	 *             Exact combination of user/email is already registered.
-	 * @throws UserNameAlreadyExistException
+	 * @throws UserNameAlreadyExistsException
 	 *             The user id is already in use by another user.
-	 * @throws UserEmailAlreadyExistException
+	 * @throws UserEmailAlreadyExistsException
 	 *             The email is already used for another user account.
 	 */
 	public void add(UserName userName, EmailAddress email)
-	        throws UserNameEmailCombinationAlreadyExistException, UserNameAlreadyExistException,
-	        UserEmailAlreadyExistException;
+	        throws UserNameEmailCombinationAlreadyExistsException, UserNameAlreadyExistsException,
+	        UserEmailAlreadyExistsException;
 
 	/**
 	 * Removes the user id and the email address) from the set.
@@ -63,5 +61,25 @@ public interface ConstraintSet {
 	 *            Email address to remove.
 	 */
 	public void remove(UserName userName, EmailAddress email);
+
+	/**
+	 * Checks if a category already exists and adds it otherwise to the
+	 * constraint set.<br>
+	 * 
+	 * @param categoryName
+	 *            Name of the category to add.
+	 * 
+	 * @throws CategoryNameAlreadyExistException
+	 *             The name is already in use by another category.
+	 */
+	public void add(CategoryName categoryName) throws CategoryNameAlreadyExistException;
+
+	/**
+	 * Removes the category name from the set.
+	 * 
+	 * @param categoryName
+	 *            Name of the category to remove.
+	 */
+	public void remove(CategoryName categoryName);
 
 }

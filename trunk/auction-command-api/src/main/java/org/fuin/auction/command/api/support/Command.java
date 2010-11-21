@@ -16,9 +16,10 @@
 package org.fuin.auction.command.api.support;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import org.fuin.auction.common.TraceStringCapable;
+import org.fuin.objects4j.Ensures;
 
 /**
  * Common behavior shared by all commands.
@@ -26,10 +27,21 @@ import org.fuin.auction.common.TraceStringCapable;
 public interface Command extends Serializable, TraceStringCapable {
 
 	/**
-	 * Returns a list of possible exceptions.
+	 * Returns the version of this instance. This may differ from the
+	 * <code>serialVersionUID</code> because the version of the class used to
+	 * serialize is an earlier version of the class used to deserialize the
+	 * instance.
 	 * 
-	 * @return Array of exceptions.
+	 * @return Instance version.
 	 */
-	public List<Class<? extends CommandException>> getExceptions();
+	public long getVersion();
+
+	/**
+	 * Returns a list of possible results.
+	 * 
+	 * @return Array of result codes.
+	 */
+	@Ensures("\result!=null")
+	public Set<Integer> getResultCodes();
 
 }
