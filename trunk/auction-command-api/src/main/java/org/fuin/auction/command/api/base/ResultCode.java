@@ -18,6 +18,7 @@ package org.fuin.auction.command.api.base;
 import static org.fuin.auction.command.api.base.CommandResultType.ERROR;
 import static org.fuin.auction.command.api.base.CommandResultType.SUCCESS;
 
+import org.apache.commons.lang.StringUtils;
 import org.fuin.objects4j.Ensures;
 import org.fuin.objects4j.Requires;
 
@@ -92,6 +93,15 @@ public enum ResultCode {
 	 */
 	public final int getCode() {
 		return code;
+	}
+
+	/**
+	 * Returns a five character code left padded with zeros.
+	 * 
+	 * @return Code with leading zeros.
+	 */
+	public final String getCodeStr() {
+		return StringUtils.leftPad("" + code, 5, "0");
 	}
 
 	/**

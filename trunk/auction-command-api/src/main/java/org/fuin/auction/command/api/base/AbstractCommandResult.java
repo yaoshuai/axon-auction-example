@@ -21,6 +21,7 @@ import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.api.support.MessageKeyValue;
@@ -121,6 +122,11 @@ public abstract class AbstractCommandResult implements CommandResult {
 	@Override
 	public final int getCode() {
 		return code;
+	}
+
+	@Override
+	public final String getCodeStr() {
+		return StringUtils.leftPad("" + code, 5, "0");
 	}
 
 	@Override

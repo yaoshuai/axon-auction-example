@@ -30,7 +30,6 @@ import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
-import org.apache.commons.lang.StringUtils;
 import org.fuin.auction.command.api.base.AuctionCommandService;
 import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.auction.command.api.support.CommandResult;
@@ -196,7 +195,7 @@ public abstract class AuctionPage extends Page {
 			return result.getText();
 		}
 		final List<MessageKeyValue> msgKeyValues = result.getMessageKeyValues();
-		final String msg = getMessage(StringUtils.leftPad("" + result.getCode(), 4, "0"));
+		final String msg = getMessage(result.getCodeStr());
 		// FIXME michael Handle key/values
 		return msg;
 

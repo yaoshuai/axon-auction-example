@@ -23,6 +23,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.Label;
+import org.fuin.objects4j.TextField;
 import org.fuin.objects4j.validation.PasswordStr;
 import org.fuin.objects4j.validation.UUIDStr;
 
@@ -41,10 +43,14 @@ public final class ChangeUserPasswordCommand implements Command {
 
 	@NotNull
 	@PasswordStr
+	@Label("Current Password")
+	@TextField(width = 50)
 	private String oldPassword;
 
 	@NotNull
 	@PasswordStr
+	@Label("New Password")
+	@TextField(width = 50)
 	private String newPassword;
 
 	/**
