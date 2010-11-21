@@ -58,6 +58,13 @@ public interface CommandResult extends Serializable, TraceStringCapable {
 	public int getCode();
 
 	/**
+	 * Returns a five character code left padded with zeros.
+	 * 
+	 * @return Code with leading zeros.
+	 */
+	public String getCodeStr();
+
+	/**
 	 * Returns the message.
 	 * 
 	 * @return Message text.

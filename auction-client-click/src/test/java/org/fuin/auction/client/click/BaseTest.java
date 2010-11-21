@@ -15,8 +15,15 @@
  */
 package org.fuin.auction.client.click;
 
-import java.io.File;
+import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Properties;
+
+import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.units4j.AssertCoverage;
 import org.fuin.units4j.AssertDependencies;
 import org.junit.Ignore;
@@ -37,6 +44,50 @@ public class BaseTest {
 		final File classesDir = new File("target/classes");
 		AssertDependencies.assertRules(this.getClass(), "/auction-client-click-dependencies.xml",
 		        classesDir);
+	}
+
+	@Test
+	// CHECKSTYLE:OFF Allow conditional operator for the test
+	public final void testEveryResultCodeHasAMessage() throws MalformedURLException {
+
+		final StringBuffer sb = new StringBuffer();
+		final String[] locales = new String[] { "", "de" };
+		for (final String locale : locales) {
+			final Properties props = loadProperties("/click-page"
+			        + ("".equals(locale) ? "" : "_" + locale) + ".properties");
+			final ResultCode[] codes = ResultCode.values();
+			for (final ResultCode code : codes) {
+				if (!props.containsKey(code.getCodeStr())) {
+					if (sb.length() > 0) {
+						sb.append(", ");
+					}
+					sb.append(("".equals(locale) ? "" : locale + "-") + code.getCodeStr());
+				}
+			}
+		}
+		if (sb.length() > 0) {
+			fail("Missing Result Codes: " + sb.toString());
+		}
+	}
+
+	// CHECKSTYLE:ON
+
+	private Properties loadProperties(final String name) {
+		try {
+			final Properties props = new Properties();
+			final InputStream inStream = this.getClass().getResourceAsStream(name);
+			if (inStream == null) {
+				throw new IllegalArgumentException("Resource '" + name + "' was not found!");
+			}
+			try {
+				props.load(inStream);
+			} finally {
+				inStream.close();
+			}
+			return props;
+		} catch (final IOException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }
