@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.common;
+package org.fuin.auction.client.swing;
 
-import org.fuin.objects4j.Ensures;
 
 /**
- * Tags objects that can create a trace string representation.
+ * A user/email combination is already registered.
  */
-public interface TraceStringCapable {
+public final class UserNameEmailCombinationAlreadyExistsException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Creates a representation of the command for tracing.
-	 * 
-	 * @return A string for a technical log.
+	 * Default constructor.
 	 */
-	@Ensures("\result!=null")
-	public String toTraceString();
+	public UserNameEmailCombinationAlreadyExistsException() {
+		super("The combination of user name and email combination already exists!");
+	}
 
 }

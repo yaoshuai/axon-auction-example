@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.support;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
+package org.fuin.auction.command.server.base;
 
 /**
- * Result that signals success without any additional data.
+ * The command received was invalid.
  */
-public final class VoidSuccessResult extends AbstractCommandResult {
+public final class InvalidCommandException extends Exception {
 
-	private static final long serialVersionUID = -3123164570987026143L;
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Default constructor.
+	 * Constructor with cause.
+	 * 
+	 * @param cause
+	 *            Cause.
 	 */
-	public VoidSuccessResult() {
-		super(CommandResultType.SUCCESS, 0, "");
-	}
-
-	@Override
-	public final String toTraceString() {
-		final ToStringBuilder builder = new ToStringBuilder(this);
-		appendAbstractCommandResult(builder);
-		return builder.toString();
+	public InvalidCommandException(final Throwable cause) {
+		super(cause);
 	}
 
 }

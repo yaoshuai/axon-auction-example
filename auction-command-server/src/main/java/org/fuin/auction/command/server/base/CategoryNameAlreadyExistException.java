@@ -13,11 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fuin.auction.command.server.base;
+
+import org.fuin.auction.common.CategoryName;
 
 /**
- * Method and exception based API directly related with the auction example. 
- * This part of the API is Java specific and therefore not intended to be use
- * by other language clients.
+ * The name is already assigned to another category.
  */
-package org.fuin.auction.command.api.extended;
+public class CategoryNameAlreadyExistException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Constructor with name.
+	 * 
+	 * @param categoryName
+	 *            Category name.
+	 */
+	public CategoryNameAlreadyExistException(final CategoryName categoryName) {
+		super();
+	}
+
+}

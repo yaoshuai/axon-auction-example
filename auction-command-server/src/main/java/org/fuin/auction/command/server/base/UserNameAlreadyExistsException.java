@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.extended;
+package org.fuin.auction.command.server.base;
+
+import org.fuin.objects4j.UserName;
 
 /**
- * The command was not valid.
+ * A user id is already registered.
  */
-public class InvalidCommandException extends CommandRuntimeException {
+public final class UserNameAlreadyExistsException extends Exception {
 
-	private static final long serialVersionUID = 4913714664808710044L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 2;
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with message.
+	 * Constructor with user name.
 	 * 
-	 * @param message
-	 *            Error message.
+	 * @param userName
+	 *            User name.
 	 */
-	public InvalidCommandException(final String message) {
-		super(MESSAGE_ID, message);
+	public UserNameAlreadyExistsException(final UserName userName) {
+		super("The user name '" + userName + "' is already assigned to another user!");
 	}
 
 }

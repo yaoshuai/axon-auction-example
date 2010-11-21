@@ -13,27 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.extended;
-
+package org.fuin.auction.client.swing;
 
 /**
- * The unique id was not found in the repository.
+ * A given password was wrong.
  */
-public final class IdNotFoundException extends CommandCheckedException {
+public class PasswordException extends Exception {
 
-	private static final long serialVersionUID = -8464648384688149062L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 7;
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with message.
-	 * 
-	 * @param message
-	 *            Error message.
+	 * Default constructor.
 	 */
-	public IdNotFoundException(final String message) {
-		super(MESSAGE_ID, message);
+	public PasswordException() {
+		super("The password is wrong");
 	}
 
 }

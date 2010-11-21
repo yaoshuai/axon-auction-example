@@ -15,19 +15,14 @@
  */
 package org.fuin.auction.command.api.base;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.extended.InternalErrorException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
 import org.fuin.auction.command.api.support.Command;
-import org.fuin.auction.command.api.support.CommandException;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
@@ -42,6 +37,8 @@ import org.fuin.objects4j.validation.UserNameStr;
 public final class RegisterUserCommand implements Command {
 
 	private static final long serialVersionUID = 5381295115581408651L;
+
+	private long version = serialVersionUID;
 
 	@NotNull
 	@UserNameStr
@@ -149,18 +146,24 @@ public final class RegisterUserCommand implements Command {
 		// We don't want to include the clear text password for security
 		// reasons here
 		return new ToStringBuilder(this).append("userName", userName).append("email", email)
-		        .toString();
+		        .append("version", version).toString();
 	}
 
 	@Override
-	public final List<Class<? extends CommandException>> getExceptions() {
-		final List<Class<? extends CommandException>> list;
-		list = new ArrayList<Class<? extends CommandException>>();
-		list.add(UserNameAlreadyExistException.class);
-		list.add(UserEmailAlreadyExistException.class);
-		list.add(InvalidCommandException.class);
-		list.add(InternalErrorException.class);
-		return list;
+	public final long getVersion() {
+		return version;
+	}
+
+	@Override
+	public final Set<Integer> getResultCodes() {
+		final Set<Integer> codes = new HashSet<Integer>();
+		codes.add(ResultCode.CATEGORY_ALREADY_EXISTS.getCode());
+		codes.add(ResultCode.DUPLICATE_USERNAME.getCode());
+		codes.add(ResultCode.DUPLICATE_EMAIL.getCode());
+		codes.add(ResultCode.DUPLICATE_USERNAME_EMAIL_COMBINATION.getCode());
+		codes.add(ResultCode.INVALID_COMMAND.getCode());
+		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		return codes;
 	}
 
 }

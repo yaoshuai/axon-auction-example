@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.fuin.auction.common.TraceStringCapable;
+import org.fuin.objects4j.Ensures;
 
 /**
  * Result of executing a command.
@@ -26,15 +27,7 @@ import org.fuin.auction.common.TraceStringCapable;
 public interface CommandResult extends Serializable, TraceStringCapable {
 
 	/**
-	 * Returns the type of the result.
-	 * 
-	 * @return Type of result.
-	 */
-	public CommandResultType getType();
-
-	/**
-	 * Returns the information if the command was successful. Convenience method
-	 * that checks the result type internally.
+	 * Returns the information if the command was successful.
 	 * 
 	 * @return If the command was executed without error or warning
 	 *         <code>true</code> else <code>false</code>.
@@ -42,26 +35,41 @@ public interface CommandResult extends Serializable, TraceStringCapable {
 	public boolean isSuccess();
 
 	/**
-	 * Returns the id of the message. This is the key within the
-	 * <code>auction-command-messages.properties</code> file.
+	 * Returns the information if the command was partly successful.
+	 * 
+	 * @return If the command was executed with a warning <code>true</code> else
+	 *         <code>false</code>.
+	 */
+	public boolean isWarning();
+
+	/**
+	 * Returns the information if the command was unsuccessful.
+	 * 
+	 * @return If the command was executed with an error <code>true</code> else
+	 *         <code>false</code>.
+	 */
+	public boolean isError();
+
+	/**
+	 * Returns the id of the message.
 	 * 
 	 * @return Unique id of the message.
 	 */
-	public int getMessageId();
+	public int getCode();
 
 	/**
-	 * Returns an internal message describing a hint, warning or error.
+	 * Returns the message.
 	 * 
-	 * @return Internal message.
+	 * @return Message text.
 	 */
-	public String getInternalMessage();
+	@Ensures("\result!=null")
+	public String getText();
 
 	/**
-	 * Returns a list of key/value pairs. This corresponds to the variables used
-	 * within the value of key <code>messageId</code> in the
-	 * <code>auction-command-messages.properties</code> file.
+	 * Returns a list of key/value pairs. The key/value pairs can be used to
+	 * localize an error message.
 	 * 
-	 * @return Key/values for localized messages.
+	 * @return Key/values for localized messages or <code>null</code>.
 	 */
 	public List<MessageKeyValue> getMessageKeyValues();
 

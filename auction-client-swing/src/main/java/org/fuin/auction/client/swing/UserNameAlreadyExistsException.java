@@ -13,26 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.support;
+package org.fuin.auction.client.swing;
 
 
 /**
- * Shared behavior for all command excaptions.
+ * A user id is already registered.
  */
-public interface CommandException {
+public final class UserNameAlreadyExistsException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Returns a system wide unique message id of this exception.
-	 * 
-	 * @return Unique exception message id.
+	 * Default constructor.
 	 */
-	public int getMessageId();
-
-	/**
-	 * Converts the exception into a command result.
-	 * 
-	 * @return Command result.
-	 */
-	public VoidExceptionResult toResult();
+	public UserNameAlreadyExistsException() {
+		super("The user name is already assigned to another user!");
+	}
 
 }

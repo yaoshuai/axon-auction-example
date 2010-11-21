@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.support;
+package org.fuin.auction.command.api.base;
 
 import javax.validation.constraints.NotNull;
 
@@ -42,11 +42,13 @@ public final class AggregateIdentifierUUIDResult extends AbstractCommandResult {
 	/**
 	 * Constructor with id.
 	 * 
+	 * @param resultCode
+	 *            Result code.
 	 * @param id
 	 *            Unique internal id of the user.
 	 */
-	public AggregateIdentifierUUIDResult(final String id) {
-		super(CommandResultType.SUCCESS, 0, "");
+	public AggregateIdentifierUUIDResult(final ResultCode resultCode, final String id) {
+		super(resultCode);
 		this.id = id;
 		Contract.requireValid(this);
 	}
@@ -58,16 +60,6 @@ public final class AggregateIdentifierUUIDResult extends AbstractCommandResult {
 	 */
 	public final String getId() {
 		return id;
-	}
-
-	/**
-	 * Sets the new UUID of the user.
-	 * 
-	 * @param id
-	 *            Unique internal id of the user.
-	 */
-	public final void setId(final String id) {
-		this.id = id;
 	}
 
 	/**

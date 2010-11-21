@@ -22,26 +22,21 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
+import org.fuin.auction.command.api.base.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
+import org.fuin.auction.command.api.base.CreateCategoryCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
+import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
-import org.fuin.auction.command.api.extended.IdNotFoundException;
-import org.fuin.auction.command.api.extended.InvalidCommandException;
-import org.fuin.auction.command.api.extended.PasswordException;
-import org.fuin.auction.command.api.extended.UserEmailAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserEmailVerificationFailedException;
-import org.fuin.auction.command.api.extended.UserNameAlreadyExistException;
-import org.fuin.auction.command.api.extended.UserNameEmailCombinationAlreadyExistException;
-import org.fuin.auction.command.api.support.AggregateIdentifierUUIDResult;
+import org.fuin.auction.command.api.base.VoidResult;
 import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.command.api.support.VoidSuccessResult;
 import org.fuin.auction.command.server.domain.IllegalUserStateException;
 import org.fuin.auction.command.server.domain.PasswordMismatchException;
 import org.fuin.auction.command.server.domain.SecurityTokenException;
 import org.fuin.auction.command.server.domain.User;
 import org.fuin.auction.command.server.support.AggregateIdentifierFactory;
 import org.fuin.auction.command.server.support.IdUUID;
-import org.fuin.auction.common.Utils;
+import org.fuin.auction.common.CategoryName;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserName;
@@ -99,6 +94,37 @@ public class AuctionCommandHandler {
 	}
 
 	/**
+	 * Create a new category.
+	 * 
+	 * @param command
+	 *            Command to handle.
+	 * 
+	 * @return Result of the command.
+	 */
+	@CommandHandler
+	public final CommandResult handle(final CreateCategoryCommand command) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle command: " + command.toTraceString());
+		}
+		try {
+
+			final CategoryName categoryName = new CategoryName(command.getName());
+			constraintSet.add(categoryName);
+
+			return null;
+
+		} catch (final CategoryNameAlreadyExistException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
+			return createAndLogVoidResult(ResultCode.CATEGORY_ALREADY_EXISTS);
+		} catch (final RuntimeException ex) {
+			LOG.error(command.toTraceString(), ex);
+			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
+		}
+
+	}
+
+	/**
 	 * Register a new user.
 	 * 
 	 * @param command
@@ -125,17 +151,21 @@ public class AuctionCommandHandler {
 			        emailAddress);
 			userRepository.add(user);
 
-			return createAndLogAggregateIdResult(user.getIdentifier());
+			return createAndLogAggregateIdResult(ResultCode.USER_SUCCESSFULLY_REGISTERED, user
+			        .getIdentifier());
 
-		} catch (final UserNameEmailCombinationAlreadyExistException ex) {
+		} catch (final UserNameEmailCombinationAlreadyExistsException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return ex.toResult();
-		} catch (final UserNameAlreadyExistException ex) {
+			return createAndLogVoidResult(ResultCode.DUPLICATE_USERNAME_EMAIL_COMBINATION);
+		} catch (final UserNameAlreadyExistsException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return ex.toResult();
-		} catch (final UserEmailAlreadyExistException ex) {
+			return createAndLogVoidResult(ResultCode.DUPLICATE_USERNAME);
+		} catch (final UserEmailAlreadyExistsException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return ex.toResult();
+			return createAndLogVoidResult(ResultCode.DUPLICATE_EMAIL);
+		} catch (final RuntimeException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
+			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
 		}
 
 	}
@@ -166,14 +196,17 @@ public class AuctionCommandHandler {
 
 			user.changePassword(oldPw, newPw);
 
-			return createAndLogVoidSuccessResult();
+			return createAndLogVoidResult(ResultCode.PASSWORD_SUCCESSFULLY_CHANGED);
 
 		} catch (final PasswordMismatchException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return new PasswordException(ex.getMessage()).toResult();
+			return createAndLogVoidResult(ResultCode.PASSWORD_WRONG);
 		} catch (final AggregateNotFoundException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
+			return createAndLogVoidResult(ResultCode.ID_NOT_FOUND);
+		} catch (final RuntimeException ex) {
+			LOG.error(ex.getMessage() + ": " + command.toTraceString());
+			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
 		}
 
 	}
@@ -203,31 +236,32 @@ public class AuctionCommandHandler {
 
 			user.verifyEmail(securityToken);
 
-			return createAndLogVoidSuccessResult();
+			return createAndLogVoidResult(ResultCode.USER_EMAIL_VERIFIED);
 
 		} catch (final AggregateNotFoundException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return new IdNotFoundException(Utils.createMessage(ex)).toResult();
+			return createAndLogVoidResult(ResultCode.ID_NOT_FOUND);
 		} catch (final SecurityTokenException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return new UserEmailVerificationFailedException().toResult();
+			return createAndLogVoidResult(ResultCode.USER_EMAIL_VERIFICATION_FAILED);
 		} catch (final IllegalUserStateException ex) {
 			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return new InvalidCommandException(ex.getMessage()).toResult();
+			return createAndLogVoidResult(ResultCode.INVALID_COMMAND);
 		}
 
 	}
 
-	private CommandResult createAndLogVoidSuccessResult() {
-		final CommandResult result = new VoidSuccessResult();
+	private CommandResult createAndLogVoidResult(final ResultCode resultCode) {
+		final CommandResult result = new VoidResult(resultCode);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Result: " + result.toTraceString());
 		}
 		return result;
 	}
 
-	private CommandResult createAndLogAggregateIdResult(final AggregateIdentifier id) {
-		final CommandResult result = new AggregateIdentifierUUIDResult(id.toString());
+	private CommandResult createAndLogAggregateIdResult(final ResultCode resultCode,
+	        final AggregateIdentifier id) {
+		final CommandResult result = new AggregateIdentifierUUIDResult(resultCode, id.toString());
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Result: " + result.toTraceString());
 		}

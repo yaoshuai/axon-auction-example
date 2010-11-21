@@ -15,11 +15,8 @@
  */
 package org.fuin.auction.command.api.base;
 
-import org.fuin.auction.command.api.support.AggregateIdentifierUUIDResult;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.command.api.support.VoidExceptionResult;
-import org.fuin.auction.command.api.support.VoidSuccessResult;
 
 /**
  * Service for sending commands to the command server - This is implemented
@@ -29,10 +26,10 @@ import org.fuin.auction.command.api.support.VoidSuccessResult;
  * arbitrary results.<br>
  * <br>
  * Sending a command should be in most cases a fire-and-forget affair returning
- * simply a {@link VoidExceptionResult} or a {@link VoidSuccessResult}. The only
- * other use case that may include a return value is a command that creates a
- * new aggregate and then returns a {@link AggregateIdentifierUUIDResult}. If the client
- * side creates the aggregate IDs there is even no need for that.
+ * simply a kind of void result. The only other use case that may include a
+ * return value is a command that creates a new aggregate and then returns a new
+ * ID. If the client side creates the aggregate IDs there is even no need for
+ * that.
  */
 public interface AuctionCommandService {
 

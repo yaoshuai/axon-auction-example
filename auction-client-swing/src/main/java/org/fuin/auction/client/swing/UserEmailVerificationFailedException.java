@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.extended;
+package org.fuin.auction.client.swing;
 
 /**
- * The verification of the user's email failed.
+ * The verification of an email address failed.
  */
-public class UserEmailVerificationFailedException extends CommandCheckedException {
+public final class UserEmailVerificationFailedException extends Exception {
 
-	private static final long serialVersionUID = -1014595618427359399L;
-
-	/** Unique message id for the exception. */
-	public static final int MESSAGE_ID = 8;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor.
 	 */
 	public UserEmailVerificationFailedException() {
-		super(MESSAGE_ID, "The given token was not equal to the one inside the user!");
+		super("The verification of the email address failed");
 	}
 
 }
