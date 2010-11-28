@@ -15,26 +15,27 @@
  */
 package org.fuin.auction.command.server.support;
 
-import javax.inject.Named;
-
 import org.axonframework.domain.AggregateIdentifier;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * Conversion of a string into an aggregate identifier failed.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+public class IllegalAggregateIdentifierException extends Exception {
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
+	/**
+	 * Constructor with wrong id and type of the id.
+	 * 
+	 * @param idStr
+	 *            String that cannot be converted into an aggregate identifier.
+	 * @param idClass
+	 *            Type of the aggregate identifier.
+	 */
+	public IllegalAggregateIdentifierException(final String idStr,
+	        final Class<? extends AggregateIdentifier> idClass) {
+		super("The id '" + idStr + "' is not a valid aggregate identifier of type '"
+		        + idClass.getName() + "'!");
 	}
 
 }

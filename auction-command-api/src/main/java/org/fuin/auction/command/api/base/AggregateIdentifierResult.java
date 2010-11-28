@@ -19,23 +19,21 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.objects4j.Contract;
-import org.fuin.objects4j.validation.UUIDStr;
 
 /**
  * Result of successfully creating a new aggregate.
  */
-public final class AggregateIdentifierUUIDResult extends AbstractCommandResult {
+public final class AggregateIdentifierResult extends AbstractCommandResult {
 
 	private static final long serialVersionUID = 7124123040949548640L;
 
 	@NotNull
-	@UUIDStr
 	private String id;
 
 	/**
 	 * Default constructor.
 	 */
-	public AggregateIdentifierUUIDResult() {
+	public AggregateIdentifierResult() {
 		super();
 	}
 
@@ -47,16 +45,16 @@ public final class AggregateIdentifierUUIDResult extends AbstractCommandResult {
 	 * @param id
 	 *            Unique internal id of the user.
 	 */
-	public AggregateIdentifierUUIDResult(final ResultCode resultCode, final String id) {
+	public AggregateIdentifierResult(final ResultCode resultCode, final String id) {
 		super(resultCode);
 		this.id = id;
 		Contract.requireValid(this);
 	}
 
 	/**
-	 * Returns the new UUID of the user.
+	 * Returns the new ID.
 	 * 
-	 * @return Unique internal id of the user.
+	 * @return Unique internal id.
 	 */
 	public final String getId() {
 		return id;

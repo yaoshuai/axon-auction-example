@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.auction.command.server.domain;
 
-import javax.inject.Named;
-
-import org.axonframework.domain.AggregateIdentifier;
+import org.fuin.auction.common.CategoryState;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * The state of the category is not as expected.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+public final class IllegalCategoryStateException extends AbstractIllegalStateException {
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
+	private static final long serialVersionUID = 1578737429376160011L;
 
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
+	/**
+	 * Constructor with states.
+	 * 
+	 * @param currentState
+	 *            Current state.
+	 * @param expected
+	 *            Expected states.
+	 */
+	public IllegalCategoryStateException(final CategoryState currentState,
+	        final CategoryState... expected) {
+		super(currentState, expected);
 	}
 
 }

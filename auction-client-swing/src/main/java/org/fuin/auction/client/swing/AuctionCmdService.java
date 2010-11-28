@@ -31,9 +31,6 @@ import org.fuin.objects4j.UserName;
  * <br>
  * <b>This interface is NOT implemented by the command server!</b> To use it
  * there has to be an implementation that does the mapping.<br>
- * <br>
- * Every method may throw {@link InvalidCommandException} or
- * {@link InternalErrorException} as two special runtime exceptions.
  */
 public interface AuctionCmdService {
 

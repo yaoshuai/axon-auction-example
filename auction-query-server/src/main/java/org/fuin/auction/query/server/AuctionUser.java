@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -40,6 +41,7 @@ import org.fuin.objects4j.validation.UserNameStr;
  * User object.
  */
 @Entity
+@Table(name = "AUCTION_USER")
 public class AuctionUser implements Serializable, TraceStringCapable {
 
 	private static final long serialVersionUID = 8435312185589868237L;

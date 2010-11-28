@@ -13,28 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.auction.common;
 
-import javax.inject.Named;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import org.axonframework.domain.AggregateIdentifier;
+//TESTCODE:BEGIN
+// FIXME michael 22.10.2010 Remove class after bug (don't test enums) in Units4J is fixed!
+public class CategoryStateTest {
 
-/**
- * Creates aggregate identifiers based on UUIDs.
- */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
-
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
-
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
+	@Ignore
+	@Test
+	public final void testNothing() {
+		// Test nothing
 	}
 
 }
+// TESTCODE:END

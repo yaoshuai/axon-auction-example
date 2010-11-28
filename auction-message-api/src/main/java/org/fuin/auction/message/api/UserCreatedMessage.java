@@ -83,9 +83,9 @@ public final class UserCreatedMessage implements AuctionMessage {
 	}
 
 	/**
-	 * Returns the user id.
+	 * Returns the user name.
 	 * 
-	 * @return User id.
+	 * @return User name.
 	 */
 	public final UserName getUserName() {
 		return userName;

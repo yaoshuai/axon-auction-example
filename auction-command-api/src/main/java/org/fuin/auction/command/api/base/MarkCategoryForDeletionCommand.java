@@ -19,68 +19,63 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.fuin.auction.command.api.support.Command;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.Requires;
-import org.fuin.objects4j.TextField;
 
 /**
- * Create a new auction category.
+ * Marks an existing category for deletion.
  */
-@Label("Create a new category")
-public final class CreateCategoryCommand implements Command {
+@Label("Mark the category for deletion")
+public final class MarkCategoryForDeletionCommand implements Command {
 
 	private static final long serialVersionUID = 2143094599433867751L;
 
 	private long version = serialVersionUID;
 
 	@NotNull
-	@Size(min = 1, max = 40)
-	@Label("Category name")
-	@TextField
-	private String name;
+	private Long categoryId;
 
 	/**
 	 * Default constructor for serialization.
 	 */
-	protected CreateCategoryCommand() {
+	protected MarkCategoryForDeletionCommand() {
 		super();
 	}
 
 	/**
 	 * Constructor with name.
 	 * 
-	 * @param name
-	 *            Unique name of the category.
+	 * @param categoryId
+	 *            Id of the category.
 	 */
-	@Requires("(name!=null) && (name.length()>=1) && (name.length()<=40)")
-	public CreateCategoryCommand(final String name) {
+	@Requires("(categoryId!=null)")
+	public MarkCategoryForDeletionCommand(final Long categoryId) {
 		super();
-		this.name = name;
+		this.categoryId = categoryId;
 		Contract.requireValid(this);
 	}
 
 	/**
-	 * Returns the name.
+	 * Returns the aggregate id of the category.
 	 * 
-	 * @return Name of the category.
+	 * @return Unique id.
 	 */
-	public final String getName() {
-		return name;
+	public final Long getCategoryId() {
+		return categoryId;
 	}
 
 	/**
-	 * Sets the name to a new value.
+	 * Sets the id of the category.
 	 * 
-	 * @param name
-	 *            Category name to set.
+	 * @param categoryId
+	 *            Unique id to set.
 	 */
-	public final void setName(final String name) {
-		this.name = name;
+	public final void setCategoryId(final Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	@Override
@@ -91,8 +86,9 @@ public final class CreateCategoryCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.CATEGORY_SUCCESSFULLY_CREATED.getCode());
-		codes.add(ResultCode.CATEGORY_ALREADY_EXISTS.getCode());
+		codes.add(ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION.getCode());
+		codes.add(ResultCode.ILLEGAL_CATEGORY_STATE.getCode());
+		codes.add(ResultCode.ID_NOT_FOUND.getCode());
 		codes.add(ResultCode.INVALID_COMMAND.getCode());
 		codes.add(ResultCode.INTERNAL_ERROR.getCode());
 		return codes;
@@ -100,7 +96,8 @@ public final class CreateCategoryCommand implements Command {
 
 	@Override
 	public final String toTraceString() {
-		return new ToStringBuilder(this).append("name", name).append("version", version).toString();
+		return new ToStringBuilder(this).append("categoryId", categoryId)
+		        .append("version", version).toString();
 	}
 
 }

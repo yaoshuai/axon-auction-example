@@ -50,6 +50,13 @@
 		<property name="eventStore" ref="eventStore" />
 	</bean>
 
+	<bean id="categoryRepository"
+		class="org.axonframework.eventsourcing.GenericEventSourcingRepository">
+		<constructor-arg value="org.fuin.auction.command.server.domain.Category" />
+		<property name="eventBus" ref="eventBus" />
+		<property name="eventStore" ref="eventStore" />
+	</bean>
+	
 	<bean id="eventStore" class="org.axonframework.eventstore.fs.FileSystemEventStore">
 		<property name="baseDir">
 			<bean class="org.springframework.core.io.FileSystemResource">

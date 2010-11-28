@@ -13,28 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
-
-import javax.inject.Named;
-
-import org.axonframework.domain.AggregateIdentifier;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * Contains utility classes for the server part of the project.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+package org.fuin.auction.command.server.utils;
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
-
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
-	}
-
-}
