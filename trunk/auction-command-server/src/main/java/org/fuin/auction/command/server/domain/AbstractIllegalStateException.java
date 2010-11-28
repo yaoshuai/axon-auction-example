@@ -15,14 +15,12 @@
  */
 package org.fuin.auction.command.server.domain;
 
-import org.fuin.auction.common.UserState;
-
 /**
- * The state of the user is not as expected.
+ * A state is not as expected.
  */
-public final class IllegalUserStateException extends AbstractIllegalStateException {
+public abstract class AbstractIllegalStateException extends Exception {
 
-	private static final long serialVersionUID = -4791410689239680399L;
+	private static final long serialVersionUID = 2943719750064608089L;
 
 	/**
 	 * Constructor with states.
@@ -31,9 +29,23 @@ public final class IllegalUserStateException extends AbstractIllegalStateExcepti
 	 *            Current state.
 	 * @param expected
 	 *            Expected states.
+	 * @param <T>
+	 *            Concrete enum type.
 	 */
-	public IllegalUserStateException(final UserState currentState, final UserState... expected) {
-		super(currentState, expected);
+	public <T extends Enum<T>> AbstractIllegalStateException(final Enum<T> currentState,
+	        final Enum<T>... expected) {
+		super("The current state was " + currentState + ", but expected: " + createStr(expected));
+	}
+
+	private static <T extends Enum<T>> String createStr(final Enum<T>... states) {
+		final StringBuffer sb = new StringBuffer();
+		for (final Enum<T> state : states) {
+			if (sb.length() > 0) {
+				sb.append(", ");
+			}
+			sb.append(state.name());
+		}
+		return sb.toString();
 	}
 
 }

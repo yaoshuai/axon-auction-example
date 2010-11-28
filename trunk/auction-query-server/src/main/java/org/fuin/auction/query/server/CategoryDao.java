@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.auction.query.server;
 
-import javax.inject.Named;
+import java.util.List;
 
-import org.axonframework.domain.AggregateIdentifier;
+import com.trg.dao.jpa.GenericDAO;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * Category Data Access Object (DAO) interface.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+public interface CategoryDao extends GenericDAO<Category, Long> {
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
-
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
-	}
+	/**
+	 * Returns a list of all active categories.
+	 * 
+	 * @return List of active categories.
+	 */
+	public List<Category> findAllActive();
 
 }

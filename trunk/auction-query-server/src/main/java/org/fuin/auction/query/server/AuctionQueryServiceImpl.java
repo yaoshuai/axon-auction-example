@@ -15,13 +15,20 @@
  */
 package org.fuin.auction.query.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.fuin.auction.common.FailedToLoadProjectInfoException;
 import org.fuin.auction.common.Utils;
 import org.fuin.auction.query.api.AuctionQueryService;
+import org.fuin.auction.query.api.CategoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implements the {@link AuctionQueryService}.
@@ -30,6 +37,9 @@ import org.slf4j.LoggerFactory;
 public class AuctionQueryServiceImpl implements AuctionQueryService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AuctionQueryServiceImpl.class);
+
+	@Inject
+	private CategoryDao categoryDao;
 
 	@Override
 	public final String getVersion() {
@@ -41,6 +51,30 @@ public class AuctionQueryServiceImpl implements AuctionQueryService {
 			LOG.error(message, ex);
 			throw new RuntimeException(message);
 		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public final List<CategoryDto> findAllCategories() {
+		final List<Category> categories = categoryDao.findAll();
+		final List<CategoryDto> result = new ArrayList<CategoryDto>();
+		for (final Category category : categories) {
+			// TODO michael Create domain object to dto converter structure
+			result.add(new CategoryDto(category.getId(), category.getName(), category.isActive()));
+		}
+		return result;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public final List<CategoryDto> findAllActiveCategories() {
+		final List<Category> categories = categoryDao.findAllActive();
+		final List<CategoryDto> result = new ArrayList<CategoryDto>();
+		for (final Category category : categories) {
+			// TODO michael Create domain object to dto converter structure
+			result.add(new CategoryDto(category.getId(), category.getName(), category.isActive()));
+		}
+		return result;
 	}
 
 }

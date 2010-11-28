@@ -15,17 +15,32 @@
  */
 package org.fuin.auction.query.api;
 
+import java.util.List;
 
 /**
  * Auction query service.
  */
 public interface AuctionQueryService {
 
-    /**
-     * Returns the version of the server.
-     * 
-     * @return Server version.
-     */
-    public String getVersion();
+	/**
+	 * Returns the version of the server.
+	 * 
+	 * @return Server version.
+	 */
+	public String getVersion();
+
+	/**
+	 * Returns all categories.
+	 * 
+	 * @return List of all categories.
+	 */
+	public List<CategoryDto> findAllCategories();
+
+	/**
+	 * Returns all active categories.
+	 * 
+	 * @return List of all active categories.
+	 */
+	public List<CategoryDto> findAllActiveCategories();
 
 }

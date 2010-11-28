@@ -15,25 +15,18 @@
  */
 package org.fuin.auction.command.server.base;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.List;
 
 import javax.inject.Named;
-import javax.sql.DataSource;
 
+import org.fuin.auction.command.server.utils.AbstractJdbcHelper;
 import org.fuin.auction.common.CategoryName;
-import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * Pure JDBC constraint service (Apache Derby!). Could be done more nice
@@ -41,30 +34,15 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  * need that a "full-blown" Hibernate or JPA here...
  */
 @Named
-public final class ConstraintSetJdbc implements ConstraintSet {
+public final class ConstraintSetJdbc extends AbstractJdbcHelper implements ConstraintSet {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ConstraintSetJdbc.class);
-
-	private final DataSource dataSource;
 
 	/**
 	 * Default constructor.
 	 */
 	public ConstraintSetJdbc() {
-		try {
-			final Properties jdbcProperties = Utils.loadProperties(this.getClass(),
-			        "/jdbc.properties");
-			final ComboPooledDataSource cpds = new ComboPooledDataSource();
-			cpds.setDriverClass(jdbcProperties.getProperty("driverclass"));
-			cpds.setJdbcUrl(jdbcProperties.getProperty("url"));
-			cpds.setUser(jdbcProperties.getProperty("commandserver"));
-			cpds.setPassword(jdbcProperties.getProperty("secret"));
-			this.dataSource = cpds;
-		} catch (final IOException ex) {
-			throw new RuntimeException(ex);
-		} catch (final PropertyVetoException ex) {
-			throw new RuntimeException(ex);
-		}
+		super(ConstraintSetJdbc.class, "/jdbc.properties");
 	}
 
 	@Override
@@ -108,41 +86,29 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 
 	@Override
 	public final void remove(final UserName userName, final EmailAddress email) {
-
-		try {
-			final Connection con = dataSource.getConnection();
-			try {
-				final PreparedStatement stmt = con
-				        .prepareStatement("delete from COMMANDSERVER.USERNAME_EMAIL "
-				                + "where USER_NAME=? and EMAIL=?");
-				try {
-					stmt.setString(1, userName.toString());
-					stmt.setString(2, email.toString());
-					stmt.executeUpdate();
-				} finally {
-					stmt.close();
-				}
-			} finally {
-				con.close();
-			}
-		} catch (final SQLException ex) {
-			final String message = "Error removing userName/email constraint!";
-			LOG.error(message + " [SQLState=" + ex.getSQLState() + ", ErrorCode="
-			        + ex.getErrorCode() + "]", ex);
-			throw new RuntimeException(message);
-		}
-
+		executeUpdateSilent(
+		        "delete from COMMANDSERVER.USERNAME_EMAIL where USER_NAME=? and EMAIL=?", userName
+		                .toString(), email.toString());
 	}
 
 	@Override
 	public final void add(final CategoryName categoryName) throws CategoryNameAlreadyExistException {
-		// TODO michael Auto-generated method stub
-
+		try {
+			executeUpdate("insert into COMMANDSERVER.CATEGORY_NAMES (NAME) values (?)",
+			        categoryName.toString());
+		} catch (final SQLException ex) {
+			// Duplicate key value in primary key
+			if (!ex.getSQLState().equals("23505")) {
+				throw new RuntimeException(ex);
+			}
+			throw new CategoryNameAlreadyExistException(categoryName);
+		}
 	}
 
 	@Override
 	public final void remove(final CategoryName categoryName) {
-		// TODO michael Auto-generated method stub
+		executeUpdateSilent("delete from COMMANDSERVER.CATEGORY_NAMES where NAME=?", categoryName
+		        .toString());
 	}
 
 	/**
@@ -161,29 +127,16 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	 *             Other error than "duplicate primary key".
 	 */
 	private boolean insert(final UserName userName, final EmailAddress email) throws SQLException {
-		final Connection con = dataSource.getConnection();
 		try {
-			final PreparedStatement stmt = con
-			        .prepareStatement("insert into COMMANDSERVER.USERNAME_EMAIL (USER_NAME, EMAIL) "
-			                + "values (?, ?)");
-			try {
-				stmt.setString(1, userName.toString());
-				stmt.setString(2, email.toString());
-				try {
-					stmt.executeUpdate();
-					return true;
-				} catch (final SQLException ex) {
-					// Duplicate key value in primary key
-					if (!ex.getSQLState().equals("23505")) {
-						throw ex;
-					}
-					return false;
-				}
-			} finally {
-				stmt.close();
+			executeUpdate("insert into COMMANDSERVER.USERNAME_EMAIL (USER_NAME, EMAIL) "
+			        + "values (?, ?)", userName.toString(), email.toString());
+			return true;
+		} catch (final SQLException ex) {
+			// Duplicate key value in primary key
+			if (!ex.getSQLState().equals("23505")) {
+				throw ex;
 			}
-		} finally {
-			con.close();
+			return false;
 		}
 	}
 
@@ -196,41 +149,20 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 	 *            Email address to find.
 	 * 
 	 * @return User name and email.
-	 * 
-	 * @throws SQLException
-	 *             Error executing the select statement.
 	 */
 	private UserNameEmail select(final UserName userName, final EmailAddress email) {
-		try {
-			final Connection con = dataSource.getConnection();
-			try {
-				final PreparedStatement stmt = con
-				        .prepareStatement("select * from COMMANDSERVER.USERNAME_EMAIL where "
-				                + "USER_NAME=? or EMAIL=?");
-				try {
-					stmt.setString(1, userName.toString());
-					stmt.setString(2, email.toString());
-					final ResultSet rs = stmt.executeQuery();
-					try {
-						if (!rs.next()) {
-							throw new RuntimeException("Neither user name '" + userName
-							        + "' nor email '" + email + "' found!");
-						}
-						return new UserNameEmail(rs.getString("USER_NAME"), rs.getString("EMAIL"));
-					} finally {
-						rs.close();
-					}
-				} finally {
-					stmt.close();
-				}
-			} finally {
-				con.close();
-			}
-		} catch (final SQLException ex) {
-			final String msg = ex.getMessage();
-			LOG.error(msg, ex);
-			throw new RuntimeException(msg);
+
+		final List<UserNameEmail> list = selectSilent(
+		        "select * from COMMANDSERVER.USERNAME_EMAIL where USER_NAME=? or EMAIL=?",
+		        new UserNameEmailCreator(), userName.toString(), email.toString());
+		if (list.size() == 0) {
+			throw new IllegalStateException("Neither user name '" + userName + "' nor email '"
+			        + email + "' found!");
+		} else if (list.size() == 1) {
+			throw new IllegalStateException("Found more than one entry for user name '" + userName
+			        + "' nor email '" + email + "'!");
 		}
+		return list.get(0);
 	}
 
 	/**
@@ -272,6 +204,18 @@ public final class ConstraintSetJdbc implements ConstraintSet {
 		 */
 		public String getEmail() {
 			return email;
+		}
+
+	}
+
+	/**
+	 * Creates {@link UserNameEmail} instances from a JDBC result set.
+	 */
+	private static final class UserNameEmailCreator implements Creator<UserNameEmail> {
+
+		@Override
+		public final UserNameEmail create(final ResultSet rs) throws SQLException {
+			return new UserNameEmail(rs.getString("USER_NAME"), rs.getString("EMAIL"));
 		}
 
 	}

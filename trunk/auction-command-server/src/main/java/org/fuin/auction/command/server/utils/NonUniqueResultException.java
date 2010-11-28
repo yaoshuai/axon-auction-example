@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
-
-import javax.inject.Named;
-
-import org.axonframework.domain.AggregateIdentifier;
+package org.fuin.auction.command.server.utils;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * More than zero or one rows returned by a unique query.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+public class NonUniqueResultException extends Exception {
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
+	/**
+	 * Constructor with message.
+	 * 
+	 * @param message
+	 *            Error message.
+	 */
+	public NonUniqueResultException(final String message) {
+		super(message);
 	}
 
 }

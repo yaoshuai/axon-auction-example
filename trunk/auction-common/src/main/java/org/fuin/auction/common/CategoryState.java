@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
-
-import javax.inject.Named;
-
-import org.axonframework.domain.AggregateIdentifier;
+package org.fuin.auction.common;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * Name of an auction category.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+public enum CategoryState {
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
-	}
+	/** The category was created but is not yet usable. */
+	INITIAL,
 
-	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
-	}
+	/** The category is usable for creating a new auction. */
+	ACTIVE,
+
+	/**
+	 * The category is marked for deletion and can not be used for create a new
+	 * auction any more.
+	 */
+	MARKED_FOR_DELETION,
+
+	/**
+	 * The category is deleted an no longer usable in any ways.
+	 */
+	DELETED
 
 }

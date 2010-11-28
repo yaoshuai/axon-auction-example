@@ -62,7 +62,20 @@ public enum ResultCode {
 	PASSWORD_SUCCESSFULLY_CHANGED(11, SUCCESS, "The password was successfully changed"),
 
 	/** A user's email was successfully verified. */
-	USER_EMAIL_VERIFIED(12, SUCCESS, "Your email was successfully verified");
+	USER_EMAIL_VERIFIED(12, SUCCESS, "Your email was successfully verified"),
+
+	/** A new category was successfully created. */
+	CATEGORY_SUCCESSFULLY_CREATED(13, SUCCESS, "A new category was created successfully"),
+
+	/** A category was successfully prepared for deletion. */
+	CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION(14, SUCCESS,
+	        "The category was successfully marked for deletion"),
+
+	/** The state of the category was not as expected. */
+	ILLEGAL_CATEGORY_STATE(15, ERROR, "The category was not in an expected state"),
+
+	/** A category was successfully deleted. */
+	CATEGORY_SUCCESSFULLY_DELETED(16, SUCCESS, "The category was successfully deleted");
 
 	private final int code;
 

@@ -32,6 +32,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.fuin.auction</groupId>
+			<artifactId>auction-query-api</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.caucho</groupId>
 			<artifactId>hessian</artifactId>
 			<version>3.1.5</version>

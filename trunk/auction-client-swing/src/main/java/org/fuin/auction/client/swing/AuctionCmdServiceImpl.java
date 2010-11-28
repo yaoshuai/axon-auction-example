@@ -18,7 +18,7 @@ package org.fuin.auction.client.swing;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
-import org.fuin.auction.command.api.base.AggregateIdentifierUUIDResult;
+import org.fuin.auction.command.api.base.AggregateIdentifierResult;
 import org.fuin.auction.command.api.base.AuctionCommandService;
 import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
@@ -74,7 +74,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 
 		final CommandResult result = commandService.send(cmd);
 		if (result.isSuccess()) {
-			final AggregateIdentifierUUIDResult rucr = (AggregateIdentifierUUIDResult) result;
+			final AggregateIdentifierResult rucr = (AggregateIdentifierResult) result;
 			return UUID.fromString(rucr.getId());
 		}
 

@@ -40,6 +40,7 @@
 			<dependsOn package="org.fuin.auction.command.server.domain" />
 			<dependsOn package="org.fuin.auction.command.server.events" />
 			<dependsOn package="org.fuin.auction.command.server.support" />
+			<dependsOn package="org.fuin.auction.command.server.utils" />
 		</package>
 	</allowed>
 

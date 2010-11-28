@@ -16,46 +16,56 @@
 package org.fuin.auction.command.server.support;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import org.axonframework.domain.AggregateIdentifier;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Requires;
 
 /**
- * An aggregate identifier that is based on a UUID.
+ * An aggregate identifier that is based on a {@link Long} value.
  */
-public final class AggregateIdentifierUUID implements AggregateIdentifier, Serializable {
+public final class AggregateIdentifierLong implements AggregateIdentifier, Serializable {
 
 	private static final long serialVersionUID = -5486703238473050628L;
 
-	private final UUID uuid;
+	private final Long id;
 
 	/**
-	 * Constructor that generates a random UUID.
-	 */
-	public AggregateIdentifierUUID() {
-		super();
-		this.uuid = UUID.randomUUID();
-	}
-
-	/**
-	 * Constrcutor with a given UUID.
+	 * Constructor with a given value.
 	 * 
-	 * @param uuidStr
-	 *            String representation of a UUID.
+	 * @param value
+	 *            The id value.
 	 * 
 	 * @throws IllegalAggregateIdentifierException
 	 *             Error parsing the aggregate identifier string.
 	 */
-	@Requires("uuidStr!=null && UUIDStrValidator.isValid(uuidStr)")
-	public AggregateIdentifierUUID(final String uuidStr) throws IllegalAggregateIdentifierException {
+	@Requires("value!=null")
+	public AggregateIdentifierLong(final Long value) throws IllegalAggregateIdentifierException {
 		super();
-		Contract.requireArgNotNull("uuidStr", uuidStr);
+		if (value == null) {
+			throw new IllegalAggregateIdentifierException("null", AggregateIdentifierLong.class);
+		}
+		this.id = value;
+	}
+
+	/**
+	 * Constructor with a given long value.
+	 * 
+	 * @param valueStr
+	 *            String representation of the id value.
+	 * 
+	 * @throws IllegalAggregateIdentifierException
+	 *             Error parsing the aggregate identifier string.
+	 */
+	@Requires("valueStr!=null && LongStrValidator.isValid(valueStr)")
+	public AggregateIdentifierLong(final String valueStr)
+	        throws IllegalAggregateIdentifierException {
+		super();
+		Contract.requireArgNotNull("valueStr", valueStr);
 		try {
-			this.uuid = UUID.fromString(uuidStr);
-		} catch (final IllegalArgumentException ex) {
-			throw new IllegalAggregateIdentifierException(uuidStr, AggregateIdentifierUUID.class);
+			this.id = Long.valueOf(valueStr);
+		} catch (final NumberFormatException ex) {
+			throw new IllegalAggregateIdentifierException(valueStr, AggregateIdentifierLong.class);
 		}
 	}
 
@@ -65,7 +75,7 @@ public final class AggregateIdentifierUUID implements AggregateIdentifier, Seria
 	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -80,20 +90,29 @@ public final class AggregateIdentifierUUID implements AggregateIdentifier, Seria
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final AggregateIdentifierUUID other = (AggregateIdentifierUUID) obj;
-		return uuid.equals(other.uuid);
+		final AggregateIdentifierLong other = (AggregateIdentifierLong) obj;
+		return id.equals(other.id);
 	}
 
 	// CHECKSTYLE:ON
 
 	@Override
 	public final String asString() {
-		return uuid.toString();
+		return id.toString();
+	}
+
+	/**
+	 * Returns the aggregate identifier as long value.
+	 * 
+	 * @return Aggregate identifier.
+	 */
+	public final Long asLong() {
+		return id;
 	}
 
 	@Override
 	public final String toString() {
-		return uuid.toString();
+		return id.toString();
 	}
 
 }

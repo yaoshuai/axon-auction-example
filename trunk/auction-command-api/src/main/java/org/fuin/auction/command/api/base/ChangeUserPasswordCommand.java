@@ -152,7 +152,7 @@ public final class ChangeUserPasswordCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.CATEGORY_ALREADY_EXISTS.getCode());
+		codes.add(ResultCode.PASSWORD_SUCCESSFULLY_CHANGED.getCode());
 		codes.add(ResultCode.ID_NOT_FOUND.getCode());
 		codes.add(ResultCode.PASSWORD_WRONG.getCode());
 		codes.add(ResultCode.INVALID_COMMAND.getCode());

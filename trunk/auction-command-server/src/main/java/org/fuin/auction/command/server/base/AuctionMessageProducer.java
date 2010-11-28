@@ -25,10 +25,17 @@ import javax.jms.Session;
 import org.axonframework.eventhandling.FullConcurrencyPolicy;
 import org.axonframework.eventhandling.annotation.AsynchronousEventListener;
 import org.axonframework.eventhandling.annotation.EventHandler;
+import org.fuin.auction.command.server.events.CategoryCreatedEvent;
+import org.fuin.auction.command.server.events.CategoryDeletedEvent;
+import org.fuin.auction.command.server.events.CategoryMarkedForDeletionEvent;
 import org.fuin.auction.command.server.events.UserCreatedEvent;
 import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
 import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
+import org.fuin.auction.command.server.support.AggregateIdentifierLong;
 import org.fuin.auction.message.api.AuctionMessage;
+import org.fuin.auction.message.api.CategoryCreatedMessage;
+import org.fuin.auction.message.api.CategoryDeletedMessage;
+import org.fuin.auction.message.api.CategoryMarkedForDeletionMessage;
 import org.fuin.auction.message.api.UserCreatedMessage;
 import org.fuin.auction.message.api.UserEmailVerfiedMessage;
 import org.fuin.auction.message.api.UserPasswordChangedMessage;
@@ -65,7 +72,47 @@ public class AuctionMessageProducer {
 	}
 
 	/**
-	 * Publish {@link UserCreatedEvent} as JMS message.
+	 * Publish {@link CategoryCreatedEvent} as JMS
+	 * {@link CategoryCreatedMessage}.
+	 * 
+	 * @param event
+	 *            Event to publish.
+	 */
+	@EventHandler
+	public final void handleCategoryCreatedEvent(final CategoryCreatedEvent event) {
+		final AggregateIdentifierLong ai = (AggregateIdentifierLong) event.getAggregateIdentifier();
+		publish(new CategoryCreatedMessage(ai.asLong(), event.getName()));
+	}
+
+	/**
+	 * Publish {@link CategoryMarkedForDeletionEvent} as JMS
+	 * {@link CategoryMarkedForDeletionMessage}.
+	 * 
+	 * @param event
+	 *            Event to publish.
+	 */
+	@EventHandler
+	public final void handleCategoryMarkedForDeletionEvent(
+	        final CategoryMarkedForDeletionEvent event) {
+		final AggregateIdentifierLong ai = (AggregateIdentifierLong) event.getAggregateIdentifier();
+		publish(new CategoryMarkedForDeletionMessage(ai.asLong()));
+	}
+
+	/**
+	 * Publish {@link CategoryDeletedEvent} as JMS
+	 * {@link CategoryDeletedMessage}.
+	 * 
+	 * @param event
+	 *            Event to publish.
+	 */
+	@EventHandler
+	public final void handleCategoryDeletedEvent(final CategoryDeletedEvent event) {
+		final AggregateIdentifierLong ai = (AggregateIdentifierLong) event.getAggregateIdentifier();
+		publish(new CategoryDeletedMessage(ai.asLong()));
+	}
+
+	/**
+	 * Publish {@link UserCreatedEvent} as JMS {@link UserCreatedMessage}.
 	 * 
 	 * @param event
 	 *            Event to publish.
@@ -77,7 +124,8 @@ public class AuctionMessageProducer {
 	}
 
 	/**
-	 * Publish {@link UserEmailVerifiedEvent} as JMS message.
+	 * Publish {@link UserEmailVerifiedEvent} as {@link UserEmailVerfiedMessage}
+	 * .
 	 * 
 	 * @param event
 	 *            Event to publish.
@@ -89,7 +137,8 @@ public class AuctionMessageProducer {
 	}
 
 	/**
-	 * Publish {@link UserPasswordChangedEvent} as JMS message.
+	 * Publish {@link UserPasswordChangedEvent} as JMS
+	 * {@link UserPasswordChangedMessage}.
 	 * 
 	 * @param event
 	 *            Event to publish.

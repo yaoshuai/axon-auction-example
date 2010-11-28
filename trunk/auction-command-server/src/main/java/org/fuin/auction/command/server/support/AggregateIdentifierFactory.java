@@ -36,7 +36,11 @@ public interface AggregateIdentifierFactory {
 	 *            String representation of the id.
 	 * 
 	 * @return Id.
+	 * 
+	 * @throws IllegalAggregateIdentifierException
+	 *             The string cannot be converted into an aggregate id.
 	 */
-	public AggregateIdentifier fromString(String aggregateId);
+	public AggregateIdentifier fromString(String aggregateId)
+	        throws IllegalAggregateIdentifierException;
 
 }

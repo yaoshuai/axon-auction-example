@@ -25,6 +25,9 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
 import org.fuin.auction.common.UserState;
+import org.fuin.auction.message.api.CategoryCreatedMessage;
+import org.fuin.auction.message.api.CategoryDeletedMessage;
+import org.fuin.auction.message.api.CategoryMarkedForDeletionMessage;
 import org.fuin.auction.message.api.UserCreatedMessage;
 import org.fuin.auction.message.api.UserEmailVerfiedMessage;
 import org.fuin.auction.message.api.UserPasswordChangedMessage;
@@ -44,6 +47,9 @@ public class AuctionMessageListener implements MessageListener {
 	@Inject
 	private AuctionUserDao userDao;
 
+	@Inject
+	private CategoryDao categoryDao;
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public final void onMessage(final Message message) {
@@ -58,7 +64,13 @@ public class AuctionMessageListener implements MessageListener {
 				final ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
 					final Serializable obj = objectMessage.getObject();
-					if (obj instanceof UserCreatedMessage) {
+					if (obj instanceof CategoryCreatedMessage) {
+						handleMessage((CategoryCreatedMessage) obj);
+					} else if (obj instanceof CategoryMarkedForDeletionMessage) {
+						handleMessage((CategoryMarkedForDeletionMessage) obj);
+					} else if (obj instanceof CategoryDeletedMessage) {
+						handleMessage((CategoryDeletedMessage) obj);
+					} else if (obj instanceof UserCreatedMessage) {
 						handleMessage((UserCreatedMessage) obj);
 					} else if (obj instanceof UserEmailVerfiedMessage) {
 						handleMessage((UserEmailVerfiedMessage) obj);
@@ -77,6 +89,38 @@ public class AuctionMessageListener implements MessageListener {
 		} catch (final RuntimeException ex) {
 			LOG.error("Error handling message", ex);
 		}
+
+	}
+
+	private void handleMessage(final CategoryCreatedMessage message) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle: " + message.toTraceString());
+		}
+
+		categoryDao.persist(new Category(message.getId(), message.getName(), true));
+
+	}
+
+	private void handleMessage(final CategoryMarkedForDeletionMessage message) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle: " + message.toTraceString());
+		}
+
+		final Category category = categoryDao.find(message.getId());
+		category.setActive(false);
+
+	}
+
+	private void handleMessage(final CategoryDeletedMessage message) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Handle: " + message.toTraceString());
+		}
+
+		final Category category = categoryDao.find(message.getId());
+		categoryDao.remove(category);
 
 	}
 

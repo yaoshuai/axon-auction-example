@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.auction.command.server.events;
 
-import javax.inject.Named;
-
-import org.axonframework.domain.AggregateIdentifier;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.axonframework.domain.DomainEvent;
+import org.fuin.auction.command.server.support.ExtendedDomainEvent;
+import org.fuin.objects4j.Contract;
 
 /**
- * Creates aggregate identifiers based on UUIDs.
+ * A category was deleted.
  */
-@Named
-@IdUUID
-public final class AggregateIdentifierUUIDFactory implements AggregateIdentifierFactory {
+public class CategoryDeletedEvent extends DomainEvent implements ExtendedDomainEvent {
 
-	@Override
-	public final AggregateIdentifier create() {
-		return new AggregateIdentifierUUID();
+	private static final long serialVersionUID = 3575185708123841419L;
+
+	/**
+	 * Default constructor.
+	 */
+	public CategoryDeletedEvent() {
+		super();
+		Contract.requireValid(this);
 	}
 
 	@Override
-	public final AggregateIdentifier fromString(final String aggregateId)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierUUID(aggregateId);
+	public final String toTraceString() {
+		return new ToStringBuilder(this).toString();
 	}
 
 }
