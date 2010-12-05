@@ -15,6 +15,9 @@
  */
 package org.fuin.auction.command.server.base;
 
+import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.objects4j.Contract;
+
 /**
  * A result was invalid.
  */
@@ -22,14 +25,20 @@ public class InvalidResultException extends Exception {
 
 	private static final long serialVersionUID = 8151877886020885741L;
 
+	private final CommandResult result;
+
 	/**
 	 * Constructor with message.
 	 * 
 	 * @param message
 	 *            Error message.
+	 * @param result
+	 *            Result that caused the error.
 	 */
-	public InvalidResultException(final String message) {
+	public InvalidResultException(final String message, final CommandResult result) {
 		super(message);
+		Contract.requireArgNotNull("result", result);
+		this.result = result;
 	}
 
 	/**
@@ -39,9 +48,14 @@ public class InvalidResultException extends Exception {
 	 *            Error message.
 	 * @param cause
 	 *            Original exception.
+	 * @param result
+	 *            Result that caused the error.
 	 */
-	public InvalidResultException(final String message, final Throwable cause) {
+	public InvalidResultException(final String message, final Throwable cause,
+	        final CommandResult result) {
 		super(message, cause);
+		Contract.requireArgNotNull("result", result);
+		this.result = result;
 	}
 
 	/**
@@ -49,9 +63,22 @@ public class InvalidResultException extends Exception {
 	 * 
 	 * @param cause
 	 *            Original exception.
+	 * @param result
+	 *            Result that caused the error.
 	 */
-	public InvalidResultException(final Throwable cause) {
+	public InvalidResultException(final Throwable cause, final CommandResult result) {
 		super(cause);
+		Contract.requireArgNotNull("result", result);
+		this.result = result;
+	}
+
+	/**
+	 * Return the result that caused the error.
+	 * 
+	 * @return Result.
+	 */
+	public final CommandResult getResult() {
+		return result;
 	}
 
 }

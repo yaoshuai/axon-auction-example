@@ -38,10 +38,11 @@ import org.fuin.auction.command.server.domain.IllegalUserStateException;
 import org.fuin.auction.command.server.domain.PasswordMismatchException;
 import org.fuin.auction.command.server.domain.SecurityTokenException;
 import org.fuin.auction.command.server.domain.User;
-import org.fuin.auction.command.server.support.AggregateIdentifierFactory;
-import org.fuin.auction.command.server.support.IdUUID;
-import org.fuin.auction.command.server.support.IllegalAggregateIdentifierException;
 import org.fuin.auction.common.CategoryName;
+import org.fuin.axon.support.base.AggregateIdentifierFactory;
+import org.fuin.axon.support.base.IllegalAggregateIdentifierException;
+import org.fuin.axon.support.base.LongIdFactory;
+import org.fuin.axon.support.base.UUIDFactory;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserName;
@@ -68,11 +69,12 @@ public class AuctionCommandHandler {
 	private Repository<Category> categoryRepository;
 
 	@Inject
-	@IdUUID
+	@UUIDFactory
 	private AggregateIdentifierFactory userAggregateIdFactory;
 
 	@Inject
-	private CategoryJdbcAggregateIdentifierFactory categoryAggregateIdFactory;
+	@LongIdFactory(Category.class)
+	private AggregateIdentifierFactory categoryAggregateIdFactory;
 
 	/**
 	 * Sets the constraint set.
@@ -128,15 +130,12 @@ public class AuctionCommandHandler {
 			        categoryName);
 			categoryRepository.add(category);
 
-			return createAndLogAggregateIdResult(ResultCode.CATEGORY_SUCCESSFULLY_CREATED, category
-			        .getIdentifier());
+			return new AggregateIdentifierResult(ResultCode.CATEGORY_SUCCESSFULLY_CREATED, category
+			        .getIdentifier().toString());
 
 		} catch (final CategoryNameAlreadyExistException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.CATEGORY_ALREADY_EXISTS);
-		} catch (final RuntimeException ex) {
-			LOG.error(command.toTraceString(), ex);
-			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.CATEGORY_ALREADY_EXISTS);
 		}
 
 	}
@@ -157,27 +156,25 @@ public class AuctionCommandHandler {
 		}
 
 		try {
-			final AggregateIdentifier id = categoryAggregateIdFactory.fromLong(command
-			        .getCategoryId());
+			final AggregateIdentifier id = categoryAggregateIdFactory.fromString(""
+			        + command.getCategoryId());
 
 			final Category category = categoryRepository.load(id);
 			category.markForDeletion();
 
-			return createAndLogAggregateIdResult(
-			        ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION, category.getIdentifier());
+			return new AggregateIdentifierResult(
+			        ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION, category.getIdentifier()
+			                .toString());
 
 		} catch (final IllegalCategoryStateException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.ILLEGAL_CATEGORY_STATE);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.ILLEGAL_CATEGORY_STATE);
 		} catch (final AggregateNotFoundException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.ID_NOT_FOUND);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.ID_NOT_FOUND);
 		} catch (final IllegalAggregateIdentifierException ex) {
-			LOG.error("Invalid command: " + ex.getMessage());
+			LOG.info("Invalid command: " + ex.getMessage());
 			return new VoidResult(ResultCode.INVALID_COMMAND);
-		} catch (final RuntimeException ex) {
-			LOG.error(command.toTraceString(), ex);
-			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
 		}
 
 	}
@@ -198,8 +195,8 @@ public class AuctionCommandHandler {
 		}
 
 		try {
-			final AggregateIdentifier id = categoryAggregateIdFactory.fromLong(command
-			        .getCategoryId());
+			final AggregateIdentifier id = categoryAggregateIdFactory.fromString(""
+			        + command.getCategoryId());
 
 			final Category category = categoryRepository.load(id);
 			category.delete();
@@ -207,21 +204,18 @@ public class AuctionCommandHandler {
 			// FIXME michael Remove category name from constraints
 			// constraintSet.remove(categoryName);
 
-			return createAndLogAggregateIdResult(ResultCode.CATEGORY_SUCCESSFULLY_DELETED, category
-			        .getIdentifier());
+			return new AggregateIdentifierResult(ResultCode.CATEGORY_SUCCESSFULLY_DELETED, category
+			        .getIdentifier().toString());
 
 		} catch (final IllegalCategoryStateException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.ILLEGAL_CATEGORY_STATE);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.ILLEGAL_CATEGORY_STATE);
 		} catch (final AggregateNotFoundException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.ID_NOT_FOUND);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.ID_NOT_FOUND);
 		} catch (final IllegalAggregateIdentifierException ex) {
-			LOG.error("Invalid command: " + ex.getMessage());
+			LOG.info("Invalid command: " + ex.getMessage());
 			return new VoidResult(ResultCode.INVALID_COMMAND);
-		} catch (final RuntimeException ex) {
-			LOG.error(command.toTraceString(), ex);
-			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
 		}
 
 	}
@@ -253,21 +247,18 @@ public class AuctionCommandHandler {
 			        emailAddress);
 			userRepository.add(user);
 
-			return createAndLogAggregateIdResult(ResultCode.USER_SUCCESSFULLY_REGISTERED, user
-			        .getIdentifier());
+			return new AggregateIdentifierResult(ResultCode.USER_SUCCESSFULLY_REGISTERED, user
+			        .getIdentifier().toString());
 
 		} catch (final UserNameEmailCombinationAlreadyExistsException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.DUPLICATE_USERNAME_EMAIL_COMBINATION);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.DUPLICATE_USERNAME_EMAIL_COMBINATION);
 		} catch (final UserNameAlreadyExistsException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.DUPLICATE_USERNAME);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.DUPLICATE_USERNAME);
 		} catch (final UserEmailAlreadyExistsException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.DUPLICATE_EMAIL);
-		} catch (final RuntimeException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.DUPLICATE_EMAIL);
 		}
 
 	}
@@ -298,20 +289,17 @@ public class AuctionCommandHandler {
 
 			user.changePassword(oldPw, newPw);
 
-			return createAndLogVoidResult(ResultCode.PASSWORD_SUCCESSFULLY_CHANGED);
+			return new VoidResult(ResultCode.PASSWORD_SUCCESSFULLY_CHANGED);
 
 		} catch (final PasswordMismatchException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.PASSWORD_WRONG);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.PASSWORD_WRONG);
 		} catch (final AggregateNotFoundException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.ID_NOT_FOUND);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.ID_NOT_FOUND);
 		} catch (final IllegalAggregateIdentifierException ex) {
-			LOG.error("Invalid command: " + ex.getMessage());
+			LOG.info("Invalid command: " + ex.getMessage());
 			return new VoidResult(ResultCode.INVALID_COMMAND);
-		} catch (final RuntimeException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.INTERNAL_ERROR);
 		}
 
 	}
@@ -341,39 +329,22 @@ public class AuctionCommandHandler {
 
 			user.verifyEmail(securityToken);
 
-			return createAndLogVoidResult(ResultCode.USER_EMAIL_VERIFIED);
+			return new VoidResult(ResultCode.USER_EMAIL_VERIFIED);
 
 		} catch (final AggregateNotFoundException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.ID_NOT_FOUND);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.ID_NOT_FOUND);
 		} catch (final SecurityTokenException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.USER_EMAIL_VERIFICATION_FAILED);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.USER_EMAIL_VERIFICATION_FAILED);
 		} catch (final IllegalAggregateIdentifierException ex) {
-			LOG.error("Invalid command: " + ex.getMessage());
+			LOG.info("Invalid command: " + ex.getMessage());
 			return new VoidResult(ResultCode.INVALID_COMMAND);
 		} catch (final IllegalUserStateException ex) {
-			LOG.error(ex.getMessage() + ": " + command.toTraceString());
-			return createAndLogVoidResult(ResultCode.INVALID_COMMAND);
+			LOG.info(ex.getMessage() + ": " + command.toTraceString());
+			return new VoidResult(ResultCode.INVALID_COMMAND);
 		}
 
-	}
-
-	private CommandResult createAndLogVoidResult(final ResultCode resultCode) {
-		final CommandResult result = new VoidResult(resultCode);
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Result: " + result.toTraceString());
-		}
-		return result;
-	}
-
-	private CommandResult createAndLogAggregateIdResult(final ResultCode resultCode,
-	        final AggregateIdentifier id) {
-		final CommandResult result = new AggregateIdentifierResult(resultCode, id.toString());
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Result: " + result.toTraceString());
-		}
-		return result;
 	}
 
 }

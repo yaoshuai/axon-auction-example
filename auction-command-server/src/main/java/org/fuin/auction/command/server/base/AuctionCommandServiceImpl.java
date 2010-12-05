@@ -15,6 +15,8 @@
  */
 package org.fuin.auction.command.server.base;
 
+import java.util.concurrent.ExecutionException;
+
 import javax.inject.Inject;
 
 import org.axonframework.commandhandling.CommandBus;
@@ -52,20 +54,35 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	public final CommandResult send(final Command command) {
 
 		try {
-			validateAndLogCommand(command);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Received command: " + command.toTraceString());
+			}
+			validateCommand(command);
 
 			final FutureCallback<CommandResult> callback = new FutureCallback<CommandResult>();
 			commandBus.dispatch(command, callback);
 			final CommandResult result = callback.get();
-
-			validateAndLogResult(result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Command result: " + result.toTraceString());
+			}
+			validateResult(result);
 
 			return result;
 
 		} catch (final InvalidCommandException ex) {
-			LOG.error("Invalid command: " + ex.getMessage());
+			LOG.error("Invalid command: " + command.toTraceString(), ex);
 			return new VoidResult(ResultCode.INVALID_COMMAND);
-		} catch (final Exception ex) {
+		} catch (final ExecutionException ex) {
+			LOG.error("Error executing command: " + command.toTraceString(), ex);
+			return new VoidResult(ResultCode.INTERNAL_ERROR);
+		} catch (final InvalidResultException ex) {
+			LOG.error("Invalid result: " + ex.getResult().toTraceString() + ", command: "
+			        + command.toTraceString(), ex);
+			return new VoidResult(ResultCode.INTERNAL_ERROR);
+		} catch (final InterruptedException ex) {
+			LOG.error("Interrupted error: " + command.toTraceString(), ex);
+			return new VoidResult(ResultCode.INTERNAL_ERROR);
+		} catch (final RuntimeException ex) {
 			LOG.error("Internal error: " + command.toTraceString(), ex);
 			return new VoidResult(ResultCode.INTERNAL_ERROR);
 		}
@@ -73,7 +90,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	}
 
 	/**
-	 * Logs the command and checks if it's valid.
+	 * Checks if the command is valid.
 	 * 
 	 * @param command
 	 *            Command to log and validate.
@@ -81,10 +98,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	 * @throws InvalidCommandException
 	 *             The command was invalid.
 	 */
-	private void validateAndLogCommand(final Command command) throws InvalidCommandException {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Received command: " + command.toTraceString());
-		}
+	private void validateCommand(final Command command) throws InvalidCommandException {
 		try {
 			// Don't let invalid commands get through
 			Contract.requireValid(command);
@@ -94,7 +108,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	}
 
 	/**
-	 * Logs the result and checks if it's valid.
+	 * Checks if the result is valid.
 	 * 
 	 * @param result
 	 *            Result to log and validate.
@@ -102,15 +116,12 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	 * @throws InvalidResultException
 	 *             The result was invalid.
 	 */
-	private void validateAndLogResult(final CommandResult result) throws InvalidResultException {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Result=" + result.toTraceString());
-		}
+	private void validateResult(final CommandResult result) throws InvalidResultException {
 		try {
 			Contract.requireValid(result);
 		} catch (final IllegalStateException ex) {
 			// Violated post condition / Programming error!
-			throw new InvalidResultException(ex);
+			throw new InvalidResultException(ex, result);
 		}
 	}
 

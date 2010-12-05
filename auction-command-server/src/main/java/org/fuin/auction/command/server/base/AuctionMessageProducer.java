@@ -31,7 +31,6 @@ import org.fuin.auction.command.server.events.CategoryMarkedForDeletionEvent;
 import org.fuin.auction.command.server.events.UserCreatedEvent;
 import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
 import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
-import org.fuin.auction.command.server.support.AggregateIdentifierLong;
 import org.fuin.auction.message.api.AuctionMessage;
 import org.fuin.auction.message.api.CategoryCreatedMessage;
 import org.fuin.auction.message.api.CategoryDeletedMessage;
@@ -39,6 +38,7 @@ import org.fuin.auction.message.api.CategoryMarkedForDeletionMessage;
 import org.fuin.auction.message.api.UserCreatedMessage;
 import org.fuin.auction.message.api.UserEmailVerfiedMessage;
 import org.fuin.auction.message.api.UserPasswordChangedMessage;
+import org.fuin.axon.support.base.LongAggregateIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +80,7 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleCategoryCreatedEvent(final CategoryCreatedEvent event) {
-		final AggregateIdentifierLong ai = (AggregateIdentifierLong) event.getAggregateIdentifier();
+		final LongAggregateIdentifier ai = (LongAggregateIdentifier) event.getAggregateIdentifier();
 		publish(new CategoryCreatedMessage(ai.asLong(), event.getName()));
 	}
 
@@ -94,7 +94,7 @@ public class AuctionMessageProducer {
 	@EventHandler
 	public final void handleCategoryMarkedForDeletionEvent(
 	        final CategoryMarkedForDeletionEvent event) {
-		final AggregateIdentifierLong ai = (AggregateIdentifierLong) event.getAggregateIdentifier();
+		final LongAggregateIdentifier ai = (LongAggregateIdentifier) event.getAggregateIdentifier();
 		publish(new CategoryMarkedForDeletionMessage(ai.asLong()));
 	}
 
@@ -107,7 +107,7 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleCategoryDeletedEvent(final CategoryDeletedEvent event) {
-		final AggregateIdentifierLong ai = (AggregateIdentifierLong) event.getAggregateIdentifier();
+		final LongAggregateIdentifier ai = (LongAggregateIdentifier) event.getAggregateIdentifier();
 		publish(new CategoryDeletedMessage(ai.asLong()));
 	}
 

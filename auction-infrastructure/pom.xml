@@ -12,6 +12,7 @@
 	<groupId>org.fuin.auction</groupId>
 	<artifactId>auction-infrastructure</artifactId>
 	<packaging>jar</packaging>
+	<version>0.2.0-SNAPSHOT</version>
 
 	<name>Axon Auction Example - Infrastructure</name>
 	<url>http://code.google.com/p/axon-auction-example/wiki/Infrastructure</url>

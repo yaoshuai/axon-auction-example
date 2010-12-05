@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.DomainEvent;
-import org.fuin.auction.command.server.support.ExtendedDomainEvent;
 import org.fuin.auction.common.CategoryName;
 import org.fuin.objects4j.Contract;
 

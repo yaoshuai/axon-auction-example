@@ -19,9 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.fuin.auction.command.server.support.AggregateIdentifierFactory;
-import org.fuin.auction.command.server.support.AggregateIdentifierLong;
-import org.fuin.auction.command.server.support.IllegalAggregateIdentifierException;
+import org.fuin.axon.support.base.AggregateIdentifierFactory;
+import org.fuin.axon.support.base.LongAggregateIdentifier;
+import org.fuin.axon.support.base.IllegalAggregateIdentifierException;
 
 /**
  * Creates a unique long id based on a JDBC query.
@@ -51,23 +51,7 @@ public abstract class AbstractJdbcAggregateIdentifierLongFactory extends Abstrac
 	@Override
 	public final AggregateIdentifier fromString(final String valueStr)
 	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierLong(valueStr);
-	}
-
-	/**
-	 * Creates the aggregate identifier with agiven long value.
-	 * 
-	 * @param value
-	 *            Id to use.
-	 * 
-	 * @return Identifier.
-	 * 
-	 * @throws IllegalAggregateIdentifierException
-	 *             The long value cannot be converted into an aggregate id.
-	 */
-	public final AggregateIdentifier fromLong(final Long value)
-	        throws IllegalAggregateIdentifierException {
-		return new AggregateIdentifierLong(value);
+		return new LongAggregateIdentifier(valueStr);
 	}
 
 	@Override
@@ -80,7 +64,7 @@ public abstract class AbstractJdbcAggregateIdentifierLongFactory extends Abstrac
 		};
 		try {
 			final Long id = selectUniqueSilent(sequenceSql, creator);
-			return new AggregateIdentifierLong(id);
+			return new LongAggregateIdentifier(id);
 		} catch (final NonUniqueResultException ex) {
 			throw new RuntimeException(ex);
 		} catch (final IllegalAggregateIdentifierException ex) {
