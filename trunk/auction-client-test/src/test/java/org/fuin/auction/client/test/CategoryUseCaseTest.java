@@ -82,7 +82,7 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 		waitUntil(new Condition() {
 			@Override
 			public boolean isTrue() {
-				return getQueryService().findAllCategories().size() > 0;
+				return getQueryService().findAllCategories().size() == 0;
 			}
 		}, 5);
 	}
