@@ -87,11 +87,11 @@ public abstract class AbstractUseCaseTest {
 		assertThat(aiResult.getId()).isNotNull();
 	}
 
-	protected final void waitUntil(final Condition condition, final int maxTries) {
+	protected final void waitUntil(final Condition condition, final int seconds) {
 		int count = 0;
-		while (!condition.isTrue() && (count < maxTries)) {
+		while (!condition.isTrue() && (count < seconds)) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			} catch (final InterruptedException ex) {
 				throw new RuntimeException(ex);
 			}
