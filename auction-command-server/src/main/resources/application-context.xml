@@ -5,7 +5,7 @@
 
 	<import resource="classpath:jms-context.xml" />
 
-	<context:component-scan base-package="org.fuin.auction.command.server" />
+	<context:component-scan base-package="org.fuin.auction.command.server,org.fuin.axon.support.base" />
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
