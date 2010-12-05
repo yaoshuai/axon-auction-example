@@ -97,6 +97,18 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>10.6.2.1</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

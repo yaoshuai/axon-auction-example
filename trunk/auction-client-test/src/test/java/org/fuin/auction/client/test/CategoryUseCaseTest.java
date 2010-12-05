@@ -35,6 +35,8 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 	// TODO michael Refactor this as it's not really a use case
 	public final void testCategoryLifeCycle() {
 
+		deleteAllDatabaseData();
+
 		final String categoryName = UUID.randomUUID().toString();
 
 		// Create category

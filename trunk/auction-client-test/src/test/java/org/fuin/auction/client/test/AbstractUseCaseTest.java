@@ -18,6 +18,7 @@ package org.fuin.auction.client.test;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.net.MalformedURLException;
+import java.sql.SQLException;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -33,13 +34,17 @@ import org.junit.BeforeClass;
 import com.caucho.hessian.client.HessianProxyFactory;
 
 //TESTCODE:BEGIN
-public abstract class AbstractUseCaseTest {
+public abstract class AbstractUseCaseTest extends AbstractJdbcHelper {
 
 	private static AuctionCommandService commandService;
 
 	private static AuctionQueryService queryService;
 
 	private static Validator validator;
+
+	public AbstractUseCaseTest() {
+		super(AbstractUseCaseTest.class, "/jdbc.properties");
+	}
 
 	@BeforeClass
 	public static final void beforeClass() {
@@ -59,6 +64,17 @@ public abstract class AbstractUseCaseTest {
 	public static final void afterClass() {
 		validator = null;
 		commandService = null;
+	}
+
+	protected final void deleteAllDatabaseData() {
+		try {
+			executeUpdate("delete from QUERYSERVER.AUCTION_USER");
+			executeUpdate("delete from QUERYSERVER.CATEGORY");
+			executeUpdate("delete from COMMANDSERVER.CATEGORY_NAMES");
+			executeUpdate("delete from COMMANDSERVER.USERNAME_EMAIL");
+		} catch (final SQLException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	protected static AuctionCommandService getCommandService() {
