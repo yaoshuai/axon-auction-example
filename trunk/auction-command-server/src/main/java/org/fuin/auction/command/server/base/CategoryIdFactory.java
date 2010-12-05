@@ -17,7 +17,9 @@ package org.fuin.auction.command.server.base;
 
 import javax.inject.Named;
 
+import org.fuin.auction.command.server.domain.Category;
 import org.fuin.auction.command.server.utils.AbstractJdbcAggregateIdentifierLongFactory;
+import org.fuin.axon.support.base.LongIdFactory;
 
 /**
  * Pure JDBC service (Apache Derby!) that creates new aggregate identifiers.
@@ -25,14 +27,15 @@ import org.fuin.auction.command.server.utils.AbstractJdbcAggregateIdentifierLong
  * to show that there is no need that a "full-blown" Hibernate or JPA here...
  */
 @Named
-public final class CategoryJdbcAggregateIdentifierFactory extends
+@LongIdFactory(Category.class)
+public final class CategoryIdFactory extends
         AbstractJdbcAggregateIdentifierLongFactory {
 
 	/**
 	 * Default constructor.
 	 */
-	public CategoryJdbcAggregateIdentifierFactory() {
-		super(CategoryJdbcAggregateIdentifierFactory.class, "/jdbc.properties",
+	public CategoryIdFactory() {
+		super(CategoryIdFactory.class, "/jdbc.properties",
 		        "VALUES (NEXT VALUE FOR COMMANDSERVER.CATEGORY_ID)");
 	}
 

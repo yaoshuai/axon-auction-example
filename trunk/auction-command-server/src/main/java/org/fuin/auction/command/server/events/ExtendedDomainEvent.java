@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.auction.command.server.events;
+
+import java.io.Serializable;
+
+import org.fuin.auction.common.TraceStringCapable;
 
 /**
- * Marker annotation for UUID based aggregate identifiers.
+ * Common behavior of all events.
  */
-@javax.inject.Qualifier
-@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-public @interface IdUUID {
+public interface ExtendedDomainEvent extends Serializable, TraceStringCapable {
 
 }

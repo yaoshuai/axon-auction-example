@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.axon.support.base;
 
 import java.io.Serializable;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.fuin.objects4j.Contract;
-import org.fuin.objects4j.Requires;
 
 /**
  * An aggregate identifier that is based on a {@link Long} value.
  */
-public final class AggregateIdentifierLong implements AggregateIdentifier, Serializable {
+public final class LongAggregateIdentifier implements AggregateIdentifier, Serializable {
 
 	private static final long serialVersionUID = -5486703238473050628L;
 
@@ -34,16 +32,15 @@ public final class AggregateIdentifierLong implements AggregateIdentifier, Seria
 	 * Constructor with a given value.
 	 * 
 	 * @param value
-	 *            The id value.
+	 *            The id value - Not <code>null</code>.
 	 * 
 	 * @throws IllegalAggregateIdentifierException
 	 *             Error parsing the aggregate identifier string.
 	 */
-	@Requires("value!=null")
-	public AggregateIdentifierLong(final Long value) throws IllegalAggregateIdentifierException {
+	public LongAggregateIdentifier(final Long value) throws IllegalAggregateIdentifierException {
 		super();
 		if (value == null) {
-			throw new IllegalAggregateIdentifierException("null", AggregateIdentifierLong.class);
+			throw new IllegalAggregateIdentifierException("null", LongAggregateIdentifier.class);
 		}
 		this.id = value;
 	}
@@ -52,20 +49,22 @@ public final class AggregateIdentifierLong implements AggregateIdentifier, Seria
 	 * Constructor with a given long value.
 	 * 
 	 * @param valueStr
-	 *            String representation of the id value.
+	 *            String representation of the id value - Not <code>null</code>
+	 *            and parseable with {@link Long#valueOf(String)}.
 	 * 
 	 * @throws IllegalAggregateIdentifierException
 	 *             Error parsing the aggregate identifier string.
 	 */
-	@Requires("valueStr!=null && LongStrValidator.isValid(valueStr)")
-	public AggregateIdentifierLong(final String valueStr)
+	public LongAggregateIdentifier(final String valueStr)
 	        throws IllegalAggregateIdentifierException {
 		super();
-		Contract.requireArgNotNull("valueStr", valueStr);
+		if (valueStr == null) {
+			throw new IllegalAggregateIdentifierException("null", LongAggregateIdentifier.class);
+		}
 		try {
 			this.id = Long.valueOf(valueStr);
 		} catch (final NumberFormatException ex) {
-			throw new IllegalAggregateIdentifierException(valueStr, AggregateIdentifierLong.class);
+			throw new IllegalAggregateIdentifierException(valueStr, LongAggregateIdentifier.class);
 		}
 	}
 
@@ -90,7 +89,7 @@ public final class AggregateIdentifierLong implements AggregateIdentifier, Seria
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final AggregateIdentifierLong other = (AggregateIdentifierLong) obj;
+		final LongAggregateIdentifier other = (LongAggregateIdentifier) obj;
 		return id.equals(other.id);
 	}
 

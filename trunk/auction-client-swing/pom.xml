@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>auction-client-swing</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Axon Auction Example - Swing Client</name>
@@ -27,31 +27,31 @@
 		<dependency>
 			<groupId>org.fuin.auction</groupId>
 			<artifactId>auction-common</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.fuin.auction</groupId>
 			<artifactId>auction-client-common</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.fuin.auction</groupId>
 			<artifactId>auction-message-api</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.fuin.auction</groupId>
 			<artifactId>auction-query-api</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.fuin.auction</groupId>
 			<artifactId>auction-command-api</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

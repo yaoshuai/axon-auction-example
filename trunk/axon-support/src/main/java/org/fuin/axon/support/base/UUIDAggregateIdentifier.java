@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.support;
+package org.fuin.axon.support.base;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.fuin.objects4j.Contract;
-import org.fuin.objects4j.Requires;
 
 /**
  * An aggregate identifier that is based on a UUID.
  */
-public final class AggregateIdentifierUUID implements AggregateIdentifier, Serializable {
+public final class UUIDAggregateIdentifier implements AggregateIdentifier, Serializable {
 
 	private static final long serialVersionUID = -5486703238473050628L;
 
@@ -34,7 +32,7 @@ public final class AggregateIdentifierUUID implements AggregateIdentifier, Seria
 	/**
 	 * Constructor that generates a random UUID.
 	 */
-	public AggregateIdentifierUUID() {
+	public UUIDAggregateIdentifier() {
 		super();
 		this.uuid = UUID.randomUUID();
 	}
@@ -43,19 +41,21 @@ public final class AggregateIdentifierUUID implements AggregateIdentifier, Seria
 	 * Constrcutor with a given UUID.
 	 * 
 	 * @param uuidStr
-	 *            String representation of a UUID.
+	 *            String representation of a UUID - Not <code>null</code> an
+	 *            parseable with {@link UUID#fromString(String)}.
 	 * 
 	 * @throws IllegalAggregateIdentifierException
 	 *             Error parsing the aggregate identifier string.
 	 */
-	@Requires("uuidStr!=null && UUIDStrValidator.isValid(uuidStr)")
-	public AggregateIdentifierUUID(final String uuidStr) throws IllegalAggregateIdentifierException {
+	public UUIDAggregateIdentifier(final String uuidStr) throws IllegalAggregateIdentifierException {
 		super();
-		Contract.requireArgNotNull("uuidStr", uuidStr);
+		if (uuidStr == null) {
+			throw new IllegalAggregateIdentifierException("null", UUIDAggregateIdentifier.class);
+		}
 		try {
 			this.uuid = UUID.fromString(uuidStr);
 		} catch (final IllegalArgumentException ex) {
-			throw new IllegalAggregateIdentifierException(uuidStr, AggregateIdentifierUUID.class);
+			throw new IllegalAggregateIdentifierException(uuidStr, UUIDAggregateIdentifier.class);
 		}
 	}
 
@@ -80,7 +80,7 @@ public final class AggregateIdentifierUUID implements AggregateIdentifier, Seria
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final AggregateIdentifierUUID other = (AggregateIdentifierUUID) obj;
+		final UUIDAggregateIdentifier other = (UUIDAggregateIdentifier) obj;
 		return uuid.equals(other.uuid);
 	}
 

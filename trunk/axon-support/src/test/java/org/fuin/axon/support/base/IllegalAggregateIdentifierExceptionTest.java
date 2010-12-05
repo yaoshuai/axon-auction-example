@@ -13,30 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.events;
+package org.fuin.axon.support.base;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.axonframework.domain.DomainEvent;
-import org.fuin.objects4j.Contract;
+import static org.fest.assertions.Assertions.assertThat;
 
-/**
- * A user was activated.
- */
-public final class UserEmailVerifiedEvent extends DomainEvent implements ExtendedDomainEvent {
+import org.junit.Test;
 
-	private static final long serialVersionUID = -3180886093274054695L;
+//TESTCODE:BEGIN
+public final class IllegalAggregateIdentifierExceptionTest {
 
-	/**
-	 * Default constructor.
-	 */
-	public UserEmailVerifiedEvent() {
-		super();
-		Contract.requireValid(this);
-	}
+	@Test
+	public final void testConstructor() {
 
-	@Override
-	public final String toTraceString() {
-		return new ToStringBuilder(this).toString();
+		assertThat(
+		        new IllegalAggregateIdentifierException("abc", UUIDAggregateIdentifier.class)
+		                .getMessage()).contains("'abc'").contains(
+		        "'" + UUIDAggregateIdentifier.class.getName() + "'");
 	}
 
 }
+// TESTCODE:END

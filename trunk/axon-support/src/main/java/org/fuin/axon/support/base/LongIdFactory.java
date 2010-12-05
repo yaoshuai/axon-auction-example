@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fuin.axon.support.base;
 
 /**
- * Contains infrastructure classes that should be included in Axon Core.
+ * Marker annotation for Long based aggregate identifier factories.
  */
-package org.fuin.auction.command.server.support;
+@javax.inject.Qualifier
+@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface LongIdFactory {
 
+	/** Aggregate class. */
+	Class<?> value();
+
+}

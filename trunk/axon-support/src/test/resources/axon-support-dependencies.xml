@@ -12,6 +12,8 @@
 		<dependsOn package="org.axonframework" />
 		<dependsOn package="org.fuin.serialver4j" />
 		<dependsOn package="org.joda.time" />
+		<dependsOn package="java.lang.annotation" />
+		<dependsOn package="javax.inject" />
   </alwaysAllowed>
   
   <!-- It's forbidden for all classes to use this (in production code) -->

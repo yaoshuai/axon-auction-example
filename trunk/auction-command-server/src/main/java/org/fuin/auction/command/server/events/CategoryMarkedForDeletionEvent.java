@@ -17,7 +17,6 @@ package org.fuin.auction.command.server.events;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.DomainEvent;
-import org.fuin.auction.command.server.support.ExtendedDomainEvent;
 import org.fuin.objects4j.Contract;
 
 /**
