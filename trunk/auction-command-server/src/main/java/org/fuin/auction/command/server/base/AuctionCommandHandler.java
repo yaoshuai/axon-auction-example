@@ -201,7 +201,8 @@ public class AuctionCommandHandler {
 			final Category category = categoryRepository.load(id);
 			category.delete();
 
-			// FIXME michael Remove category name from constraints
+			// FIXME michael Remove category name from constraints -
+			// Resolve the name by executing a query against the query server.
 			// constraintSet.remove(categoryName);
 
 			return new AggregateIdentifierResult(ResultCode.CATEGORY_SUCCESSFULLY_DELETED, category
