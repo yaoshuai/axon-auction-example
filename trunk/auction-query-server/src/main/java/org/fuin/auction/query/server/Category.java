@@ -24,9 +24,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.common.CategoryName;
-import org.fuin.auction.common.TraceStringCapable;
 import org.fuin.objects4j.Contract;
+import org.fuin.objects4j.TraceStringCapable;
 
 /**
  * Category object.
@@ -66,10 +65,10 @@ public class Category implements Serializable, TraceStringCapable {
 	 * @param active
 	 *            Determines if the category is active or not.
 	 */
-	public Category(final Long id, final CategoryName name, final Boolean active) {
+	public Category(final Long id, final String name, final Boolean active) {
 		super();
 		this.id = id;
-		this.name = name.toString();
+		this.name = name;
 		this.active = active;
 		Contract.requireValid(this);
 	}

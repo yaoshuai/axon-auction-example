@@ -20,8 +20,8 @@ import java.sql.SQLException;
 
 import org.axonframework.domain.AggregateIdentifier;
 import org.fuin.axon.support.base.AggregateIdentifierFactory;
-import org.fuin.axon.support.base.LongAggregateIdentifier;
 import org.fuin.axon.support.base.IllegalAggregateIdentifierException;
+import org.fuin.axon.support.base.LongAggregateIdentifier;
 
 /**
  * Creates a unique long id based on a JDBC query.

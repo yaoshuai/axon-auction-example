@@ -92,7 +92,7 @@ public class MailManager {
 	 *            Event to handle.
 	 */
 	@EventHandler
-	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
+	public final void handle(final UserCreatedEvent event) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("SEND user created mail to " + event.getEmail() + " [securityToken='"
@@ -108,7 +108,7 @@ public class MailManager {
 				varMap.put("email", event.getEmail().toString());
 				varMap.put("userName", event.getUserName().toString());
 				varMap.put("userAggregateId", event.getAggregateIdentifier().toString());
-				varMap.put("securityToken", event.getSecurityToken());
+				varMap.put("securityToken", event.getSecurityToken().toString());
 				final String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
 				        "user-created-mail.vm", varMap);
 				message.setText(text, true);

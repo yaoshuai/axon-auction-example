@@ -1,0 +1,24 @@
+<external-types>
+
+	<!-- Types -->
+	<type name="UserName" fullyQualifiedName="org.fuin.objects4j.UserName" />
+	<type name="EmailAddress" fullyQualifiedName="org.fuin.objects4j.EmailAddress" />
+	<type name="UserState" fullyQualifiedName="org.fuin.auction.common.UserState" />
+	<type name="PasswordSha512" fullyQualifiedName="org.fuin.objects4j.PasswordSha512" />
+	<type name="Password" fullyQualifiedName="org.fuin.objects4j.Password" />
+	<type name="SecurityToken" fullyQualifiedName="org.fuin.objects4j.SecurityToken" />
+	<type name="String" fullyQualifiedName="java.lang.String" />
+	<type name="CategoryName" fullyQualifiedName="org.fuin.auction.common.CategoryName" />
+	<type name="CategoryState" fullyQualifiedName="org.fuin.auction.common.CategoryState" />
+
+	<!-- Exceptions  -->
+	<type name="UserNameEmailCombinationAlreadyExistsException" fullyQualifiedName="org.fuin.auction.command.server.base.UserNameEmailCombinationAlreadyExistsException" />
+	<type name="UserNameAlreadyExistsException" fullyQualifiedName="org.fuin.auction.command.server.base.UserNameAlreadyExistsException" />
+	<type name="UserEmailAlreadyExistsException" fullyQualifiedName="org.fuin.auction.command.server.base.UserEmailAlreadyExistsException" />
+	<type name="PasswordMismatchException" fullyQualifiedName="org.fuin.auction.command.server.domain.PasswordMismatchException" />
+	<type name="IllegalUserStateException" fullyQualifiedName="org.fuin.auction.command.server.domain.IllegalUserStateException" />
+	<type name="SecurityTokenException" fullyQualifiedName="org.fuin.auction.command.server.domain.SecurityTokenException" />
+	<type name="CategoryNameAlreadyExistException" fullyQualifiedName="org.fuin.auction.command.server.base.CategoryNameAlreadyExistException" />
+	<type name="IllegalCategoryStateException" fullyQualifiedName="org.fuin.auction.command.server.domain.IllegalCategoryStateException" />
+	
+</external-types>

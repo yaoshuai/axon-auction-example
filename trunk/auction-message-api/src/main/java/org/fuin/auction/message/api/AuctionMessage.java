@@ -17,7 +17,7 @@ package org.fuin.auction.message.api;
 
 import java.io.Serializable;
 
-import org.fuin.auction.common.TraceStringCapable;
+import org.fuin.objects4j.TraceStringCapable;
 
 /**
  * Bas behavior for all messages.

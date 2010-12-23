@@ -15,8 +15,6 @@
  */
 package org.fuin.auction.command.server.base;
 
-import java.util.UUID;
-
 import javax.inject.Named;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -35,9 +33,9 @@ import org.fuin.auction.message.api.AuctionMessage;
 import org.fuin.auction.message.api.CategoryCreatedMessage;
 import org.fuin.auction.message.api.CategoryDeletedMessage;
 import org.fuin.auction.message.api.CategoryMarkedForDeletionMessage;
-import org.fuin.auction.message.api.UserCreatedMessage;
-import org.fuin.auction.message.api.UserEmailVerfiedMessage;
+import org.fuin.auction.message.api.UserEmailVerifiedMessage;
 import org.fuin.auction.message.api.UserPasswordChangedMessage;
+import org.fuin.auction.message.api.UserRegisteredMessage;
 import org.fuin.axon.support.base.LongAggregateIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +79,7 @@ public class AuctionMessageProducer {
 	@EventHandler
 	public final void handleCategoryCreatedEvent(final CategoryCreatedEvent event) {
 		final LongAggregateIdentifier ai = (LongAggregateIdentifier) event.getAggregateIdentifier();
-		publish(new CategoryCreatedMessage(ai.asLong(), event.getName()));
+		publish(new CategoryCreatedMessage(ai.toString(), event.getName().toString()));
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class AuctionMessageProducer {
 	public final void handleCategoryMarkedForDeletionEvent(
 	        final CategoryMarkedForDeletionEvent event) {
 		final LongAggregateIdentifier ai = (LongAggregateIdentifier) event.getAggregateIdentifier();
-		publish(new CategoryMarkedForDeletionMessage(ai.asLong()));
+		publish(new CategoryMarkedForDeletionMessage(ai.toString()));
 	}
 
 	/**
@@ -108,7 +106,7 @@ public class AuctionMessageProducer {
 	@EventHandler
 	public final void handleCategoryDeletedEvent(final CategoryDeletedEvent event) {
 		final LongAggregateIdentifier ai = (LongAggregateIdentifier) event.getAggregateIdentifier();
-		publish(new CategoryDeletedMessage(ai.asLong()));
+		publish(new CategoryDeletedMessage(ai.toString()));
 	}
 
 	/**
@@ -119,8 +117,9 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
-		publish(new UserCreatedMessage(UUID.fromString(event.getAggregateIdentifier().toString()),
-		        event.getUserName(), event.getEmail(), event.getPassword()));
+		publish(new UserRegisteredMessage(event.getAggregateIdentifier().toString(), event
+		        .getUserName().toString(), event.getPassword().toString(), event.getEmail()
+		        .toString()));
 	}
 
 	/**
@@ -132,8 +131,7 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleUserEmailVerifiedEvent(final UserEmailVerifiedEvent event) {
-		publish(new UserEmailVerfiedMessage(UUID.fromString(event.getAggregateIdentifier()
-		        .toString())));
+		publish(new UserEmailVerifiedMessage(event.getAggregateIdentifier().toString()));
 	}
 
 	/**
@@ -145,8 +143,8 @@ public class AuctionMessageProducer {
 	 */
 	@EventHandler
 	public final void handleUserPasswordChangedEvent(final UserPasswordChangedEvent event) {
-		publish(new UserPasswordChangedMessage(UUID.fromString(event.getAggregateIdentifier()
-		        .toString()), event.getNewPassword()));
+		publish(new UserPasswordChangedMessage(event.getAggregateIdentifier().toString(), event
+		        .getNewPassword().toString()));
 	}
 
 	/**

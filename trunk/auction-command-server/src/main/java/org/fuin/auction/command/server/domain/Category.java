@@ -17,7 +17,6 @@ package org.fuin.auction.command.server.domain;
 
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.eventhandling.annotation.EventHandler;
-import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.fuin.auction.command.server.events.CategoryCreatedEvent;
 import org.fuin.auction.command.server.events.CategoryDeletedEvent;
 import org.fuin.auction.command.server.events.CategoryMarkedForDeletionEvent;
@@ -27,9 +26,7 @@ import org.fuin.auction.common.CategoryState;
 /**
  * Represents an auction category.
  */
-public final class Category extends AbstractAnnotatedAggregateRoot {
-
-	private CategoryState state = CategoryState.INITIAL;
+public final class Category extends AbstractCategory {
 
 	/**
 	 * Constructor with id that fires NO EVENT.
@@ -39,6 +36,7 @@ public final class Category extends AbstractAnnotatedAggregateRoot {
 	 */
 	public Category(final AggregateIdentifier identifier) {
 		super(identifier);
+		setState(CategoryState.INITIAL);
 	}
 
 	/**
@@ -61,8 +59,8 @@ public final class Category extends AbstractAnnotatedAggregateRoot {
 	 *             If the category state is not {@link CategoryState#ACTIVE}.
 	 */
 	public final void markForDeletion() throws IllegalCategoryStateException {
-		if (!state.equals(CategoryState.ACTIVE)) {
-			throw new IllegalCategoryStateException(state, CategoryState.ACTIVE);
+		if (!getState().equals(CategoryState.ACTIVE)) {
+			throw new IllegalCategoryStateException(getState(), CategoryState.ACTIVE);
 		}
 		apply(new CategoryMarkedForDeletionEvent());
 	}
@@ -74,8 +72,8 @@ public final class Category extends AbstractAnnotatedAggregateRoot {
 	 *             If the category state is not {@link CategoryState#DELETED}.
 	 */
 	public final void delete() throws IllegalCategoryStateException {
-		if (!state.equals(CategoryState.MARKED_FOR_DELETION)) {
-			throw new IllegalCategoryStateException(state, CategoryState.MARKED_FOR_DELETION);
+		if (!getState().equals(CategoryState.MARKED_FOR_DELETION)) {
+			throw new IllegalCategoryStateException(getState(), CategoryState.MARKED_FOR_DELETION);
 		}
 		apply(new CategoryDeletedEvent());
 	}
@@ -87,8 +85,9 @@ public final class Category extends AbstractAnnotatedAggregateRoot {
 	 *            Event.
 	 */
 	@EventHandler
-	public final void handleCategoryCreatedEvent(final CategoryCreatedEvent event) {
-		state = CategoryState.ACTIVE;
+	public final void handle(final CategoryCreatedEvent event) {
+		setName(event.getName());
+		setState(CategoryState.ACTIVE);
 	}
 
 	/**
@@ -98,9 +97,8 @@ public final class Category extends AbstractAnnotatedAggregateRoot {
 	 *            Event.
 	 */
 	@EventHandler
-	public final void handleCategoryMarkedForDeletionEvent(
-	        final CategoryMarkedForDeletionEvent event) {
-		state = CategoryState.MARKED_FOR_DELETION;
+	public final void handle(final CategoryMarkedForDeletionEvent event) {
+		setState(CategoryState.MARKED_FOR_DELETION);
 	}
 
 	/**
@@ -110,8 +108,8 @@ public final class Category extends AbstractAnnotatedAggregateRoot {
 	 *            Event.
 	 */
 	@EventHandler
-	public final void handleCategoryDeletedEvent(final CategoryDeletedEvent event) {
-		state = CategoryState.DELETED;
+	public final void handle(final CategoryDeletedEvent event) {
+		setState(CategoryState.DELETED);
 	}
 
 }

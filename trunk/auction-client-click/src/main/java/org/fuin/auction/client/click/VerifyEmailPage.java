@@ -18,7 +18,7 @@ package org.fuin.auction.client.click;
 import org.apache.click.control.Form;
 import org.apache.click.control.Submit;
 import org.apache.click.util.Bindable;
-import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.base.UserVerifyEmailCommand;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.objects4j.RenderClassInfo;
 import org.slf4j.Logger;
@@ -54,8 +54,8 @@ public final class VerifyEmailPage extends AuctionPage {
 	public VerifyEmailPage() {
 		super();
 
-		final RenderClassInfo<VerifyUserEmailCommand> renderClassInfo;
-		renderClassInfo = new RenderClassInfo<VerifyUserEmailCommand>(VerifyUserEmailCommand.class,
+		final RenderClassInfo<UserVerifyEmailCommand> renderClassInfo;
+		renderClassInfo = new RenderClassInfo<UserVerifyEmailCommand>(UserVerifyEmailCommand.class,
 		        getContext().getLocale());
 		setTitle(renderClassInfo, "Verify Email");
 		renderToForm(renderClassInfo, form);
@@ -76,7 +76,7 @@ public final class VerifyEmailPage extends AuctionPage {
 		}
 
 		try {
-			final VerifyUserEmailCommand cmd = new VerifyUserEmailCommand(getUserAggregateId(),
+			final UserVerifyEmailCommand cmd = new UserVerifyEmailCommand(getUserAggregateId(),
 			        getSecurityToken());
 			final CommandResult result = getCommandService().send(cmd);
 			msg = getMessage(form, result);
@@ -113,11 +113,11 @@ public final class VerifyEmailPage extends AuctionPage {
 	}
 
 	private String getUserAggregateId() {
-		return form.getField("userAggregateId").getValue();
+		return form.getField("aggregateId").getValue();
 	}
 
 	private void setUserAggregateId(final String userId) {
-		form.getField("userAggregateId").setValue(userId);
+		form.getField("aggregateId").setValue(userId);
 	}
 
 }

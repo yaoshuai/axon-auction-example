@@ -16,28 +16,20 @@
 package org.fuin.auction.command.server.domain;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.axonframework.eventhandling.annotation.EventHandler;
-import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.fuin.auction.command.server.events.UserCreatedEvent;
 import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
 import org.fuin.auction.command.server.events.UserPasswordChangedEvent;
 import org.fuin.auction.common.UserState;
-import org.fuin.auction.common.Utils;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.PasswordSha512;
+import org.fuin.objects4j.SecurityToken;
 import org.fuin.objects4j.UserName;
 
 /**
  * Represents a user in the auction system.
  */
-public final class User extends AbstractAnnotatedAggregateRoot {
-
-	private UserState userState = UserState.NEW;
-
-	private PasswordSha512 password;
-
-	private String verificationToken;
+public final class User extends AbstractUser {
 
 	/**
 	 * Constructor with id that fires NO EVENT.
@@ -47,6 +39,7 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	 */
 	public User(final AggregateIdentifier identifier) {
 		super(identifier);
+		setUserState(UserState.NEW);
 	}
 
 	/**
@@ -64,53 +57,31 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 	public User(final AggregateIdentifier identifier, final UserName userName,
 	        final Password password, final EmailAddress email) {
 		super(identifier);
-		apply(new UserCreatedEvent(userName, new PasswordSha512(password), email, Utils
-		        .createSecureRandom()));
+		apply(new UserCreatedEvent(userName, new PasswordSha512(password), email,
+		        new SecurityToken()));
 	}
 
-	/**
-	 * Changes the password and fires a {@link UserPasswordChangedEvent}.
-	 * 
-	 * @param oldPw
-	 *            Old clear text password.
-	 * @param newPw
-	 *            New clear text password.
-	 * 
-	 * @throws PasswordMismatchException
-	 *             The old password is not equal to the stored password.
-	 */
+	@Override
 	public final void changePassword(final Password oldPw, final Password newPw)
 	        throws PasswordMismatchException {
 
 		final PasswordSha512 oldPassword = new PasswordSha512(oldPw);
-		if (!password.equals(oldPassword)) {
+		if (!getPassword().equals(oldPw)) {
 			throw new PasswordMismatchException();
 		}
 
-		apply(new UserPasswordChangedEvent(new PasswordSha512(oldPw), new PasswordSha512(newPw)));
+		apply(new UserPasswordChangedEvent(oldPassword, new PasswordSha512(newPw)));
 
 	}
 
-	/**
-	 * Verify the user by checking the verification token.
-	 * 
-	 * @param token
-	 *            Token to compare with the internal token.
-	 * 
-	 * @throws IllegalUserStateException
-	 *             The state was not {@link UserState#NEW} or
-	 *             {@link UserState#RESET}.
-	 * @throws SecurityTokenException
-	 *             The given token was not equal to the user's verification
-	 *             token.
-	 */
+	@Override
 	public final void verifyEmail(final String token) throws IllegalUserStateException,
 	        SecurityTokenException {
 
-		if (!(userState.equals(UserState.NEW) || userState.equals(UserState.RESET))) {
-			throw new IllegalUserStateException(userState, UserState.NEW, UserState.RESET);
+		if (!(getUserState().equals(UserState.NEW) || getUserState().equals(UserState.RESET))) {
+			throw new IllegalUserStateException(getUserState(), UserState.NEW, UserState.RESET);
 		}
-		if (!verificationToken.equals(token)) {
+		if (!getVerificationToken().toString().equals(token)) {
 			throw new SecurityTokenException();
 		}
 
@@ -118,38 +89,22 @@ public final class User extends AbstractAnnotatedAggregateRoot {
 
 	}
 
-	/**
-	 * Handles the creation event without checking any constraints.
-	 * 
-	 * @param event
-	 *            Event.
-	 */
-	@EventHandler
-	protected final void handleUserCreatedEvent(final UserCreatedEvent event) {
-		this.password = event.getPassword();
-		this.verificationToken = event.getSecurityToken();
+	@Override
+	protected final void handle(final UserCreatedEvent event) {
+		setEmail(event.getEmail());
+		setPassword(event.getPassword());
+		setUserName(event.getUserName());
+		setVerificationToken(event.getSecurityToken());
 	}
 
-	/**
-	 * Handles the password change event without checking any constraints.
-	 * 
-	 * @param event
-	 *            Event.
-	 */
-	@EventHandler
-	protected final void handlePasswordChangedEvent(final UserPasswordChangedEvent event) {
-		this.password = event.getNewPassword();
+	@Override
+	protected final void handle(final UserPasswordChangedEvent event) {
+		setPassword(event.getNewPassword());
 	}
 
-	/**
-	 * Handles user verified event without checking any constraints.
-	 * 
-	 * @param event
-	 *            Event.
-	 */
-	@EventHandler
-	protected final void handleUserVerifiedEvent(final UserEmailVerifiedEvent event) {
-		this.userState = UserState.ACTIVE;
+	@Override
+	protected final void handle(final UserEmailVerifiedEvent event) {
+		setUserState(UserState.ACTIVE);
 	}
 
 }

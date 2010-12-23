@@ -1,0 +1,56 @@
+<aggregate name="Category" comment="Represents an auction category." type="LONG" version="100">
+ 
+	<property no="1" name="name" type="CategoryName" nullable="false" comment="Decriptive name.">
+		<label text="Category name"/>
+		<textfield/>
+	</property>
+	<property no="2" name="state" type="CategoryState" nullable="false" comment="Current state.">
+		<label text="State"/>
+	</property>
+ 
+ 	<operations>
+ 	
+    	<constructor name="CreateCategoryCommand" comment="Creates a new category." version="100">    	
+      		<property no="1" name="name" type="@name"/>
+      		
+      		<error no="110" key="CATEGORY_ALREADY_EXISTS" comment="Category name already exists" exception="CategoryNameAlreadyExistException"/>
+      		<success no="113" key="CATEGORY_SUCCESSFULLY_CREATED" comment="The new category was created successfully"/>
+      		
+      		<event name="CategoryCreatedEvent" comment="A new category was created." version="100">	      
+	      		<property no="1" name="name" type="@name"/>
+	      	
+	      		<message name="CategoryCreatedMessage" comment="A new category was created." version="100">      
+			      	<property no="1" name="name" type="@name"/>
+			    </message>
+			    
+	      	</event>
+      		
+		</constructor> 	
+ 	
+		<command name="MarkCategoryForDeletionCommand" method="markForDeletion" comment="Marks an existing category for deletion." version="100">
+		
+      		<error no="115" key="CATEGORY_TO_MARK_NOT_ACTIVE" comment="The category was not in an active state." exception="IllegalCategoryStateException"/>
+      		<success no="114" key="CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION" comment="The category was successfully marked for deletion."/>
+
+			<event name="CategoryMarkedForDeletionEvent" comment="A category was marked as deleted." version="100">
+	      		<message name="CategoryMarkedForDeletionMessage" comment="A category was marked as deleted." version="100">
+	      		</message>      
+			</event>	      
+		
+		</command>
+		
+		<command name="DeleteCategoryCommand" method="delete" comment="Deletes a category that is marked for deletion." version="100">
+		
+      		<error no="118" key="CATEGORY_TO_DELETE_NOT_MARKED" comment="The category is not marked for deletion." exception="IllegalCategoryStateException"/>
+      		<success no="116" key="CATEGORY_SUCCESSFULLY_DELETED" comment="The category was successfully deleted."/>
+
+			<event name="CategoryDeletedEvent" comment="A category was deleted." version="100">
+	      		<message name="CategoryDeletedMessage" comment="A category was deleted." version="100">
+	      		</message>      
+			</event>	      
+		
+		</command>
+		
+ 	</operations>
+  
+</aggregate>

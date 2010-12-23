@@ -52,7 +52,8 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 		assertThat(getQueryService().findAllActiveCategories()).contains(categoryDto);
 
 		// Mark category for deletion
-		result = getCommandService().send(new MarkCategoryForDeletionCommand(categoryDto.getId()));
+		result = getCommandService().send(
+		        new MarkCategoryForDeletionCommand("" + categoryDto.getId()));
 		assertSuccess(result, ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION);
 
 		waitUntilNoActiveCategoryIsAvailable();
@@ -61,7 +62,7 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 		assertThat(getQueryService().findAllActiveCategories().size()).isEqualTo(0);
 
 		// Delete category
-		result = getCommandService().send(new DeleteCategoryCommand(categoryDto.getId()));
+		result = getCommandService().send(new DeleteCategoryCommand("" + categoryDto.getId()));
 		assertSuccess(result, ResultCode.CATEGORY_SUCCESSFULLY_DELETED);
 
 		waitUntilNoMoreCategoriesAreAvailable();

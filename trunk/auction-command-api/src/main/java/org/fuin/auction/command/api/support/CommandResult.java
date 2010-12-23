@@ -18,8 +18,8 @@ package org.fuin.auction.command.api.support;
 import java.io.Serializable;
 import java.util.List;
 
-import org.fuin.auction.common.TraceStringCapable;
 import org.fuin.objects4j.Ensures;
+import org.fuin.objects4j.TraceStringCapable;
 
 /**
  * Result of executing a command.

@@ -20,10 +20,10 @@ import java.util.UUID;
 
 import org.fuin.auction.command.api.base.AggregateIdentifierResult;
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
 import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.base.UserChangePasswordCommand;
+import org.fuin.auction.command.api.base.UserVerifyEmailCommand;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.ContractViolationException;
@@ -104,7 +104,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 	public final void changeUserPassword(final UUID userAggregateId, final Password oldPassword,
 	        final Password newPassword) throws IdNotFoundException, PasswordException {
 
-		final ChangeUserPasswordCommand cmd = new ChangeUserPasswordCommand(userAggregateId
+		final UserChangePasswordCommand cmd = new UserChangePasswordCommand(userAggregateId
 		        .toString(), oldPassword.toString(), newPassword.toString());
 
 		final CommandResult result = commandService.send(cmd);
@@ -145,9 +145,9 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 		Contract.requireArgNotNull("userAggregateId", userAggregateId);
 		Contract.requireArgNotNull("securityToken", securityToken);
 
-		final VerifyUserEmailCommand cmd;
+		final UserVerifyEmailCommand cmd;
 		try {
-			cmd = new VerifyUserEmailCommand(userAggregateId.toString(), securityToken);
+			cmd = new UserVerifyEmailCommand(userAggregateId.toString(), securityToken);
 		} catch (final ContractViolationException ex) {
 			throw new RuntimeException(ex.getMessage());
 		}
