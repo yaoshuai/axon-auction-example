@@ -16,7 +16,6 @@
 package org.fuin.auction.query.server;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,12 +26,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.common.TraceStringCapable;
 import org.fuin.auction.common.UserState;
 import org.fuin.objects4j.Contract;
-import org.fuin.objects4j.EmailAddress;
-import org.fuin.objects4j.PasswordSha512;
-import org.fuin.objects4j.UserName;
+import org.fuin.objects4j.TraceStringCapable;
 import org.fuin.objects4j.validation.EmailAddressStr;
 import org.fuin.objects4j.validation.UUIDStr;
 import org.fuin.objects4j.validation.UserNameStr;
@@ -95,14 +91,14 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	 * @param password
 	 *            SHA512 hashed password.
 	 */
-	public AuctionUser(final UUID aggregateId, final UserName userName, final EmailAddress email,
-	        final UserState state, final PasswordSha512 password) {
+	public AuctionUser(final String aggregateId, final String userName, final String email,
+	        final UserState state, final String password) {
 		super();
-		this.aggregateId = aggregateId.toString();
-		this.userName = userName.toString();
-		this.email = email.toString();
+		this.aggregateId = aggregateId;
+		this.userName = userName;
+		this.email = email;
 		this.state = state;
-		this.password = password.toString();
+		this.password = password;
 		Contract.requireValid(this);
 	}
 

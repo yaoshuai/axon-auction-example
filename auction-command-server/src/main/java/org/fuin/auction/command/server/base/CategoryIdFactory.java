@@ -28,8 +28,7 @@ import org.fuin.axon.support.base.LongIdFactory;
  */
 @Named
 @LongIdFactory(Category.class)
-public final class CategoryIdFactory extends
-        AbstractJdbcAggregateIdentifierLongFactory {
+public final class CategoryIdFactory extends AbstractJdbcAggregateIdentifierLongFactory {
 
 	/**
 	 * Default constructor.

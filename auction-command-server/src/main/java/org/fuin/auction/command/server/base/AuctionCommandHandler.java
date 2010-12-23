@@ -23,13 +23,13 @@ import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.repository.AggregateNotFoundException;
 import org.axonframework.repository.Repository;
 import org.fuin.auction.command.api.base.AggregateIdentifierResult;
-import org.fuin.auction.command.api.base.ChangeUserPasswordCommand;
 import org.fuin.auction.command.api.base.CreateCategoryCommand;
 import org.fuin.auction.command.api.base.DeleteCategoryCommand;
 import org.fuin.auction.command.api.base.MarkCategoryForDeletionCommand;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
 import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.base.VerifyUserEmailCommand;
+import org.fuin.auction.command.api.base.UserChangePasswordCommand;
+import org.fuin.auction.command.api.base.UserVerifyEmailCommand;
 import org.fuin.auction.command.api.base.VoidResult;
 import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.server.domain.Category;
@@ -156,8 +156,8 @@ public class AuctionCommandHandler {
 		}
 
 		try {
-			final AggregateIdentifier id = categoryAggregateIdFactory.fromString(""
-			        + command.getCategoryId());
+			final AggregateIdentifier id = categoryAggregateIdFactory.fromString(command
+			        .getAggregateId());
 
 			final Category category = categoryRepository.load(id);
 			category.markForDeletion();
@@ -168,7 +168,7 @@ public class AuctionCommandHandler {
 
 		} catch (final IllegalCategoryStateException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
-			return new VoidResult(ResultCode.ILLEGAL_CATEGORY_STATE);
+			return new VoidResult(ResultCode.CATEGORY_TO_MARK_NOT_ACTIVE);
 		} catch (final AggregateNotFoundException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 			return new VoidResult(ResultCode.ID_NOT_FOUND);
@@ -195,8 +195,8 @@ public class AuctionCommandHandler {
 		}
 
 		try {
-			final AggregateIdentifier id = categoryAggregateIdFactory.fromString(""
-			        + command.getCategoryId());
+			final AggregateIdentifier id = categoryAggregateIdFactory.fromString(command
+			        .getAggregateId());
 
 			final Category category = categoryRepository.load(id);
 			category.delete();
@@ -210,7 +210,7 @@ public class AuctionCommandHandler {
 
 		} catch (final IllegalCategoryStateException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
-			return new VoidResult(ResultCode.ILLEGAL_CATEGORY_STATE);
+			return new VoidResult(ResultCode.CATEGORY_TO_DELETE_NOT_MARKED);
 		} catch (final AggregateNotFoundException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 			return new VoidResult(ResultCode.ID_NOT_FOUND);
@@ -273,7 +273,7 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final ChangeUserPasswordCommand command) {
+	public final CommandResult handle(final UserChangePasswordCommand command) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
@@ -282,7 +282,7 @@ public class AuctionCommandHandler {
 		try {
 
 			final AggregateIdentifier id = userAggregateIdFactory.fromString(command
-			        .getUserAggregateId());
+			        .getAggregateId());
 			final Password oldPw = new Password(command.getOldPassword());
 			final Password newPw = new Password(command.getNewPassword());
 
@@ -314,7 +314,7 @@ public class AuctionCommandHandler {
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final VerifyUserEmailCommand command) {
+	public final CommandResult handle(final UserVerifyEmailCommand command) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
@@ -323,7 +323,7 @@ public class AuctionCommandHandler {
 		try {
 
 			final AggregateIdentifier id = userAggregateIdFactory.fromString(command
-			        .getUserAggregateId());
+			        .getAggregateId());
 			final String securityToken = command.getSecurityToken();
 
 			final User user = userRepository.load(id);

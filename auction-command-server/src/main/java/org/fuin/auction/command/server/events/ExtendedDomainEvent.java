@@ -17,7 +17,7 @@ package org.fuin.auction.command.server.events;
 
 import java.io.Serializable;
 
-import org.fuin.auction.common.TraceStringCapable;
+import org.fuin.objects4j.TraceStringCapable;
 
 /**
  * Common behavior of all events.

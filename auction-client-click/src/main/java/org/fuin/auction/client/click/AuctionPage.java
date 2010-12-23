@@ -48,7 +48,7 @@ public abstract class AuctionPage extends Page {
 	private static final long serialVersionUID = 1L;
 
 	/** Error message code for an internal error. */
-	protected static final String INTERNAL_ERROR = "0001";
+	protected static final String INTERNAL_ERROR = "00001";
 
 	private final AuctionCommandService commandService;
 
@@ -240,6 +240,10 @@ public abstract class AuctionPage extends Page {
 			}
 		}
 
+	}
+
+	protected final Validator getValidator() {
+		return validator;
 	}
 
 	/**

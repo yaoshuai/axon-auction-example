@@ -28,9 +28,9 @@ import org.fuin.auction.common.UserState;
 import org.fuin.auction.message.api.CategoryCreatedMessage;
 import org.fuin.auction.message.api.CategoryDeletedMessage;
 import org.fuin.auction.message.api.CategoryMarkedForDeletionMessage;
-import org.fuin.auction.message.api.UserCreatedMessage;
-import org.fuin.auction.message.api.UserEmailVerfiedMessage;
+import org.fuin.auction.message.api.UserEmailVerifiedMessage;
 import org.fuin.auction.message.api.UserPasswordChangedMessage;
+import org.fuin.auction.message.api.UserRegisteredMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -70,10 +70,10 @@ public class AuctionMessageListener implements MessageListener {
 						handleMessage((CategoryMarkedForDeletionMessage) obj);
 					} else if (obj instanceof CategoryDeletedMessage) {
 						handleMessage((CategoryDeletedMessage) obj);
-					} else if (obj instanceof UserCreatedMessage) {
-						handleMessage((UserCreatedMessage) obj);
-					} else if (obj instanceof UserEmailVerfiedMessage) {
-						handleMessage((UserEmailVerfiedMessage) obj);
+					} else if (obj instanceof UserRegisteredMessage) {
+						handleMessage((UserRegisteredMessage) obj);
+					} else if (obj instanceof UserEmailVerifiedMessage) {
+						handleMessage((UserEmailVerifiedMessage) obj);
 					} else if (obj instanceof UserPasswordChangedMessage) {
 						handleMessage((UserPasswordChangedMessage) obj);
 					} else {
@@ -97,8 +97,8 @@ public class AuctionMessageListener implements MessageListener {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
-
-		categoryDao.persist(new Category(message.getId(), message.getName(), true));
+		final Long id = Long.parseLong(message.getAggregateId());
+		categoryDao.persist(new Category(id, message.getName(), true));
 
 	}
 
@@ -108,7 +108,8 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		final Category category = categoryDao.find(message.getId());
+		final Long id = Long.parseLong(message.getAggregateId());
+		final Category category = categoryDao.find(id);
 		category.setActive(false);
 
 	}
@@ -119,29 +120,30 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		final Category category = categoryDao.find(message.getId());
+		final Long id = Long.parseLong(message.getAggregateId());
+		final Category category = categoryDao.find(id);
 		categoryDao.remove(category);
 
 	}
 
-	private void handleMessage(final UserCreatedMessage message) {
+	private void handleMessage(final UserRegisteredMessage message) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		userDao.persist(new AuctionUser(message.getUserAggregateId(), message.getUserName(),
-		        message.getEmail(), UserState.NEW, message.getPassword()));
+		userDao.persist(new AuctionUser(message.getAggregateId(), message.getUserName(), message
+		        .getEmail(), UserState.NEW, message.getPassword()));
 
 	}
 
-	private void handleMessage(final UserEmailVerfiedMessage message) {
+	private void handleMessage(final UserEmailVerifiedMessage message) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		final AuctionUser user = userDao.findByAggregateId(message.getUserAggregateId().toString());
+		final AuctionUser user = userDao.findByAggregateId(message.getAggregateId().toString());
 		user.setState(UserState.ACTIVE);
 
 	}
@@ -152,7 +154,7 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		final AuctionUser user = userDao.findByAggregateId(message.getUserAggregateId().toString());
+		final AuctionUser user = userDao.findByAggregateId(message.getAggregateId().toString());
 		user.setPassword(message.getPassword().toString());
 
 	}
