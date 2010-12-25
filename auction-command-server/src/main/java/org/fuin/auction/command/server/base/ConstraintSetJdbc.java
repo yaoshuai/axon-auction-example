@@ -158,9 +158,9 @@ public final class ConstraintSetJdbc extends AbstractJdbcHelper implements Const
 		if (list.size() == 0) {
 			throw new IllegalStateException("Neither user name '" + userName + "' nor email '"
 			        + email + "' found!");
-		} else if (list.size() == 1) {
+		} else if (list.size() > 1) {
 			throw new IllegalStateException("Found more than one entry for user name '" + userName
-			        + "' nor email '" + email + "'!");
+			        + "' or email '" + email + "'!");
 		}
 		return list.get(0);
 	}
