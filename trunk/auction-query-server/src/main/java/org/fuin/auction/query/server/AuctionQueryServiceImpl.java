@@ -86,4 +86,12 @@ public class AuctionQueryServiceImpl implements AuctionQueryService {
 		return userDao.findUserIdBySecurityToken(securityToken);
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public final CategoryDto findById(final Long id) {
+		final Category category = categoryDao.find(id);
+		// TODO michael Create domain object to dto converter structure
+		return new CategoryDto(category.getId(), category.getName(), category.isActive());
+	}
+
 }
