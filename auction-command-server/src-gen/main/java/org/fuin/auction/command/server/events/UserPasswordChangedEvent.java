@@ -20,6 +20,8 @@ import org.axonframework.domain.DomainEvent;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.PasswordSha512;
 
+// GENERATED CODE - DO NOT EDIT!
+
 /**
  * The password of a user was changed.
  */

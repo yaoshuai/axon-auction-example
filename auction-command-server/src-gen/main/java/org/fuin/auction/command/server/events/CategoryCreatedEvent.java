@@ -20,6 +20,8 @@ import org.axonframework.domain.DomainEvent;
 import org.fuin.auction.common.CategoryName;
 import org.fuin.objects4j.Contract;
 
+// GENERATED CODE - DO NOT EDIT!
+
 /**
  * A new category was created.
  */
