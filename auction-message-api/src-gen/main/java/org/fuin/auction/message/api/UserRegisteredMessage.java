@@ -52,9 +52,15 @@ public final class UserRegisteredMessage implements AuctionMessage {
 	/** Email address. */
 	@NotNull
 	@EmailAddressStr
-	@TextField(width = 50)
 	@Label("Email address")
+	@TextField(width = 50)
 	private String email;
+
+	/** Generated security token to verify the email address. */
+	@NotNull
+	@Label("Security Token")
+	@TextField(width = 100)
+	private String securityToken;
 
 	/**
 	 * Default constructor for serialization.
@@ -74,15 +80,18 @@ public final class UserRegisteredMessage implements AuctionMessage {
 	 *            Password hash.
 	 * @param email
 	 *            Email address.
+	 * @param securityToken
+	 *            Generated security token to verify the email address.
 	 * 
 	 */
 	public UserRegisteredMessage(final String aggregateId, final String userName,
-	        final String password, final String email) {
+	        final String password, final String email, final String securityToken) {
 		super();
 		this.aggregateId = aggregateId;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+		this.securityToken = securityToken;
 		Contract.requireValid(this);
 	}
 
@@ -122,9 +131,19 @@ public final class UserRegisteredMessage implements AuctionMessage {
 		return email;
 	}
 
+	/**
+	 * Returns: Generated security token to verify the email address.
+	 * 
+	 * @return SecurityToken
+	 */
+	public final String getSecurityToken() {
+		return securityToken;
+	}
+
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("aggregateId", aggregateId).append("userName",
-		        userName).append("password", password).append("email", email).toString();
+		        userName).append("password", password).append("email", email).append(
+		        "securityToken", securityToken).toString();
 	}
 }

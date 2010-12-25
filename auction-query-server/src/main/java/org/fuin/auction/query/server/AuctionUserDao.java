@@ -28,8 +28,19 @@ public interface AuctionUserDao extends GenericDAO<AuctionUser, Long> {
 	 * @param aggregateId
 	 *            User's aggregate id to find.
 	 * 
-	 * @return User.
+	 * @return User or <code>null</code> if the id was not found.
 	 */
 	public AuctionUser findByAggregateId(String aggregateId);
+
+	/**
+	 * Loads the user id that belongs to the given security token.
+	 * 
+	 * @param securityToken
+	 *            Token to find the user aggregate id for.
+	 * 
+	 * @return User's aggregate id or <code>null</code> if the token was not
+	 *         found.
+	 */
+	public String findUserIdBySecurityToken(String securityToken);
 
 }

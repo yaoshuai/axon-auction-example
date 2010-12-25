@@ -48,4 +48,13 @@ public final class AuctionUserDaoImpl extends GenericDAOImpl<AuctionUser, Long> 
 		return searchUnique(new Search().addFilterEqual("aggregateId", aggregateId));
 	}
 
+	@Override
+	public final String findUserIdBySecurityToken(final String token) {
+		final AuctionUser user = searchUnique(new Search().addFilterEqual("securityToken", token));
+		if (user == null) {
+			return null;
+		}
+		return user.getAggregateId();
+	}
+
 }

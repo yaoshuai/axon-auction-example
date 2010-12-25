@@ -8,6 +8,8 @@
 	<type name="Password" fullyQualifiedName="org.fuin.objects4j.Password" />
 	<type name="SecurityToken" fullyQualifiedName="org.fuin.objects4j.SecurityToken" />
 	<type name="String" fullyQualifiedName="java.lang.String" />
+	<type name="Long" fullyQualifiedName="java.lang.Long" />
+	<type name="UUID" fullyQualifiedName="java.util.UUID" />
 	<type name="CategoryName" fullyQualifiedName="org.fuin.auction.common.CategoryName" />
 	<type name="CategoryState" fullyQualifiedName="org.fuin.auction.common.CategoryState" />
 

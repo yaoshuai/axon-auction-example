@@ -147,7 +147,7 @@ public final class AuctionCmdServiceImpl implements AuctionCmdService {
 
 		final UserVerifyEmailCommand cmd;
 		try {
-			cmd = new UserVerifyEmailCommand(userAggregateId.toString(), securityToken);
+			cmd = new UserVerifyEmailCommand(securityToken);
 		} catch (final ContractViolationException ex) {
 			throw new RuntimeException(ex.getMessage());
 		}

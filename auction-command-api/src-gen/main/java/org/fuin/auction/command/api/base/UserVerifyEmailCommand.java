@@ -25,7 +25,6 @@ import org.fuin.auction.command.api.support.Command;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
-import org.fuin.objects4j.validation.UUIDStr;
 
 /**
  * Verifies the user's email by checking the verification token.
@@ -35,11 +34,6 @@ public final class UserVerifyEmailCommand implements Command {
 	private long version = serialVersionUID;
 
 	/** Unique aggregate id. */
-	@NotNull
-	@UUIDStr
-	@Label("User ID")
-	@TextField(width = 100)
-	private String aggregateId;
 
 	/** Token to compare with the internal token. */
 	@NotNull
@@ -57,15 +51,12 @@ public final class UserVerifyEmailCommand implements Command {
 	/**
 	 * Constructor with all attributes.
 	 * 
-	 * @param aggregateId
-	 *            Aggregate id.
 	 * @param securityToken
 	 *            Token to compare with the internal token.
 	 * 
 	 */
-	public UserVerifyEmailCommand(final String aggregateId, final String securityToken) {
+	public UserVerifyEmailCommand(final String securityToken) {
 		super();
-		this.aggregateId = aggregateId;
 		this.securityToken = securityToken;
 		Contract.requireValid(this);
 	}
@@ -73,25 +64,6 @@ public final class UserVerifyEmailCommand implements Command {
 	@Override
 	public final long getVersion() {
 		return version;
-	}
-
-	/**
-	 * Returns the aggregate id.
-	 * 
-	 * @return Unique id.
-	 */
-	public final String getAggregateId() {
-		return aggregateId;
-	}
-
-	/**
-	 * Sets the aggregate id to a new value.
-	 * 
-	 * @param aggregateId
-	 *            Unique id to set.
-	 */
-	public final void setAggregateId(final String aggregateId) {
-		this.aggregateId = aggregateId;
 	}
 
 	/**
@@ -115,8 +87,8 @@ public final class UserVerifyEmailCommand implements Command {
 
 	@Override
 	public final String toTraceString() {
-		return new ToStringBuilder(this).append("aggregateId", aggregateId).append("securityToken",
-		        securityToken).append("version", version).toString();
+		return new ToStringBuilder(this).append("securityToken", securityToken).append("version",
+		        version).toString();
 	}
 
 	@Override

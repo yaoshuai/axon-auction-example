@@ -23,7 +23,7 @@
     	<constructor name="RegisterUserCommand" comment="Registers a new user." version="100">
     
       		<property no="1" name="userName" type="@userName"/>
-      		<property no="2" name="password" type="Password" comment="Clear text password.">
+      		<property no="2" name="password" type="Password" nullable="false" comment="Clear text password.">
 				<label text="Password"/>
 				<textfield/>
 			</property>
@@ -37,14 +37,15 @@
       		<event name="UserCreatedEvent" comment="A new user was created." version="100">
 	      
 	      		<property no="1" name="userName" type="@userName"/>
-          		<property no="2" name="password" type="PasswordSha512" comment="Password hash."/>
+          		<property no="2" name="password" type="PasswordSha512" nullable="false" comment="Password hash."/>
           		<property no="3" name="email" type="@email"/>
-          		<property no="4" name="securityToken" type="/verificationToken"/>          
+          		<property no="4" name="securityToken" nullable="false" type="/verificationToken"/>          
 	      
 	      		<message name="UserRegisteredMessage" comment="A new user was created." version="100">      
 			      	<property no="1" name="userName" type="@userName"/>
 	          		<property no="2" name="password" type="@password"/>
 	        	  	<property no="3" name="email" type="@email"/>
+          			<property no="4" name="securityToken" type="@securityToken"/>          
 	    	  	</message>
      
       		</event>
@@ -53,12 +54,12 @@
     
     
 		<command name="UserChangePasswordCommand" method="changePassword" comment="Changes the user's password." version="100">
-		
-	    	<property name="oldPassword" type="Password" traceExclude="true" comment="Old clear text password.">
+			
+	    	<property name="oldPassword" type="Password" nullable="false" traceExclude="true" comment="Old clear text password.">
 				<label text="Old password"/>
 				<textfield width="50"/>
 	    	</property>
-			<property name="newPassword" type="Password" traceExclude="true" comment="New clear text password.">
+			<property name="newPassword" type="Password" nullable="false" traceExclude="true" comment="New clear text password.">
 				<label text="New password"/>
 				<textfield width="50"/>
 			</property>
@@ -68,8 +69,8 @@
 	
 			<event name="UserPasswordChangedEvent" comment="The password of a user was changed." version="100">
 
-				<property name="oldPassword" type="PasswordSha512" comment="Old password hash."/>
-				<property name="newPassword" type="PasswordSha512" comment="New password hash."/>
+				<property name="oldPassword" type="PasswordSha512" nullable="false" comment="Old password hash."/>
+				<property name="newPassword" type="PasswordSha512" nullable="false" comment="New password hash."/>
 				
 				<message name="UserPasswordChangedMessage" comment="The password of a user was changed." version="100">
 					<property name="password" type="@newPassword"/>
@@ -79,9 +80,9 @@
 	
 		</command>
 		
-		<command name="UserVerifyEmailCommand" method="verifyEmail" comment="Verifies the user's email by checking the verification token." version="100">
+		<command name="UserVerifyEmailCommand" method="verifyEmail" excludeAggregateId="true" comment="Verifies the user's email by checking the verification token." version="100">
 	
-			<property name="securityToken" type="String" comment="Token to compare with the internal token.">
+			<property name="securityToken" type="String" nullable="false" comment="Token to compare with the internal token.">
 				<label text="Security Token"/>
 				<textfield width="100"/>
 			</property>
