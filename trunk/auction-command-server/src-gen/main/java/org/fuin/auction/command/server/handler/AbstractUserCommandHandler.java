@@ -70,8 +70,10 @@ public abstract class AbstractUserCommandHandler {
 	 * Converts the string into an aggregate identifier.
 	 * 
 	 * @param aggregateId
-	 *            Aggregate identifier that is supposed to be valid or a runtime
-	 *            exception will be thrown.
+	 *            Aggregate identifier that is supposed to be valid. Otherwise a
+	 *            runtime exception will be thrown.
+	 * 
+	 * @return Aggregate identifier.
 	 */
 	protected final AggregateIdentifier toAggregateId(final String aggregateId) {
 		try {
