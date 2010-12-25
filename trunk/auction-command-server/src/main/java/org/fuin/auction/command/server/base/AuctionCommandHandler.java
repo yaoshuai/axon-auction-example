@@ -39,6 +39,7 @@ import org.fuin.auction.command.server.domain.PasswordMismatchException;
 import org.fuin.auction.command.server.domain.SecurityTokenException;
 import org.fuin.auction.command.server.domain.User;
 import org.fuin.auction.common.CategoryName;
+import org.fuin.auction.query.api.AuctionQueryService;
 import org.fuin.axon.support.base.AggregateIdentifierFactory;
 import org.fuin.axon.support.base.IllegalAggregateIdentifierException;
 import org.fuin.axon.support.base.LongIdFactory;
@@ -56,6 +57,10 @@ import org.slf4j.LoggerFactory;
 public class AuctionCommandHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AuctionCommandHandler.class);
+
+	@Inject
+	@Named("queryService")
+	private AuctionQueryService queryService;
 
 	@Inject
 	private ConstraintSet constraintSet;
@@ -322,9 +327,14 @@ public class AuctionCommandHandler {
 
 		try {
 
-			final AggregateIdentifier id = userAggregateIdFactory.fromString(command
-			        .getAggregateId());
 			final String securityToken = command.getSecurityToken();
+
+			final String idStr = queryService.findUserIdBySecurityToken(securityToken);
+			if (idStr == null) {
+				throw new SecurityTokenException();
+			}
+
+			final AggregateIdentifier id = userAggregateIdFactory.fromString(idStr);
 
 			final User user = userRepository.load(id);
 

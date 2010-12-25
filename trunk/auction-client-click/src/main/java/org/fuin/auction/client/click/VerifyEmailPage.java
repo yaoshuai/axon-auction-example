@@ -76,8 +76,7 @@ public final class VerifyEmailPage extends AuctionPage {
 		}
 
 		try {
-			final UserVerifyEmailCommand cmd = new UserVerifyEmailCommand(getUserAggregateId(),
-			        getSecurityToken());
+			final UserVerifyEmailCommand cmd = new UserVerifyEmailCommand(getSecurityToken());
 			final CommandResult result = getCommandService().send(cmd);
 			msg = getMessage(form, result);
 		} catch (final RuntimeException ex) {

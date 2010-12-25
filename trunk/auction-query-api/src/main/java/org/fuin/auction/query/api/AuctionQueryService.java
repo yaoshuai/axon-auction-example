@@ -43,4 +43,14 @@ public interface AuctionQueryService {
 	 */
 	public List<CategoryDto> findAllActiveCategories();
 
+	/**
+	 * Returns the user id that belongs to the given security token.
+	 * 
+	 * @param securityToken
+	 *            Token to find the user aggregate id for.
+	 * 
+	 * @return Aggregate id or <code>null</code> if the token was not found.
+	 */
+	public String findUserIdBySecurityToken(String securityToken);
+
 }

@@ -81,4 +81,10 @@
 		</property>
 	</bean>
 
+   <bean id="queryService"
+      class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+      <property name="serviceUrl" value="http://localhost:8080/auction-query-server/AuctionQueryService" />
+      <property name="serviceInterface" value="org.fuin.auction.query.api.AuctionQueryService" />
+   </bean>
+
 </beans>

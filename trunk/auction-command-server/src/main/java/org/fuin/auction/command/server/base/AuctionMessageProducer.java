@@ -119,7 +119,7 @@ public class AuctionMessageProducer {
 	public final void handleUserCreatedEvent(final UserCreatedEvent event) {
 		publish(new UserRegisteredMessage(event.getAggregateIdentifier().toString(), event
 		        .getUserName().toString(), event.getPassword().toString(), event.getEmail()
-		        .toString()));
+		        .toString(), event.getSecurityToken().toString()));
 	}
 
 	/**

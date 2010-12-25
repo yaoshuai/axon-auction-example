@@ -70,6 +70,9 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	@Column(name = "PASSWORD", length = 130, nullable = false)
 	private String password;
 
+	@Column(name = "SECURITY_TOKEN", length = 40)
+	private String securityToken;
+
 	/**
 	 * Package visible default constructor for persistence.
 	 */
@@ -90,15 +93,18 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 	 *            Current state of the user.
 	 * @param password
 	 *            SHA512 hashed password.
+	 * @param securityToken
+	 *            The security token.
 	 */
 	public AuctionUser(final String aggregateId, final String userName, final String email,
-	        final UserState state, final String password) {
+	        final UserState state, final String password, final String securityToken) {
 		super();
 		this.aggregateId = aggregateId;
 		this.userName = userName;
 		this.email = email;
 		this.state = state;
 		this.password = password;
+		this.securityToken = securityToken;
 		Contract.requireValid(this);
 	}
 
@@ -216,11 +222,30 @@ public class AuctionUser implements Serializable, TraceStringCapable {
 		this.password = password;
 	}
 
+	/**
+	 * Returns the security token associated with the user.
+	 * 
+	 * @return Security token or <code>null</code>.
+	 */
+	public final String getSecurityToken() {
+		return securityToken;
+	}
+
+	/**
+	 * Sets the security token associated with the user.
+	 * 
+	 * @param securityToken
+	 *            Security token or <code>null</code>.
+	 */
+	public final void setSecurityToken(final String securityToken) {
+		this.securityToken = securityToken;
+	}
+
 	@Override
 	public final String toTraceString() {
 		return new ToStringBuilder(this).append("aggregateId", aggregateId).append("userName",
 		        userName).append("email", email).append("state", state)
-		        .append("password", password).toString();
+		        .append("password", password).append("securityToken", securityToken).toString();
 	}
 
 }

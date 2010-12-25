@@ -41,6 +41,9 @@ public class AuctionQueryServiceImpl implements AuctionQueryService {
 	@Inject
 	private CategoryDao categoryDao;
 
+	@Inject
+	private AuctionUserDao userDao;
+
 	@Override
 	public final String getVersion() {
 		try {
@@ -75,6 +78,12 @@ public class AuctionQueryServiceImpl implements AuctionQueryService {
 			result.add(new CategoryDto(category.getId(), category.getName(), category.isActive()));
 		}
 		return result;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public final String findUserIdBySecurityToken(final String securityToken) {
+		return userDao.findUserIdBySecurityToken(securityToken);
 	}
 
 }

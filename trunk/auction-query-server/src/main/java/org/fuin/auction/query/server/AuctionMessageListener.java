@@ -133,7 +133,7 @@ public class AuctionMessageListener implements MessageListener {
 		}
 
 		userDao.persist(new AuctionUser(message.getAggregateId(), message.getUserName(), message
-		        .getEmail(), UserState.NEW, message.getPassword()));
+		        .getEmail(), UserState.NEW, message.getPassword(), message.getSecurityToken()));
 
 	}
 
@@ -145,6 +145,7 @@ public class AuctionMessageListener implements MessageListener {
 
 		final AuctionUser user = userDao.findByAggregateId(message.getAggregateId().toString());
 		user.setState(UserState.ACTIVE);
+		user.setSecurityToken(null);
 
 	}
 
