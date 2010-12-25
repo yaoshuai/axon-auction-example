@@ -18,6 +18,8 @@ package org.fuin.auction.command.server.events;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.axonframework.domain.DomainEvent;
 
+// GENERATED CODE - DO NOT EDIT!
+
 /**
  * A category was marked as deleted.
  */

@@ -23,6 +23,8 @@ import org.fuin.objects4j.PasswordSha512;
 import org.fuin.objects4j.SecurityToken;
 import org.fuin.objects4j.UserName;
 
+// GENERATED CODE - DO NOT EDIT!
+
 /**
  * A new user was created.
  */
