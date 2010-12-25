@@ -44,6 +44,16 @@ public interface AuctionQueryService {
 	public List<CategoryDto> findAllActiveCategories();
 
 	/**
+	 * Returns a category by it's id.
+	 * 
+	 * @param id
+	 *            Id of the category to find.
+	 * 
+	 * @return Category or <code>null</code> if the id was not found.
+	 */
+	public CategoryDto findById(Long id);
+
+	/**
 	 * Returns the user id that belongs to the given security token.
 	 * 
 	 * @param securityToken

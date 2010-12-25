@@ -15,15 +15,20 @@
  */
 package org.fuin.auction.command.server.handler;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.axonframework.domain.AggregateIdentifier;
 import org.fuin.auction.command.api.base.AggregateIdentifierResult;
 import org.fuin.auction.command.api.base.DeleteCategoryCommand;
 import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.server.base.ConstraintSet;
 import org.fuin.auction.command.server.domain.Category;
 import org.fuin.auction.command.server.domain.IllegalCategoryStateException;
+import org.fuin.auction.common.CategoryName;
+import org.fuin.auction.query.api.AuctionQueryService;
+import org.fuin.auction.query.api.CategoryDto;
+import org.fuin.axon.support.base.LongAggregateIdentifier;
 
 /**
  * Handler for managing {@link DeleteCategoryCommand} commands.
@@ -31,22 +36,29 @@ import org.fuin.auction.command.server.domain.IllegalCategoryStateException;
 @Named
 public class DeleteCategoryCommandHandler extends AbstractDeleteCategoryCommandHandler {
 
+	@Inject
+	@Named("queryService")
+	private AuctionQueryService queryService;
+
+	@Inject
+	private ConstraintSet constraintSet;
+
 	@Override
 	protected final CommandResult handleIntern(final DeleteCategoryCommand command)
 	        throws IllegalCategoryStateException {
 
-		final AggregateIdentifier id = toAggregateId(command.getAggregateId());
+		final LongAggregateIdentifier id = (LongAggregateIdentifier) toAggregateId(command
+		        .getAggregateId());
 
 		final Category category = getRepository().load(id);
 		category.delete();
 
-		// FIXME michael Remove category name from constraints -
-		// Resolve the name by executing a query against the query server.
-		// constraintSet.remove(categoryName);
+		final CategoryDto categoryDto = queryService.findById(id.asLong());
+		final CategoryName categoryName = new CategoryName(categoryDto.getName());
+		constraintSet.remove(categoryName);
 
 		return new AggregateIdentifierResult(ResultCode.CATEGORY_SUCCESSFULLY_DELETED, category
 		        .getIdentifier().toString());
 
 	}
-
 }
