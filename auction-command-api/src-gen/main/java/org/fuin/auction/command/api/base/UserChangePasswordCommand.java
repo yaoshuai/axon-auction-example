@@ -43,15 +43,15 @@ public final class UserChangePasswordCommand implements Command {
 	/** Old clear text password. */
 	@NotNull
 	@PasswordStr
-	@TextField(width = 50)
 	@Label("Old password")
+	@TextField(width = 50)
 	private String oldPassword;
 
 	/** New clear text password. */
 	@NotNull
 	@PasswordStr
-	@TextField(width = 50)
 	@Label("New password")
+	@TextField(width = 50)
 	private String newPassword;
 
 	/**

@@ -53,8 +53,8 @@ public final class RegisterUserCommand implements Command {
 	/** Email address. */
 	@NotNull
 	@EmailAddressStr
-	@TextField(width = 50)
 	@Label("Email address")
+	@TextField(width = 50)
 	private String email;
 
 	/**
