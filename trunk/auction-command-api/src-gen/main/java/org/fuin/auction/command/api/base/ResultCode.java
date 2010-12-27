@@ -26,15 +26,15 @@ import org.fuin.objects4j.Requires;
  * All possible result codes.
  */
 public enum ResultCode {
-	/** The combination of user name and email is already registered */
+	/** The combination of user name and email is already registered. */
 	DUPLICATE_USERNAME_EMAIL_COMBINATION(101, ERROR,
-	        "The combination of user name and email is already registered"),
+	        "The combination of user name and email is already registered."),
 
-	/** The name is already used by another user */
-	DUPLICATE_USERNAME(102, ERROR, "The name is already used by another user"),
+	/** The name is already used by another user. */
+	DUPLICATE_USERNAME(102, ERROR, "The name is already used by another user."),
 
-	/** The email address is already registered with another user */
-	DUPLICATE_EMAIL(103, ERROR, "The email address is already registered with another user"),
+	/** The email address is already registered with another user. */
+	DUPLICATE_EMAIL(103, ERROR, "The email address is already registered with another user."),
 
 	/** You registered successfully! A confirmation email has been sent to you */
 	USER_SUCCESSFULLY_REGISTERED(104, SUCCESS,
@@ -50,13 +50,13 @@ public enum ResultCode {
 	USER_EMAIL_VERIFICATION_FAILED(108, ERROR,
 	        "The given token was not equal to the user's verification token."),
 
-	/** Your email address was confirmed successfully */
+	/** Your email address was confirmed successfully. */
 	USER_EMAIL_VERIFIED(109, SUCCESS, "Your email address was confirmed successfully"),
 
-	/** Category name already exists */
+	/** Category name already exists. */
 	CATEGORY_ALREADY_EXISTS(110, ERROR, "Category name already exists"),
 
-	/** The new category was created successfully */
+	/** The new category was created successfully. */
 	CATEGORY_SUCCESSFULLY_CREATED(113, SUCCESS, "The new category was created successfully"),
 
 	/** The category was successfully marked for deletion. */

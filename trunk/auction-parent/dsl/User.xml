@@ -29,10 +29,10 @@
 			</property>
       		<property no="3" name="email" type="@email"/>
       
-      		<error no="103" key="DUPLICATE_EMAIL" comment="The email address is already registered with another user" exception="UserEmailAlreadyExistsException"/>
-      		<error no="101" key="DUPLICATE_USERNAME_EMAIL_COMBINATION" comment="The combination of user name and email is already registered" exception="UserNameEmailCombinationAlreadyExistsException"/>
-      		<error no="102" key="DUPLICATE_USERNAME" comment="The name is already used by another user" exception="UserNameAlreadyExistsException"/>
-      		<success no="104" key="USER_SUCCESSFULLY_REGISTERED" comment="You registered successfully! A confirmation email has been sent to you"/>
+      		<error no="103" key="DUPLICATE_EMAIL" comment="The email address is already registered with another user." exception="UserEmailAlreadyExistsException"/>
+      		<error no="101" key="DUPLICATE_USERNAME_EMAIL_COMBINATION" comment="The combination of user name and email is already registered." exception="UserNameEmailCombinationAlreadyExistsException"/>
+      		<error no="102" key="DUPLICATE_USERNAME" comment="The name is already used by another user." exception="UserNameAlreadyExistsException"/>
+      		<success no="104" key="USER_SUCCESSFULLY_REGISTERED" comment="You registered successfully! A confirmation email has been sent to you."/>
      
       		<event name="UserCreatedEvent" comment="A new user was created." version="100">
 	      
@@ -89,7 +89,7 @@
 	
 			<error no="117" key="ILLEGAL_USER_STATE" exception="IllegalUserStateException" comment="The state of the user was not NEW or RESET."/>
 			<error no="108" key="USER_EMAIL_VERIFICATION_FAILED" exception="SecurityTokenException" comment="The given token was not equal to the user's verification token."/>
-			<success no="109" key="USER_EMAIL_VERIFIED" comment="Your email address was confirmed successfully"/>
+			<success no="109" key="USER_EMAIL_VERIFIED" comment="Your email address was confirmed successfully."/>
 	
 			<event name="UserEmailVerifiedEvent" comment="The email address of a user was verified." version="100">
 				

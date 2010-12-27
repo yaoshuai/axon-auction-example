@@ -13,8 +13,8 @@
     	<constructor name="CreateCategoryCommand" comment="Creates a new category." version="100">    	
       		<property no="1" name="name" type="@name"/>
       		
-      		<error no="110" key="CATEGORY_ALREADY_EXISTS" comment="Category name already exists" exception="CategoryNameAlreadyExistException"/>
-      		<success no="113" key="CATEGORY_SUCCESSFULLY_CREATED" comment="The new category was created successfully"/>
+      		<error no="110" key="CATEGORY_ALREADY_EXISTS" comment="Category name already exists." exception="CategoryNameAlreadyExistException"/>
+      		<success no="113" key="CATEGORY_SUCCESSFULLY_CREATED" comment="The new category was created successfully."/>
       		
       		<event name="CategoryCreatedEvent" comment="A new category was created." version="100">	      
 	      		<property no="1" name="name" type="@name"/>
