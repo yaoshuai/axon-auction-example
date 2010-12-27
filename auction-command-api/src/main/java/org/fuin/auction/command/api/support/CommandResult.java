@@ -62,6 +62,7 @@ public interface CommandResult extends Serializable, TraceStringCapable {
 	 * 
 	 * @return Code with leading zeros.
 	 */
+	@Ensures("\result!=null")
 	public String getCodeStr();
 
 	/**
