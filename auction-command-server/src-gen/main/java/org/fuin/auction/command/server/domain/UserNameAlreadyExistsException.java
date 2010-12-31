@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.base;
+package org.fuin.auction.command.server.domain;
+
+// GENERATED CODE - DO NOT EDIT!
 
 /**
- * Type of a command result.
+ * The name is already used by another user
  */
-public enum CommandResultType {
+public class UserNameAlreadyExistsException extends AbstractBaseException {
+	private static final long serialVersionUID = 1L;
 
-	/** The operation was successful. */
-	SUCCESS,
-
-	/** The operation was partially successful. */
-	WARNING,
-
-	/** The operation failed for some reason. */
-	ERROR
-
+	/**
+	 * Default constructor.
+	 */
+	public UserNameAlreadyExistsException() {
+		super("The name is already used by another user");
+	}
 }

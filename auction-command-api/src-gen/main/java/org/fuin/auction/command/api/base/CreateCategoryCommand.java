@@ -21,7 +21,8 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.common.InternalErrorResult;
+import org.fuin.auction.common.Operation;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
@@ -29,11 +30,11 @@ import org.fuin.objects4j.TextField;
 /**
  * Creates a new category.
  */
-public final class CreateCategoryCommand implements Command {
+public final class CreateCategoryCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
-	/** Decriptive name. */
+	/**  */
 	@NotNull
 	@Label("Category name")
 	@TextField
@@ -50,7 +51,6 @@ public final class CreateCategoryCommand implements Command {
 	 * Constructor with all attributes.
 	 * 
 	 * @param name
-	 *            Decriptive name.
 	 * 
 	 */
 	public CreateCategoryCommand(final String name) {
@@ -65,7 +65,7 @@ public final class CreateCategoryCommand implements Command {
 	}
 
 	/**
-	 * Sets: Decriptive name.
+	 * Sets:
 	 * 
 	 * @param name
 	 *            Value to set.
@@ -75,7 +75,7 @@ public final class CreateCategoryCommand implements Command {
 	}
 
 	/**
-	 * Returns: Decriptive name.
+	 * Returns:
 	 * 
 	 * @return Name
 	 */
@@ -91,10 +91,10 @@ public final class CreateCategoryCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.CATEGORY_SUCCESSFULLY_CREATED.getCode());
-		codes.add(ResultCode.CATEGORY_ALREADY_EXISTS.getCode());
-		codes.add(ResultCode.INVALID_COMMAND.getCode());
-		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		codes.add(CategoryCreatedResult.CODE);
+		codes.add(CreateCategoryFailedNameAlreadyExistResult.CODE);
+		codes.add(InvalidCommandResult.CODE);
+		codes.add(InternalErrorResult.CODE);
 
 		return codes;
 	}

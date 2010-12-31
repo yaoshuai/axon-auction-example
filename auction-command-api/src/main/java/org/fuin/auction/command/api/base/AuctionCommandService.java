@@ -15,14 +15,14 @@
  */
 package org.fuin.auction.command.api.base;
 
-import org.fuin.auction.command.api.support.Command;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.common.Operation;
+import org.fuin.auction.common.OperationResult;
 
 /**
  * Service for sending commands to the command server - This is implemented
  * directly by the command server.<br>
  * <br>
- * CAUTION: The {@link CommandResult} is NOT meant to be a way to return
+ * CAUTION: The {@link OperationResult} is NOT meant to be a way to return
  * arbitrary results.<br>
  * <br>
  * Sending a command should be in most cases a fire-and-forget affair returning
@@ -41,6 +41,6 @@ public interface AuctionCommandService {
 	 * 
 	 * @return Result.
 	 */
-	public CommandResult send(Command command);
+	public OperationResult send(Operation command);
 
 }

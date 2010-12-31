@@ -13,27 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.domain;
-
-import org.fuin.auction.common.UserState;
+package org.fuin.auction.common;
 
 /**
- * The state of the user is not as expected.
+ * Type of an operation result.
  */
-public final class IllegalUserStateException extends AbstractIllegalStateException {
+public enum OperationResultType {
 
-	private static final long serialVersionUID = -4791410689239680399L;
+	/** The operation was successful. */
+	SUCCESS,
 
-	/**
-	 * Constructor with states.
-	 * 
-	 * @param currentState
-	 *            Current state.
-	 * @param expected
-	 *            Expected states.
-	 */
-	public IllegalUserStateException(final UserState currentState, final UserState... expected) {
-		super(currentState, expected);
-	}
+	/** The operation was partially successful. */
+	WARNING,
+
+	/** The operation failed for some reason. */
+	ERROR
 
 }

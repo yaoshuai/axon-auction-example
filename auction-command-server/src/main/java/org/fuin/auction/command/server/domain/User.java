@@ -15,6 +15,9 @@
  */
 package org.fuin.auction.command.server.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.axonframework.domain.AggregateIdentifier;
 import org.fuin.auction.command.server.events.UserCreatedEvent;
 import org.fuin.auction.command.server.events.UserEmailVerifiedEvent;
@@ -79,7 +82,10 @@ public final class User extends AbstractUser {
 	        SecurityTokenException {
 
 		if (!(getUserState().equals(UserState.NEW) || getUserState().equals(UserState.RESET))) {
-			throw new IllegalUserStateException(getUserState(), UserState.NEW, UserState.RESET);
+			final List<UserState> expected = new ArrayList<UserState>();
+			expected.add(UserState.NEW);
+			expected.add(UserState.RESET);
+			throw new IllegalUserStateException(getUserState(), expected);
 		}
 		if (!getVerificationToken().toString().equals(token)) {
 			throw new SecurityTokenException();

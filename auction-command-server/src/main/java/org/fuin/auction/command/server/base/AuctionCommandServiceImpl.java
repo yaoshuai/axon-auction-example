@@ -22,10 +22,10 @@ import javax.inject.Inject;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.callbacks.FutureCallback;
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.Command;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.api.base.InvalidCommandResult;
+import org.fuin.auction.common.InternalErrorResult;
+import org.fuin.auction.common.Operation;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.objects4j.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	}
 
 	@Override
-	public final CommandResult send(final Command command) {
+	public final OperationResult send(final Operation command) {
 
 		try {
 			if (LOG.isDebugEnabled()) {
@@ -59,9 +59,9 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 			}
 			validateCommand(command);
 
-			final FutureCallback<CommandResult> callback = new FutureCallback<CommandResult>();
+			final FutureCallback<OperationResult> callback = new FutureCallback<OperationResult>();
 			commandBus.dispatch(command, callback);
-			final CommandResult result = callback.get();
+			final OperationResult result = callback.get();
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Command result: " + result.toTraceString());
 			}
@@ -71,20 +71,20 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
 		} catch (final InvalidCommandException ex) {
 			LOG.error("Invalid command: " + command.toTraceString(), ex);
-			return new VoidResult(ResultCode.INVALID_COMMAND);
+			return new InvalidCommandResult();
 		} catch (final ExecutionException ex) {
 			LOG.error("Error executing command: " + command.toTraceString(), ex);
-			return new VoidResult(ResultCode.INTERNAL_ERROR);
+			return new InternalErrorResult();
 		} catch (final InvalidResultException ex) {
 			LOG.error("Invalid result: " + ex.getResult().toTraceString() + ", command: "
 			        + command.toTraceString(), ex);
-			return new VoidResult(ResultCode.INTERNAL_ERROR);
+			return new InternalErrorResult();
 		} catch (final InterruptedException ex) {
 			LOG.error("Interrupted error: " + command.toTraceString(), ex);
-			return new VoidResult(ResultCode.INTERNAL_ERROR);
+			return new InternalErrorResult();
 		} catch (final RuntimeException ex) {
 			LOG.error("Internal error: " + command.toTraceString(), ex);
-			return new VoidResult(ResultCode.INTERNAL_ERROR);
+			return new InternalErrorResult();
 		}
 
 	}
@@ -98,7 +98,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	 * @throws InvalidCommandException
 	 *             The command was invalid.
 	 */
-	private void validateCommand(final Command command) throws InvalidCommandException {
+	private void validateCommand(final Operation command) throws InvalidCommandException {
 		try {
 			// Don't let invalid commands get through
 			Contract.requireValid(command);
@@ -116,7 +116,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 	 * @throws InvalidResultException
 	 *             The result was invalid.
 	 */
-	private void validateResult(final CommandResult result) throws InvalidResultException {
+	private void validateResult(final OperationResult result) throws InvalidResultException {
 		try {
 			Contract.requireValid(result);
 		} catch (final IllegalStateException ex) {

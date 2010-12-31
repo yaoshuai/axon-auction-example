@@ -15,6 +15,10 @@
  */
 package org.fuin.auction.command.server.base;
 
+import org.fuin.auction.command.server.domain.CategoryNameAlreadyExistException;
+import org.fuin.auction.command.server.domain.UserEmailAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameEmailCombinationAlreadyExistsException;
 import org.fuin.auction.common.CategoryName;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.UserName;

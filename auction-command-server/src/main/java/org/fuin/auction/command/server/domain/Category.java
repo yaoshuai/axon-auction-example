@@ -15,6 +15,9 @@
  */
 package org.fuin.auction.command.server.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.axonframework.domain.AggregateIdentifier;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.fuin.auction.command.server.events.CategoryCreatedEvent;
@@ -60,7 +63,9 @@ public final class Category extends AbstractCategory {
 	 */
 	public final void markForDeletion() throws IllegalCategoryStateException {
 		if (!getState().equals(CategoryState.ACTIVE)) {
-			throw new IllegalCategoryStateException(getState(), CategoryState.ACTIVE);
+			final List<CategoryState> expected = new ArrayList<CategoryState>();
+			expected.add(CategoryState.ACTIVE);
+			throw new IllegalCategoryStateException(getState(), expected);
 		}
 		apply(new CategoryMarkedForDeletionEvent());
 	}
@@ -73,7 +78,9 @@ public final class Category extends AbstractCategory {
 	 */
 	public final void delete() throws IllegalCategoryStateException {
 		if (!getState().equals(CategoryState.MARKED_FOR_DELETION)) {
-			throw new IllegalCategoryStateException(getState(), CategoryState.MARKED_FOR_DELETION);
+			final List<CategoryState> expected = new ArrayList<CategoryState>();
+			expected.add(CategoryState.MARKED_FOR_DELETION);
+			throw new IllegalCategoryStateException(getState(), expected);
 		}
 		apply(new CategoryDeletedEvent());
 	}

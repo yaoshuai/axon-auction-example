@@ -21,7 +21,8 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.common.InternalErrorResult;
+import org.fuin.auction.common.Operation;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
@@ -32,11 +33,11 @@ import org.fuin.objects4j.validation.UserNameStr;
 /**
  * Registers a new user.
  */
-public final class RegisterUserCommand implements Command {
+public final class RegisterUserCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
-	/** Human readable unique name of the user. */
+	/**  */
 	@NotNull
 	@UserNameStr
 	@Label("User name")
@@ -50,7 +51,7 @@ public final class RegisterUserCommand implements Command {
 	@TextField
 	private String password;
 
-	/** Email address. */
+	/**  */
 	@NotNull
 	@EmailAddressStr
 	@Label("Email address")
@@ -68,11 +69,9 @@ public final class RegisterUserCommand implements Command {
 	 * Constructor with all attributes.
 	 * 
 	 * @param userName
-	 *            Human readable unique name of the user.
 	 * @param password
 	 *            Clear text password.
 	 * @param email
-	 *            Email address.
 	 * 
 	 */
 	public RegisterUserCommand(final String userName, final String password, final String email) {
@@ -89,7 +88,7 @@ public final class RegisterUserCommand implements Command {
 	}
 
 	/**
-	 * Sets: Human readable unique name of the user.
+	 * Sets:
 	 * 
 	 * @param userName
 	 *            Value to set.
@@ -99,7 +98,7 @@ public final class RegisterUserCommand implements Command {
 	}
 
 	/**
-	 * Returns: Human readable unique name of the user.
+	 * Returns:
 	 * 
 	 * @return UserName
 	 */
@@ -127,7 +126,7 @@ public final class RegisterUserCommand implements Command {
 	}
 
 	/**
-	 * Sets: Email address.
+	 * Sets:
 	 * 
 	 * @param email
 	 *            Value to set.
@@ -137,7 +136,7 @@ public final class RegisterUserCommand implements Command {
 	}
 
 	/**
-	 * Returns: Email address.
+	 * Returns:
 	 * 
 	 * @return Email
 	 */
@@ -154,12 +153,12 @@ public final class RegisterUserCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.USER_SUCCESSFULLY_REGISTERED.getCode());
-		codes.add(ResultCode.DUPLICATE_EMAIL.getCode());
-		codes.add(ResultCode.DUPLICATE_USERNAME_EMAIL_COMBINATION.getCode());
-		codes.add(ResultCode.DUPLICATE_USERNAME.getCode());
-		codes.add(ResultCode.INVALID_COMMAND.getCode());
-		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		codes.add(UserCreatedResult.CODE);
+		codes.add(RegisterUserFailedUserEmailAlreadyExistsResult.CODE);
+		codes.add(RegisterUserFailedUserNameEmailCombinationAlreadyExistsResult.CODE);
+		codes.add(RegisterUserFailedUserNameAlreadyExistsResult.CODE);
+		codes.add(InvalidCommandResult.CODE);
+		codes.add(InternalErrorResult.CODE);
 
 		return codes;
 	}

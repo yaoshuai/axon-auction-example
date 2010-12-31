@@ -21,6 +21,10 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.fuin.auction.command.server.domain.CategoryNameAlreadyExistException;
+import org.fuin.auction.command.server.domain.UserEmailAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameEmailCombinationAlreadyExistsException;
 import org.fuin.auction.command.server.utils.AbstractJdbcHelper;
 import org.fuin.auction.common.CategoryName;
 import org.fuin.objects4j.EmailAddress;
@@ -60,12 +64,12 @@ public final class ConstraintSetJdbc extends AbstractJdbcHelper implements Const
 				final UserNameEmail row = select(userName, email);
 				if (row.getUserName().equals(userNameStr)) {
 					if (row.getEmail().equals(emailStr)) {
-						throw new UserNameEmailCombinationAlreadyExistsException(userName, email);
+						throw new UserNameEmailCombinationAlreadyExistsException();
 					}
-					throw new UserNameAlreadyExistsException(userName);
+					throw new UserNameAlreadyExistsException();
 				} else {
 					if (row.getEmail().equals(emailStr)) {
-						throw new UserEmailAlreadyExistsException(email);
+						throw new UserEmailAlreadyExistsException();
 					}
 					// This should never happen because it doesn't fit to there
 					// where clause.
@@ -101,7 +105,7 @@ public final class ConstraintSetJdbc extends AbstractJdbcHelper implements Const
 			if (!ex.getSQLState().equals("23505")) {
 				throw new RuntimeException(ex);
 			}
-			throw new CategoryNameAlreadyExistException(categoryName);
+			throw new CategoryNameAlreadyExistException();
 		}
 	}
 

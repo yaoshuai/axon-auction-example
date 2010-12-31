@@ -28,7 +28,7 @@ import org.fuin.objects4j.Contract;
 public final class CategoryCreatedEvent extends DomainEvent implements ExtendedDomainEvent {
 	private static final long serialVersionUID = 100L;
 
-	/** Decriptive name. */
+	/**  */
 	private CategoryName name;
 
 	/**
@@ -42,7 +42,6 @@ public final class CategoryCreatedEvent extends DomainEvent implements ExtendedD
 	 * Constructor with all attributes.
 	 * 
 	 * @param name
-	 *            Decriptive name.
 	 * 
 	 */
 	public CategoryCreatedEvent(final CategoryName name) {
@@ -52,7 +51,7 @@ public final class CategoryCreatedEvent extends DomainEvent implements ExtendedD
 	}
 
 	/**
-	 * Returns: Decriptive name.
+	 * Returns:
 	 * 
 	 * @return Name
 	 */

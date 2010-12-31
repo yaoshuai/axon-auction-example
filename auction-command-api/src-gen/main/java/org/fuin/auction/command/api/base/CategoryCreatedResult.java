@@ -15,67 +15,64 @@
  */
 package org.fuin.auction.command.api.base;
 
+import static org.fuin.auction.common.OperationResultType.SUCCESS;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.objects4j.Contract;
+import org.fuin.auction.common.AbstractOperationResult;
+import org.fuin.auction.common.KeyValue;
+
+// GENERATED CODE - DO NOT EDIT!
 
 /**
- * Result of successfully creating a new aggregate.
+ * A new category was created and is in state ACTIVE.
  */
-public final class AggregateIdentifierResult extends AbstractCommandResult {
+public final class CategoryCreatedResult extends AbstractOperationResult {
+	private static final long serialVersionUID = 100L;
 
-	private static final long serialVersionUID = 7124123040949548640L;
+	/** Unique ID of the result. */
+	public static final int CODE = 111;
 
+	/** Unique identifier. */
 	@NotNull
-	private String id;
+	private Long id;
 
 	/**
-	 * Default constructor.
+	 * Default constructor for serialization.
 	 */
-	public AggregateIdentifierResult() {
-		super();
+	protected CategoryCreatedResult() {
+		super(CODE, SUCCESS, "The new category was created successfully");
 	}
 
 	/**
-	 * Constructor with id.
+	 * Constructor with all attributes.
 	 * 
-	 * @param resultCode
-	 *            Result code.
 	 * @param id
-	 *            Unique internal id of the user.
+	 *            Unique identifier.
+	 * 
 	 */
-	public AggregateIdentifierResult(final ResultCode resultCode, final String id) {
-		super(resultCode);
+	public CategoryCreatedResult(final Long id) {
+		super(CODE, SUCCESS, replace("The new category was created successfully", new KeyValue(
+		        "id", id)));
 		this.id = id;
-		Contract.requireValid(this);
 	}
 
 	/**
-	 * Returns the new ID.
+	 * Returns: Unique identifier.
 	 * 
-	 * @return Unique internal id.
+	 * @return Id
 	 */
-	public final String getId() {
+	public final Long getId() {
 		return id;
-	}
-
-	/**
-	 * Appends all properties to the builder.
-	 * 
-	 * @param builder
-	 *            Builder to append key/values.
-	 */
-	protected void appendRegisterUserCommandResult(final ToStringBuilder builder) {
-		builder.append("id", id);
 	}
 
 	@Override
 	public final String toTraceString() {
 		final ToStringBuilder builder = new ToStringBuilder(this);
 		appendAbstractCommandResult(builder);
-		appendRegisterUserCommandResult(builder);
+		builder.append("id", id);
+
 		return builder.toString();
 	}
-
 }

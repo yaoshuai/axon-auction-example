@@ -18,12 +18,11 @@ package org.fuin.auction.command.server.handler;
 import javax.inject.Named;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.fuin.auction.command.api.base.AggregateIdentifierResult;
+import org.fuin.auction.command.api.base.CategoryMarkedForDeletionResult;
 import org.fuin.auction.command.api.base.MarkCategoryForDeletionCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.server.domain.Category;
 import org.fuin.auction.command.server.domain.IllegalCategoryStateException;
+import org.fuin.auction.common.OperationResult;
 
 /**
  * Handler for managing {@link MarkCategoryForDeletionCommand} commands.
@@ -33,7 +32,7 @@ public class MarkCategoryForDeletionCommandHandler extends
         AbstractMarkCategoryForDeletionCommandHandler {
 
 	@Override
-	protected final CommandResult handleIntern(final MarkCategoryForDeletionCommand command)
+	protected final OperationResult handleIntern(final MarkCategoryForDeletionCommand command)
 	        throws IllegalCategoryStateException {
 
 		final AggregateIdentifier id = toAggregateId(command.getAggregateId());
@@ -41,8 +40,7 @@ public class MarkCategoryForDeletionCommandHandler extends
 		final Category category = getRepository().load(id);
 		category.markForDeletion();
 
-		return new AggregateIdentifierResult(ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION,
-		        category.getIdentifier().toString());
+		return new CategoryMarkedForDeletionResult();
 
 	}
 

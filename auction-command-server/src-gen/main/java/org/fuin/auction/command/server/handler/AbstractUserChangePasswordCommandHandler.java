@@ -17,11 +17,11 @@ package org.fuin.auction.command.server.handler;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.AggregateNotFoundException;
-import org.fuin.auction.command.api.base.ResultCode;
+import org.fuin.auction.command.api.base.AggregateIdNotFoundResult;
 import org.fuin.auction.command.api.base.UserChangePasswordCommand;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.api.base.UserChangePasswordMismatchResult;
 import org.fuin.auction.command.server.domain.PasswordMismatchException;
+import org.fuin.auction.common.OperationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public abstract class AbstractUserChangePasswordCommandHandler extends AbstractU
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final UserChangePasswordCommand command) {
+	public final OperationResult handle(final UserChangePasswordCommand command) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
 		}
@@ -53,11 +53,11 @@ public abstract class AbstractUserChangePasswordCommandHandler extends AbstractU
 		} catch (final PasswordMismatchException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.PASSWORD_WRONG);
+			return new UserChangePasswordMismatchResult();
 		} catch (final AggregateNotFoundException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.ID_NOT_FOUND);
+			return new AggregateIdNotFoundResult();
 		}
 	}
 
@@ -70,8 +70,9 @@ public abstract class AbstractUserChangePasswordCommandHandler extends AbstractU
 	 * @return Result of the command.
 	 * 
 	 * @throws PasswordMismatchException
-	 *             The old password is not equal to the stored password.
+	 *             The user's password was not equal to the old password sent
+	 *             with the command.
 	 */
-	protected abstract CommandResult handleIntern(final UserChangePasswordCommand command)
+	protected abstract OperationResult handleIntern(final UserChangePasswordCommand command)
 	        throws PasswordMismatchException;
 }

@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.base;
+package org.fuin.auction.command.server.domain;
 
-import org.fuin.objects4j.UserName;
+// GENERATED CODE - DO NOT EDIT!
 
 /**
- * A user id is already registered.
+ * The combination of user name and email is already registered
  */
-public final class UserNameAlreadyExistsException extends Exception {
-
+public class UserNameEmailCombinationAlreadyExistsException extends AbstractBaseException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with user name.
-	 * 
-	 * @param userName
-	 *            User name.
+	 * Default constructor.
 	 */
-	public UserNameAlreadyExistsException(final UserName userName) {
-		super("The user name '" + userName + "' is already assigned to another user!");
+	public UserNameEmailCombinationAlreadyExistsException() {
+		super("The combination of user name and email is already registered");
 	}
-
 }

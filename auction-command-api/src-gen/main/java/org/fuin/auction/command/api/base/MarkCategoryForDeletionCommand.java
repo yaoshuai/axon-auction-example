@@ -21,13 +21,14 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.common.InternalErrorResult;
+import org.fuin.auction.common.Operation;
 import org.fuin.objects4j.Contract;
 
 /**
  * Marks an existing category for deletion.
  */
-public final class MarkCategoryForDeletionCommand implements Command {
+public final class MarkCategoryForDeletionCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
@@ -89,11 +90,11 @@ public final class MarkCategoryForDeletionCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION.getCode());
-		codes.add(ResultCode.CATEGORY_TO_MARK_NOT_ACTIVE.getCode());
-		codes.add(ResultCode.ID_NOT_FOUND.getCode());
-		codes.add(ResultCode.INVALID_COMMAND.getCode());
-		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		codes.add(CategoryMarkedForDeletionResult.CODE);
+		codes.add(MarkCategoryForDeletionFailedIllegalStateResult.CODE);
+		codes.add(AggregateIdNotFoundResult.CODE);
+		codes.add(InvalidCommandResult.CODE);
+		codes.add(InternalErrorResult.CODE);
 
 		return codes;
 	}

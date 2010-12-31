@@ -12,8 +12,10 @@
 		<dependsOn package="java.text" />
 		<dependsOn package="java.util" />
 		<dependsOn package="javax.validation" />
+		<dependsOn package="org.apache.commons.lang" />
 		<dependsOn package="org.apache.commons.lang.builder" />
 		<dependsOn package="org.fuin.objects4j" />
+		<dependsOn package="org.fuin.utils4j" />
 	</alwaysAllowed>
 
 	<!-- It's forbidden for all classes to use this (in production code) -->

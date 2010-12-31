@@ -98,7 +98,7 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 		final Long id = Long.parseLong(message.getAggregateId());
-		categoryDao.persist(new Category(id, message.getName(), true));
+		categoryDao.persist(new Category(id, message.getName().toString(), true));
 
 	}
 
@@ -132,8 +132,9 @@ public class AuctionMessageListener implements MessageListener {
 			LOG.debug("Handle: " + message.toTraceString());
 		}
 
-		userDao.persist(new AuctionUser(message.getAggregateId(), message.getUserName(), message
-		        .getEmail(), UserState.NEW, message.getPassword(), message.getSecurityToken()));
+		userDao.persist(new AuctionUser(message.getAggregateId(), message.getUserName().toString(),
+		        message.getEmail().toString(), UserState.NEW, message.getPassword().toString(),
+		        message.getSecurityToken().toString()));
 
 	}
 

@@ -23,8 +23,8 @@
 		packages are forbidden)
 	-->
 	<allowed>
-		<package name="org.fuin.auction.command.api.base" comment="Only depends on support package">
-			<dependsOn package="org.fuin.auction.command.api.support" />
+		<package name="org.fuin.auction.command.api.base" comment="Only depends on auction-common">
+			<dependsOn package="org.fuin.auction.common" />
 		</package>
 		<package name="org.fuin.auction.command.api.support" comment="Only depends on auction-common">
 			<dependsOn package="org.fuin.auction.common" />

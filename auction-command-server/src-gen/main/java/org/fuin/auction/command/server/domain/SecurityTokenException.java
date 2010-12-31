@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.base;
+package org.fuin.auction.command.server.domain;
 
-import org.fuin.objects4j.EmailAddress;
+// GENERATED CODE - DO NOT EDIT!
 
 /**
- * The email is already used for another user account.
+ * The given token was not equal to the user's verification token
  */
-public final class UserEmailAlreadyExistsException extends Exception {
-
+public class SecurityTokenException extends AbstractBaseException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with email.
-	 * 
-	 * @param email
-	 *            Email address.
+	 * Default constructor.
 	 */
-	public UserEmailAlreadyExistsException(final EmailAddress email) {
-		super("The email address '" + email + "' is already assigned to another user!");
+	public SecurityTokenException() {
+		super("The given token was not equal to the user's verification token");
 	}
-
 }

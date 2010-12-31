@@ -18,12 +18,11 @@ package org.fuin.auction.command.server.handler;
 import javax.inject.Named;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.auction.command.api.base.UserChangePasswordCommand;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.api.base.UserPasswordChangedResult;
 import org.fuin.auction.command.server.domain.PasswordMismatchException;
 import org.fuin.auction.command.server.domain.User;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.objects4j.Password;
 
 /**
@@ -33,7 +32,7 @@ import org.fuin.objects4j.Password;
 public class UserChangePasswordCommandHandler extends AbstractUserChangePasswordCommandHandler {
 
 	@Override
-	protected final CommandResult handleIntern(final UserChangePasswordCommand command)
+	protected final OperationResult handleIntern(final UserChangePasswordCommand command)
 	        throws PasswordMismatchException {
 
 		final AggregateIdentifier id = toAggregateId(command.getAggregateId());
@@ -44,7 +43,7 @@ public class UserChangePasswordCommandHandler extends AbstractUserChangePassword
 
 		user.changePassword(oldPw, newPw);
 
-		return new VoidResult(ResultCode.PASSWORD_SUCCESSFULLY_CHANGED);
+		return new UserPasswordChangedResult();
 
 	}
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.support;
+package org.fuin.auction.common;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -22,9 +22,9 @@ import org.fuin.objects4j.Ensures;
 import org.fuin.objects4j.TraceStringCapable;
 
 /**
- * Common behavior shared by all commands.
+ * Common behavior shared by all operations.
  */
-public interface Command extends Serializable, TraceStringCapable {
+public interface Operation extends Serializable, TraceStringCapable {
 
 	/**
 	 * Returns the version of this instance. This may differ from the

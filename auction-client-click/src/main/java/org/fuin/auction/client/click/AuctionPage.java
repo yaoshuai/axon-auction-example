@@ -31,9 +31,7 @@ import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.command.api.support.MessageKeyValue;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.objects4j.RenderClassInfo;
 import org.fuin.objects4j.RenderFieldInfo;
 import org.fuin.objects4j.TextFieldInfo;
@@ -167,7 +165,7 @@ public abstract class AuctionPage extends Page {
 	 * 
 	 * @return Formatted and localized message or <code>null</code>.
 	 */
-	protected final String getMessage(final Form form, final CommandResult result) {
+	protected final String getMessage(final Form form, final OperationResult result) {
 
 		form.clearErrors();
 		if (result.isSuccess()) {
@@ -187,16 +185,14 @@ public abstract class AuctionPage extends Page {
 	 * 
 	 * @return Formatted and localized message.
 	 */
-	protected final String getMessage(final CommandResult result) {
+	protected final String getMessage(final OperationResult result) {
 
-		if (!ResultCode.exists(result.getCode())) {
+		final String msg = getMessage(result.getCodeStr());
+		if (msg == null) {
 			// We received an unknown (newer) message code.
 			// Seems as if this client is not up-to-date
 			return result.getText();
 		}
-		final List<MessageKeyValue> msgKeyValues = result.getMessageKeyValues();
-		final String msg = getMessage(result.getCodeStr());
-		// FIXME michael Handle key/values
 		return msg;
 
 	}

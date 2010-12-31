@@ -18,15 +18,14 @@ package org.fuin.auction.command.server.handler;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.fuin.auction.command.api.base.AggregateIdentifierResult;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.api.base.UserCreatedResult;
 import org.fuin.auction.command.server.base.ConstraintSet;
-import org.fuin.auction.command.server.base.UserEmailAlreadyExistsException;
-import org.fuin.auction.command.server.base.UserNameAlreadyExistsException;
-import org.fuin.auction.command.server.base.UserNameEmailCombinationAlreadyExistsException;
 import org.fuin.auction.command.server.domain.User;
+import org.fuin.auction.command.server.domain.UserEmailAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameEmailCombinationAlreadyExistsException;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.objects4j.EmailAddress;
 import org.fuin.objects4j.Password;
 import org.fuin.objects4j.UserName;
@@ -41,7 +40,7 @@ public class RegisterUserCommandHandler extends AbstractRegisterUserCommandHandl
 	private ConstraintSet constraintSet;
 
 	@Override
-	protected final CommandResult handleIntern(final RegisterUserCommand command)
+	protected final OperationResult handleIntern(final RegisterUserCommand command)
 	        throws UserEmailAlreadyExistsException, UserNameEmailCombinationAlreadyExistsException,
 	        UserNameAlreadyExistsException {
 
@@ -55,8 +54,7 @@ public class RegisterUserCommandHandler extends AbstractRegisterUserCommandHandl
 		        emailAddress);
 		getRepository().add(user);
 
-		return new AggregateIdentifierResult(ResultCode.USER_SUCCESSFULLY_REGISTERED, user
-		        .getIdentifier().toString());
+		return new UserCreatedResult(user.getIdentifier().toString());
 
 	}
 

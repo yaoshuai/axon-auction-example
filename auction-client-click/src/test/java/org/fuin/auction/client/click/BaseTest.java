@@ -21,9 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.Iterator;
 import java.util.Properties;
 
-import org.fuin.auction.command.api.base.ResultCode;
 import org.fuin.units4j.AssertCoverage;
 import org.fuin.units4j.AssertDependencies;
 import org.junit.Ignore;
@@ -50,18 +50,21 @@ public class BaseTest {
 	// CHECKSTYLE:OFF Allow conditional operator for the test
 	public final void testEveryResultCodeHasAMessage() throws MalformedURLException {
 
+		final Properties messages = loadProperties("/auction-command-api-messages.properties");
+
 		final StringBuffer sb = new StringBuffer();
 		final String[] locales = new String[] { "", "de" };
 		for (final String locale : locales) {
 			final Properties props = loadProperties("/click-page"
 			        + ("".equals(locale) ? "" : "_" + locale) + ".properties");
-			final ResultCode[] codes = ResultCode.values();
-			for (final ResultCode code : codes) {
-				if (!props.containsKey(code.getCodeStr())) {
+			final Iterator<?> it = messages.keySet().iterator();
+			while (it.hasNext()) {
+				final String key = (String) it.next();
+				if (!props.containsKey(key)) {
 					if (sb.length() > 0) {
 						sb.append(", ");
 					}
-					sb.append(("".equals(locale) ? "" : locale + "-") + code.getCodeStr());
+					sb.append(("".equals(locale) ? "" : locale + "-") + key);
 				}
 			}
 		}

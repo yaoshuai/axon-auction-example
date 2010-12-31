@@ -19,13 +19,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.axonframework.domain.AggregateIdentifier;
-import org.fuin.auction.command.api.base.ResultCode;
+import org.fuin.auction.command.api.base.UserEmailVerifiedResult;
 import org.fuin.auction.command.api.base.UserVerifyEmailCommand;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
 import org.fuin.auction.command.server.domain.IllegalUserStateException;
 import org.fuin.auction.command.server.domain.SecurityTokenException;
 import org.fuin.auction.command.server.domain.User;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.auction.query.api.AuctionQueryService;
 
 /**
@@ -39,7 +38,7 @@ public class UserVerifyEmailCommandHandler extends AbstractUserVerifyEmailComman
 	private AuctionQueryService queryService;
 
 	@Override
-	protected final CommandResult handleIntern(final UserVerifyEmailCommand command)
+	protected final OperationResult handleIntern(final UserVerifyEmailCommand command)
 	        throws IllegalUserStateException, SecurityTokenException {
 
 		final String securityToken = command.getSecurityToken();
@@ -55,7 +54,7 @@ public class UserVerifyEmailCommandHandler extends AbstractUserVerifyEmailComman
 
 		user.verifyEmail(securityToken);
 
-		return new VoidResult(ResultCode.USER_EMAIL_VERIFIED);
+		return new UserEmailVerifiedResult();
 
 	}
 
