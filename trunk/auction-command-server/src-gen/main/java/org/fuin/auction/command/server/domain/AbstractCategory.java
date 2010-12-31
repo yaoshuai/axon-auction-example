@@ -106,7 +106,7 @@ public abstract class AbstractCategory extends AbstractAnnotatedAggregateRoot im
 	 * fired: {@link CategoryDeletedEvent} *
 	 * 
 	 * @throws IllegalCategoryStateException
-	 *             The category is not marked for deletion.
+	 *             The category is not in state MARKED_FOR_DELETION.
 	 */
 	public abstract void delete() throws IllegalCategoryStateException;
 

@@ -173,8 +173,9 @@ public abstract class AbstractUser extends AbstractAnnotatedAggregateRoot implem
 	 * @param newPassword
 	 *            New clear text password.
 	 * 
-	 * @throws PasswordMismatchException
-	 *             The old password is not equal to the stored password.
+	 @throws PasswordMismatchException
+	 *             The user's password was not equal to the old password sent
+	 *             with the command.
 	 */
 	public abstract void changePassword(final Password oldPassword, final Password newPassword)
 	        throws PasswordMismatchException;
@@ -186,11 +187,10 @@ public abstract class AbstractUser extends AbstractAnnotatedAggregateRoot implem
 	 * @param securityToken
 	 *            Token to compare with the internal token.
 	 * 
-	 * @throws IllegalUserStateException
+	 @throws IllegalUserStateException
 	 *             The state of the user was not NEW or RESET.
 	 * @throws SecurityTokenException
-	 *             The given token was not equal to the user's verification
-	 *             token.
+	 *             The security token was not equal to the one sent with email.
 	 */
 	public abstract void verifyEmail(final String securityToken) throws IllegalUserStateException,
 	        SecurityTokenException;

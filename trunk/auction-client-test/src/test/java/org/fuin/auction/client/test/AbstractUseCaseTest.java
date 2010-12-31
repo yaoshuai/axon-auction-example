@@ -23,10 +23,8 @@ import java.sql.SQLException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import org.fuin.auction.command.api.base.AggregateIdentifierResult;
 import org.fuin.auction.command.api.base.AuctionCommandService;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.auction.query.api.AuctionQueryService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -89,18 +87,13 @@ public abstract class AbstractUseCaseTest extends AbstractJdbcHelper {
 		return validator;
 	}
 
-	protected final void assertSuccess(final CommandResult result, final ResultCode code) {
+	protected final void assertSuccess(final OperationResult result,
+	        final Class<? extends OperationResult> expectedResultClass) {
 		assertThat(result).isNotNull();
 		assertThat(result.isSuccess()).as(result.getText()).isTrue();
 		assertThat(result.isError()).isFalse();
 		assertThat(result.isWarning()).isFalse();
-		assertThat(result.getCode()).isEqualTo(code.getCode());
-	}
-
-	protected final void assertAggregateIdentifierResult(final CommandResult result) {
-		assertThat(result).isInstanceOf(AggregateIdentifierResult.class);
-		final AggregateIdentifierResult aiResult = (AggregateIdentifierResult) result;
-		assertThat(aiResult.getId()).isNotNull();
+		assertThat(result).isInstanceOf(expectedResultClass);
 	}
 
 	protected final void waitUntil(final Condition condition, final int seconds) {

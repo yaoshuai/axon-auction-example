@@ -15,18 +15,18 @@
  */
 package org.fuin.auction.command.server.domain;
 
-/**
- * The given security token is not as expected.
- */
-public class SecurityTokenException extends Exception {
+// GENERATED CODE - DO NOT EDIT!
 
+/**
+ * The email address is already registered by another user
+ */
+public class UserEmailAlreadyExistsException extends AbstractBaseException {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor.
 	 */
-	public SecurityTokenException() {
-		super("The given security token is invalid");
+	public UserEmailAlreadyExistsException() {
+		super("The email address is already registered by another user");
 	}
-
 }

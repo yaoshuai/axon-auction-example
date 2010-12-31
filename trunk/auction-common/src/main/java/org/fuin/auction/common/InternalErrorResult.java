@@ -13,20 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.domain;
+package org.fuin.auction.common;
+
+import static org.fuin.auction.common.OperationResultType.ERROR;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * The given password does not match the stored one.
+ * An internal error occurred.
  */
-public class PasswordMismatchException extends Exception {
+public final class InternalErrorResult extends AbstractOperationResult {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
+
+	/** Unique error code. */
+	public static final int CODE = 1;
 
 	/**
 	 * Default constructor.
 	 */
-	public PasswordMismatchException() {
-		super("The given password does not match the stored one");
+	public InternalErrorResult() {
+		super(CODE, ERROR, "An internal error occurred");
+	}
+
+	@Override
+	public final String toTraceString() {
+		final ToStringBuilder builder = new ToStringBuilder(this);
+		appendAbstractCommandResult(builder);
+		return builder.toString();
 	}
 
 }

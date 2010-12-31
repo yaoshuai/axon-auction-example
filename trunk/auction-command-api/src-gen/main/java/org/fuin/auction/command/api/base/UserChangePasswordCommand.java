@@ -21,7 +21,8 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.common.InternalErrorResult;
+import org.fuin.auction.common.Operation;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
@@ -31,7 +32,7 @@ import org.fuin.objects4j.validation.UUIDStr;
 /**
  * Changes the user's password.
  */
-public final class UserChangePasswordCommand implements Command {
+public final class UserChangePasswordCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
@@ -152,11 +153,11 @@ public final class UserChangePasswordCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.PASSWORD_SUCCESSFULLY_CHANGED.getCode());
-		codes.add(ResultCode.PASSWORD_WRONG.getCode());
-		codes.add(ResultCode.ID_NOT_FOUND.getCode());
-		codes.add(ResultCode.INVALID_COMMAND.getCode());
-		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		codes.add(UserPasswordChangedResult.CODE);
+		codes.add(UserChangePasswordMismatchResult.CODE);
+		codes.add(AggregateIdNotFoundResult.CODE);
+		codes.add(InvalidCommandResult.CODE);
+		codes.add(InternalErrorResult.CODE);
 
 		return codes;
 	}

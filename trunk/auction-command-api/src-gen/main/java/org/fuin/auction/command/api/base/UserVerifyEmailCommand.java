@@ -21,7 +21,8 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.fuin.auction.command.api.support.Command;
+import org.fuin.auction.common.InternalErrorResult;
+import org.fuin.auction.common.Operation;
 import org.fuin.objects4j.Contract;
 import org.fuin.objects4j.Label;
 import org.fuin.objects4j.TextField;
@@ -29,7 +30,7 @@ import org.fuin.objects4j.TextField;
 /**
  * Verifies the user's email by checking the verification token.
  */
-public final class UserVerifyEmailCommand implements Command {
+public final class UserVerifyEmailCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
@@ -94,12 +95,12 @@ public final class UserVerifyEmailCommand implements Command {
 	@Override
 	public final Set<Integer> getResultCodes() {
 		final Set<Integer> codes = new HashSet<Integer>();
-		codes.add(ResultCode.USER_EMAIL_VERIFIED.getCode());
-		codes.add(ResultCode.ILLEGAL_USER_STATE.getCode());
-		codes.add(ResultCode.USER_EMAIL_VERIFICATION_FAILED.getCode());
-		codes.add(ResultCode.ID_NOT_FOUND.getCode());
-		codes.add(ResultCode.INVALID_COMMAND.getCode());
-		codes.add(ResultCode.INTERNAL_ERROR.getCode());
+		codes.add(UserEmailVerifiedResult.CODE);
+		codes.add(UserVerifyEmailFailedIllegalStateResult.CODE);
+		codes.add(UserVerifyEmailFailedTokenWrongResult.CODE);
+		codes.add(AggregateIdNotFoundResult.CODE);
+		codes.add(InvalidCommandResult.CODE);
+		codes.add(InternalErrorResult.CODE);
 
 		return codes;
 	}

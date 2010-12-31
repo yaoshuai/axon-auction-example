@@ -13,40 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.api.support;
+package org.fuin.auction.common;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.fuin.objects4j.Ensures;
 import org.fuin.objects4j.TraceStringCapable;
 
 /**
- * Result of executing a command.
+ * Result of executing an operation.
  */
-public interface CommandResult extends Serializable, TraceStringCapable {
+public interface OperationResult extends Serializable, TraceStringCapable {
 
 	/**
-	 * Returns the information if the command was successful.
+	 * Returns the information if the operation was successful.
 	 * 
-	 * @return If the command was executed without error or warning
+	 * @return If the operation was executed without error or warning
 	 *         <code>true</code> else <code>false</code>.
 	 */
 	public boolean isSuccess();
 
 	/**
-	 * Returns the information if the command was partly successful.
+	 * Returns the information if the operation was partly successful.
 	 * 
-	 * @return If the command was executed with a warning <code>true</code> else
-	 *         <code>false</code>.
+	 * @return If the operation was executed with a warning <code>true</code>
+	 *         else <code>false</code>.
 	 */
 	public boolean isWarning();
 
 	/**
-	 * Returns the information if the command was unsuccessful.
+	 * Returns the information if the operation was unsuccessful.
 	 * 
-	 * @return If the command was executed with an error <code>true</code> else
-	 *         <code>false</code>.
+	 * @return If the operation was executed with an error <code>true</code>
+	 *         else <code>false</code>.
 	 */
 	public boolean isError();
 
@@ -72,13 +71,5 @@ public interface CommandResult extends Serializable, TraceStringCapable {
 	 */
 	@Ensures("\result!=null")
 	public String getText();
-
-	/**
-	 * Returns a list of key/value pairs. The key/value pairs can be used to
-	 * localize an error message.
-	 * 
-	 * @return Key/values for localized messages or <code>null</code>.
-	 */
-	public List<MessageKeyValue> getMessageKeyValues();
 
 }

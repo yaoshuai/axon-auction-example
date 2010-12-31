@@ -19,7 +19,7 @@ import org.apache.click.control.Form;
 import org.apache.click.control.Submit;
 import org.apache.click.util.Bindable;
 import org.fuin.auction.command.api.base.UserVerifyEmailCommand;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.objects4j.RenderClassInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +77,7 @@ public final class VerifyEmailPage extends AuctionPage {
 
 		try {
 			final UserVerifyEmailCommand cmd = new UserVerifyEmailCommand(getSecurityToken());
-			final CommandResult result = getCommandService().send(cmd);
+			final OperationResult result = getCommandService().send(cmd);
 			msg = getMessage(form, result);
 		} catch (final RuntimeException ex) {
 			final String msg = getMessage(INTERNAL_ERROR);

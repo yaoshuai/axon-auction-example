@@ -17,11 +17,11 @@ package org.fuin.auction.command.server.handler;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.AggregateNotFoundException;
+import org.fuin.auction.command.api.base.AggregateIdNotFoundResult;
 import org.fuin.auction.command.api.base.MarkCategoryForDeletionCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.api.base.MarkCategoryForDeletionFailedIllegalStateResult;
 import org.fuin.auction.command.server.domain.IllegalCategoryStateException;
+import org.fuin.auction.common.OperationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public abstract class AbstractMarkCategoryForDeletionCommandHandler extends
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final MarkCategoryForDeletionCommand command) {
+	public final OperationResult handle(final MarkCategoryForDeletionCommand command) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
 		}
@@ -54,11 +54,12 @@ public abstract class AbstractMarkCategoryForDeletionCommandHandler extends
 		} catch (final IllegalCategoryStateException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.CATEGORY_TO_MARK_NOT_ACTIVE);
+			return new MarkCategoryForDeletionFailedIllegalStateResult(ex.getCurrent(), ex
+			        .getExpected());
 		} catch (final AggregateNotFoundException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.ID_NOT_FOUND);
+			return new AggregateIdNotFoundResult();
 		}
 	}
 
@@ -73,6 +74,6 @@ public abstract class AbstractMarkCategoryForDeletionCommandHandler extends
 	 * @throws IllegalCategoryStateException
 	 *             The category was not in an active state.
 	 */
-	protected abstract CommandResult handleIntern(final MarkCategoryForDeletionCommand command)
+	protected abstract OperationResult handleIntern(final MarkCategoryForDeletionCommand command)
 	        throws IllegalCategoryStateException;
 }

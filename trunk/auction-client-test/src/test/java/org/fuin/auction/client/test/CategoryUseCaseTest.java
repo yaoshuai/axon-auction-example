@@ -19,12 +19,13 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.UUID;
 
-import org.fuin.auction.command.api.base.AggregateIdentifierResult;
+import org.fuin.auction.command.api.base.CategoryCreatedResult;
+import org.fuin.auction.command.api.base.CategoryDeletedResult;
+import org.fuin.auction.command.api.base.CategoryMarkedForDeletionResult;
 import org.fuin.auction.command.api.base.CreateCategoryCommand;
 import org.fuin.auction.command.api.base.DeleteCategoryCommand;
 import org.fuin.auction.command.api.base.MarkCategoryForDeletionCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.common.OperationResult;
 import org.fuin.auction.query.api.CategoryDto;
 import org.junit.Test;
 
@@ -40,13 +41,14 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 		final String categoryName = UUID.randomUUID().toString();
 
 		// Create category
-		CommandResult result = getCommandService().send(new CreateCategoryCommand(categoryName));
-		assertSuccess(result, ResultCode.CATEGORY_SUCCESSFULLY_CREATED);
-		assertAggregateIdentifierResult(result);
+		OperationResult result = getCommandService().send(new CreateCategoryCommand(categoryName));
+		assertSuccess(result, CategoryCreatedResult.class);
+		final CategoryCreatedResult aiResult = (CategoryCreatedResult) result;
+		assertThat(aiResult.getId()).isNotNull();
+		assertThat(aiResult.getId()).isGreaterThan(0L);
 
 		waitUntilAtLeastOneCategoryIsAvailable();
 
-		final AggregateIdentifierResult aiResult = (AggregateIdentifierResult) result;
 		final CategoryDto categoryDto = new CategoryDto(aiResult.getId(), categoryName, true);
 		assertThat(getQueryService().findAllCategories()).contains(categoryDto);
 		assertThat(getQueryService().findAllActiveCategories()).contains(categoryDto);
@@ -54,7 +56,7 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 		// Mark category for deletion
 		result = getCommandService().send(
 		        new MarkCategoryForDeletionCommand("" + categoryDto.getId()));
-		assertSuccess(result, ResultCode.CATEGORY_SUCCESSFULLY_MARKED_FOR_DELETION);
+		assertSuccess(result, CategoryMarkedForDeletionResult.class);
 
 		waitUntilNoActiveCategoryIsAvailable();
 
@@ -63,7 +65,7 @@ public final class CategoryUseCaseTest extends AbstractUseCaseTest {
 
 		// Delete category
 		result = getCommandService().send(new DeleteCategoryCommand("" + categoryDto.getId()));
-		assertSuccess(result, ResultCode.CATEGORY_SUCCESSFULLY_DELETED);
+		assertSuccess(result, CategoryDeletedResult.class);
 
 		waitUntilNoMoreCategoriesAreAvailable();
 

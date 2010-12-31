@@ -18,14 +18,14 @@ package org.fuin.auction.command.server.handler;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.fuin.auction.command.api.base.AggregateIdentifierResult;
+import org.fuin.auction.command.api.base.CategoryCreatedResult;
 import org.fuin.auction.command.api.base.CreateCategoryCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.command.server.base.CategoryNameAlreadyExistException;
 import org.fuin.auction.command.server.base.ConstraintSet;
 import org.fuin.auction.command.server.domain.Category;
+import org.fuin.auction.command.server.domain.CategoryNameAlreadyExistException;
 import org.fuin.auction.common.CategoryName;
+import org.fuin.auction.common.OperationResult;
+import org.fuin.axon.support.base.LongAggregateIdentifier;
 
 /**
  * Handler for managing {@link CreateCategoryCommand} commands.
@@ -37,7 +37,7 @@ public class CreateCategoryCommandHandler extends AbstractCreateCategoryCommandH
 	private ConstraintSet constraintSet;
 
 	@Override
-	protected final CommandResult handleIntern(final CreateCategoryCommand command)
+	protected final OperationResult handleIntern(final CreateCategoryCommand command)
 	        throws CategoryNameAlreadyExistException {
 
 		final CategoryName categoryName = new CategoryName(command.getName());
@@ -46,8 +46,8 @@ public class CreateCategoryCommandHandler extends AbstractCreateCategoryCommandH
 		final Category category = new Category(getAggregateIdFactory().create(), categoryName);
 		getRepository().add(category);
 
-		return new AggregateIdentifierResult(ResultCode.CATEGORY_SUCCESSFULLY_CREATED, category
-		        .getIdentifier().toString());
+		return new CategoryCreatedResult(((LongAggregateIdentifier) category.getIdentifier())
+		        .asLong());
 
 	}
 

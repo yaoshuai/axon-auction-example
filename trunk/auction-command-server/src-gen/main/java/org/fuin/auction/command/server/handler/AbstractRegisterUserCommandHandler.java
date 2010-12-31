@@ -17,12 +17,13 @@ package org.fuin.auction.command.server.handler;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.fuin.auction.command.api.base.RegisterUserCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.command.server.base.UserEmailAlreadyExistsException;
-import org.fuin.auction.command.server.base.UserNameAlreadyExistsException;
-import org.fuin.auction.command.server.base.UserNameEmailCombinationAlreadyExistsException;
+import org.fuin.auction.command.api.base.RegisterUserFailedUserEmailAlreadyExistsResult;
+import org.fuin.auction.command.api.base.RegisterUserFailedUserNameAlreadyExistsResult;
+import org.fuin.auction.command.api.base.RegisterUserFailedUserNameEmailCombinationAlreadyExistsResult;
+import org.fuin.auction.command.server.domain.UserEmailAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameAlreadyExistsException;
+import org.fuin.auction.command.server.domain.UserNameEmailCombinationAlreadyExistsException;
+import org.fuin.auction.common.OperationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,7 @@ public abstract class AbstractRegisterUserCommandHandler extends AbstractUserCom
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final RegisterUserCommand command) {
+	public final OperationResult handle(final RegisterUserCommand command) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
 		}
@@ -54,15 +55,15 @@ public abstract class AbstractRegisterUserCommandHandler extends AbstractUserCom
 		} catch (final UserEmailAlreadyExistsException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.DUPLICATE_EMAIL);
+			return new RegisterUserFailedUserEmailAlreadyExistsResult();
 		} catch (final UserNameEmailCombinationAlreadyExistsException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.DUPLICATE_USERNAME_EMAIL_COMBINATION);
+			return new RegisterUserFailedUserNameEmailCombinationAlreadyExistsResult();
 		} catch (final UserNameAlreadyExistsException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.DUPLICATE_USERNAME);
+			return new RegisterUserFailedUserNameAlreadyExistsResult();
 		}
 	}
 
@@ -75,13 +76,13 @@ public abstract class AbstractRegisterUserCommandHandler extends AbstractUserCom
 	 * @return Result of the command.
 	 * 
 	 * @throws UserEmailAlreadyExistsException
-	 *             The email address is already registered with another user
+	 *             ${error.comment}
 	 * @throws UserNameEmailCombinationAlreadyExistsException
-	 *             The combination of user name and email is already registered
+	 *             ${error.comment}
 	 * @throws UserNameAlreadyExistsException
-	 *             The name is already used by another user
+	 *             ${error.comment}
 	 */
-	protected abstract CommandResult handleIntern(final RegisterUserCommand command)
+	protected abstract OperationResult handleIntern(final RegisterUserCommand command)
 	        throws UserEmailAlreadyExistsException, UserNameEmailCombinationAlreadyExistsException,
 	        UserNameAlreadyExistsException;
 }

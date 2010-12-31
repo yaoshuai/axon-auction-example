@@ -17,10 +17,9 @@ package org.fuin.auction.command.server.handler;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.fuin.auction.command.api.base.CreateCategoryCommand;
-import org.fuin.auction.command.api.base.ResultCode;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
-import org.fuin.auction.command.server.base.CategoryNameAlreadyExistException;
+import org.fuin.auction.command.api.base.CreateCategoryFailedNameAlreadyExistResult;
+import org.fuin.auction.command.server.domain.CategoryNameAlreadyExistException;
+import org.fuin.auction.common.OperationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +41,7 @@ public abstract class AbstractCreateCategoryCommandHandler extends AbstractCateg
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final CreateCategoryCommand command) {
+	public final OperationResult handle(final CreateCategoryCommand command) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
 		}
@@ -52,7 +51,7 @@ public abstract class AbstractCreateCategoryCommandHandler extends AbstractCateg
 		} catch (final CategoryNameAlreadyExistException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.CATEGORY_ALREADY_EXISTS);
+			return new CreateCategoryFailedNameAlreadyExistResult();
 		}
 	}
 
@@ -65,8 +64,8 @@ public abstract class AbstractCreateCategoryCommandHandler extends AbstractCateg
 	 * @return Result of the command.
 	 * 
 	 * @throws CategoryNameAlreadyExistException
-	 *             Category name already exists
+	 *             ${error.comment}
 	 */
-	protected abstract CommandResult handleIntern(final CreateCategoryCommand command)
+	protected abstract OperationResult handleIntern(final CreateCategoryCommand command)
 	        throws CategoryNameAlreadyExistException;
 }

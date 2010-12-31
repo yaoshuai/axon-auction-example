@@ -17,12 +17,13 @@ package org.fuin.auction.command.server.handler;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.AggregateNotFoundException;
-import org.fuin.auction.command.api.base.ResultCode;
+import org.fuin.auction.command.api.base.AggregateIdNotFoundResult;
 import org.fuin.auction.command.api.base.UserVerifyEmailCommand;
-import org.fuin.auction.command.api.base.VoidResult;
-import org.fuin.auction.command.api.support.CommandResult;
+import org.fuin.auction.command.api.base.UserVerifyEmailFailedIllegalStateResult;
+import org.fuin.auction.command.api.base.UserVerifyEmailFailedTokenWrongResult;
 import org.fuin.auction.command.server.domain.IllegalUserStateException;
 import org.fuin.auction.command.server.domain.SecurityTokenException;
+import org.fuin.auction.common.OperationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,7 @@ public abstract class AbstractUserVerifyEmailCommandHandler extends AbstractUser
 	 * @return Result of the command.
 	 */
 	@CommandHandler
-	public final CommandResult handle(final UserVerifyEmailCommand command) {
+	public final OperationResult handle(final UserVerifyEmailCommand command) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handle command: " + command.toTraceString());
 		}
@@ -54,15 +55,15 @@ public abstract class AbstractUserVerifyEmailCommandHandler extends AbstractUser
 		} catch (final IllegalUserStateException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.ILLEGAL_USER_STATE);
+			return new UserVerifyEmailFailedIllegalStateResult(ex.getCurrent(), ex.getExpected());
 		} catch (final SecurityTokenException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.USER_EMAIL_VERIFICATION_FAILED);
+			return new UserVerifyEmailFailedTokenWrongResult();
 		} catch (final AggregateNotFoundException ex) {
 			LOG.info(ex.getMessage() + ": " + command.toTraceString());
 
-			return new VoidResult(ResultCode.ID_NOT_FOUND);
+			return new AggregateIdNotFoundResult();
 		}
 	}
 
@@ -77,9 +78,8 @@ public abstract class AbstractUserVerifyEmailCommandHandler extends AbstractUser
 	 * @throws IllegalUserStateException
 	 *             The state of the user was not NEW or RESET.
 	 * @throws SecurityTokenException
-	 *             The given token was not equal to the user's verification
-	 *             token.
+	 *             The security token was not equal to the one sent with email.
 	 */
-	protected abstract CommandResult handleIntern(final UserVerifyEmailCommand command)
+	protected abstract OperationResult handleIntern(final UserVerifyEmailCommand command)
 	        throws IllegalUserStateException, SecurityTokenException;
 }

@@ -15,26 +15,18 @@
  */
 package org.fuin.auction.command.server.domain;
 
-import org.fuin.auction.common.CategoryState;
+// GENERATED CODE - DO NOT EDIT!
 
 /**
- * The state of the category is not as expected.
+ * The category name already exists
  */
-public final class IllegalCategoryStateException extends AbstractIllegalStateException {
-
-	private static final long serialVersionUID = 1578737429376160011L;
+public class CategoryNameAlreadyExistException extends AbstractBaseException {
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with states.
-	 * 
-	 * @param currentState
-	 *            Current state.
-	 * @param expected
-	 *            Expected states.
+	 * Default constructor.
 	 */
-	public IllegalCategoryStateException(final CategoryState currentState,
-	        final CategoryState... expected) {
-		super(currentState, expected);
+	public CategoryNameAlreadyExistException() {
+		super("The category name already exists");
 	}
-
 }

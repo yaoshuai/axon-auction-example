@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fuin.auction.command.server.base;
+package org.fuin.auction.command.server.domain;
 
-import org.fuin.auction.common.CategoryName;
+// GENERATED CODE - DO NOT EDIT!
 
 /**
- * The name is already assigned to another category.
+ * The old password is not equal to the stored password
  */
-public class CategoryNameAlreadyExistException extends Exception {
-
+public class PasswordMismatchException extends AbstractBaseException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with name.
-	 * 
-	 * @param categoryName
-	 *            Category name.
+	 * Default constructor.
 	 */
-	public CategoryNameAlreadyExistException(final CategoryName categoryName) {
-		super();
+	public PasswordMismatchException() {
+		super("The old password is not equal to the stored password");
 	}
-
 }
