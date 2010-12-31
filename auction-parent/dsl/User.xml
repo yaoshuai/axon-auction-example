@@ -22,17 +22,22 @@
   
     	<constructor name="RegisterUserCommand" comment="Registers a new user." version="100">
     
-      		<property no="1" name="userName" type="@userName"/>
-      		<property no="2" name="password" type="Password" nullable="false" comment="Clear text password.">
-				<label text="Password"/>
-				<textfield/>
-			</property>
-      		<property no="3" name="email" type="@email"/>
-      
-      		<error no="103" key="DUPLICATE_EMAIL" comment="The email address is already registered with another user." exception="UserEmailAlreadyExistsException"/>
-      		<error no="101" key="DUPLICATE_USERNAME_EMAIL_COMBINATION" comment="The combination of user name and email is already registered." exception="UserNameEmailCombinationAlreadyExistsException"/>
-      		<error no="102" key="DUPLICATE_USERNAME" comment="The name is already used by another user." exception="UserNameAlreadyExistsException"/>
-      		<success no="104" key="USER_SUCCESSFULLY_REGISTERED" comment="You registered successfully! A confirmation email has been sent to you."/>
+    		<properties>
+	      		<property no="1" name="userName" type="@userName"/>
+	      		<property no="2" name="password" type="Password" nullable="false" comment="Clear text password.">
+					<label text="Password"/>
+					<textfield/>
+				</property>
+	      		<property no="3" name="email" type="@email"/>
+      		</properties>
+      		<errors>
+	      		<error no="101" name="RegisterUserFailedUserEmailAlreadyExistsResult" exception="UserEmailAlreadyExistsException" version="100"/>
+	      		<error no="102" name="RegisterUserFailedUserNameEmailCombinationAlreadyExistsResult" exception="UserNameEmailCombinationAlreadyExistsException" version="100"/>
+	      		<error no="103" name="RegisterUserFailedUserNameAlreadyExistsResult" exception="UserNameAlreadyExistsException" version="100"/>
+      		</errors>
+      		<success no="104" name="UserCreatedResult" message="You registered successfully! A confirmation email has been sent to you." comment="A new user was successfully created."  version="100">
+				<property no="1" name="id" type="UUID" comment="Unique identifier." />
+      		</success>
      
       		<event name="UserCreatedEvent" comment="A new user was created." version="100">
 	      
@@ -55,17 +60,21 @@
     
 		<command name="UserChangePasswordCommand" method="changePassword" comment="Changes the user's password." version="100">
 			
-	    	<property name="oldPassword" type="Password" nullable="false" traceExclude="true" comment="Old clear text password.">
-				<label text="Old password"/>
-				<textfield width="50"/>
-	    	</property>
-			<property name="newPassword" type="Password" nullable="false" traceExclude="true" comment="New clear text password.">
-				<label text="New password"/>
-				<textfield width="50"/>
-			</property>
-		
-			<error no="105" key="PASSWORD_WRONG" exception="PasswordMismatchException" comment="The old password is not equal to the stored password."/>
-      		<success no="106" key="PASSWORD_SUCCESSFULLY_CHANGED" comment="The password was successfully changed."/>
+			<properties>
+		    	<property name="oldPassword" type="Password" nullable="false" traceExclude="true" comment="Old clear text password.">
+					<label text="Old password"/>
+					<textfield width="50"/>
+		    	</property>
+				<property name="newPassword" type="Password" nullable="false" traceExclude="true" comment="New clear text password.">
+					<label text="New password"/>
+					<textfield width="50"/>
+				</property>
+			</properties>
+
+			<errors>		
+				<error no="105" name="UserChangePasswordMismatchResult" exception="PasswordMismatchException" comment="The user's password was not equal to the old password sent with the command."  version="100"/>
+      		</errors>
+      		<success no="106" name="UserPasswordChangedResult" message="The password was successfully changed" comment="The stored and the old password sent with the command matched and the user's password was changed."  version="100"/>
 	
 			<event name="UserPasswordChangedEvent" comment="The password of a user was changed." version="100">
 
@@ -81,15 +90,22 @@
 		</command>
 		
 		<command name="UserVerifyEmailCommand" method="verifyEmail" excludeAggregateId="true" comment="Verifies the user's email by checking the verification token." version="100">
+
+			<properties>	
+				<property name="securityToken" type="String" nullable="false" comment="Token to compare with the internal token.">
+					<label text="Security Token"/>
+					<textfield width="100"/>
+				</property>
+			</properties>
 	
-			<property name="securityToken" type="String" nullable="false" comment="Token to compare with the internal token.">
-				<label text="Security Token"/>
-				<textfield width="100"/>
-			</property>
-	
-			<error no="117" key="ILLEGAL_USER_STATE" exception="IllegalUserStateException" comment="The state of the user was not NEW or RESET."/>
-			<error no="108" key="USER_EMAIL_VERIFICATION_FAILED" exception="SecurityTokenException" comment="The given token was not equal to the user's verification token."/>
-			<success no="109" key="USER_EMAIL_VERIFIED" comment="Your email address was confirmed successfully."/>
+			<errors>
+				<error no="107" name="UserVerifyEmailFailedIllegalStateResult" exception="IllegalUserStateException" comment="The state of the user was not NEW or RESET." version="100">
+					<property no="1" name="current" type="UserState" nullable="false" comment="Current state."/>
+					<property no="2" name="expected" type="UserState" multiplicity="ONE_OR_MORE" nullable="false" comment="Expected states."/>
+				</error>
+				<error no="108" name="UserVerifyEmailFailedTokenWrongResult" exception="SecurityTokenException" comment="The security token was not equal to the one sent with email."  version="100"/>
+			</errors>
+			<success no="109" name="UserEmailVerifiedResult" message="Your email address was confirmed successfully" comment="The security token was equal to the one sent to the user by email."  version="100" />
 	
 			<event name="UserEmailVerifiedEvent" comment="The email address of a user was verified." version="100">
 				
