@@ -64,7 +64,7 @@ public abstract class AbstractCreateCategoryCommandHandler extends AbstractCateg
 	 * @return Result of the command.
 	 * 
 	 * @throws CategoryNameAlreadyExistException
-	 *             ${error.comment}
+	 *             The category name already exists
 	 */
 	protected abstract OperationResult handleIntern(final CreateCategoryCommand command)
 	        throws CategoryNameAlreadyExistException;
