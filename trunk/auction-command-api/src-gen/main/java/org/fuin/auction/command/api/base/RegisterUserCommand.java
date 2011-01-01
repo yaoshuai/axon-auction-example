@@ -37,7 +37,7 @@ public final class RegisterUserCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
-	/**  */
+	/** Human readable unique name of the user. */
 	@NotNull
 	@UserNameStr
 	@Label("User name")
@@ -51,7 +51,7 @@ public final class RegisterUserCommand implements Operation {
 	@TextField
 	private String password;
 
-	/**  */
+	/** Email address. */
 	@NotNull
 	@EmailAddressStr
 	@Label("Email address")
@@ -69,9 +69,11 @@ public final class RegisterUserCommand implements Operation {
 	 * Constructor with all attributes.
 	 * 
 	 * @param userName
+	 *            Human readable unique name of the user.
 	 * @param password
 	 *            Clear text password.
 	 * @param email
+	 *            Email address.
 	 * 
 	 */
 	public RegisterUserCommand(final String userName, final String password, final String email) {
@@ -88,7 +90,7 @@ public final class RegisterUserCommand implements Operation {
 	}
 
 	/**
-	 * Sets:
+	 * Sets: Human readable unique name of the user.
 	 * 
 	 * @param userName
 	 *            Value to set.
@@ -98,7 +100,7 @@ public final class RegisterUserCommand implements Operation {
 	}
 
 	/**
-	 * Returns:
+	 * Returns: Human readable unique name of the user.
 	 * 
 	 * @return UserName
 	 */
@@ -126,7 +128,7 @@ public final class RegisterUserCommand implements Operation {
 	}
 
 	/**
-	 * Sets:
+	 * Sets: Email address.
 	 * 
 	 * @param email
 	 *            Value to set.
@@ -136,7 +138,7 @@ public final class RegisterUserCommand implements Operation {
 	}
 
 	/**
-	 * Returns:
+	 * Returns: Email address.
 	 * 
 	 * @return Email
 	 */
