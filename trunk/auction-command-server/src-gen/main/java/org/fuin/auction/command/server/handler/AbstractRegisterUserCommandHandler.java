@@ -76,11 +76,11 @@ public abstract class AbstractRegisterUserCommandHandler extends AbstractUserCom
 	 * @return Result of the command.
 	 * 
 	 * @throws UserEmailAlreadyExistsException
-	 *             ${error.comment}
+	 *             The email address is already registered by another user
 	 * @throws UserNameEmailCombinationAlreadyExistsException
-	 *             ${error.comment}
+	 *             The combination of user name and email is already registered
 	 * @throws UserNameAlreadyExistsException
-	 *             ${error.comment}
+	 *             The name is already used by another user
 	 */
 	protected abstract OperationResult handleIntern(final RegisterUserCommand command)
 	        throws UserEmailAlreadyExistsException, UserNameEmailCombinationAlreadyExistsException,
