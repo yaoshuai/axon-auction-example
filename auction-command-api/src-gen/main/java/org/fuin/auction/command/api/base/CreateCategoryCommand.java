@@ -34,7 +34,7 @@ public final class CreateCategoryCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
-	/**  */
+	/** Decriptive name. */
 	@NotNull
 	@Label("Category name")
 	@TextField
@@ -51,6 +51,7 @@ public final class CreateCategoryCommand implements Operation {
 	 * Constructor with all attributes.
 	 * 
 	 * @param name
+	 *            Decriptive name.
 	 * 
 	 */
 	public CreateCategoryCommand(final String name) {
@@ -65,7 +66,7 @@ public final class CreateCategoryCommand implements Operation {
 	}
 
 	/**
-	 * Sets:
+	 * Sets: Decriptive name.
 	 * 
 	 * @param name
 	 *            Value to set.
@@ -75,7 +76,7 @@ public final class CreateCategoryCommand implements Operation {
 	}
 
 	/**
-	 * Returns:
+	 * Returns: Decriptive name.
 	 * 
 	 * @return Name
 	 */

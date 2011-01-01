@@ -34,8 +34,6 @@ public final class UserVerifyEmailCommand implements Operation {
 	private static final long serialVersionUID = 100L;
 	private long version = serialVersionUID;
 
-	/** Unique aggregate id. */
-
 	/** Token to compare with the internal token. */
 	@NotNull
 	@Label("Security Token")
