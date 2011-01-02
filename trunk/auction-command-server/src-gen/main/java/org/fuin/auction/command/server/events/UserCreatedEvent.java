@@ -31,13 +31,13 @@ import org.fuin.objects4j.UserName;
 public final class UserCreatedEvent extends DomainEvent implements ExtendedDomainEvent {
 	private static final long serialVersionUID = 100L;
 
-	/**  */
+	/** Human readable unique name of the user. */
 	private UserName userName;
 
 	/** Password hash. */
 	private PasswordSha512 password;
 
-	/**  */
+	/** Email address. */
 	private EmailAddress email;
 
 	/** Generated security token to verify the email address. */
@@ -54,9 +54,11 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	 * Constructor with all attributes.
 	 * 
 	 * @param userName
+	 *            Human readable unique name of the user.
 	 * @param password
 	 *            Password hash.
 	 * @param email
+	 *            Email address.
 	 * @param securityToken
 	 *            Generated security token to verify the email address.
 	 * 
@@ -72,7 +74,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	}
 
 	/**
-	 * Returns:
+	 * Returns: Human readable unique name of the user.
 	 * 
 	 * @return UserName
 	 */
@@ -90,7 +92,7 @@ public final class UserCreatedEvent extends DomainEvent implements ExtendedDomai
 	}
 
 	/**
-	 * Returns:
+	 * Returns: Email address.
 	 * 
 	 * @return Email
 	 */
