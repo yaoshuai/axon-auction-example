@@ -8,7 +8,7 @@ Explains how to run the example application.
 
 The application isn't complete yet in any way, but...
 
-You can run a "main(String[])" method example:
+You can run a test method an trace the commands:
 
  # Check out all projects from the SVN trunk
  # Build the projects with Maven using the [http://code.google.com/p/axon-auction-example/source/browse/#svn/trunk/auction-root auction-root] project
