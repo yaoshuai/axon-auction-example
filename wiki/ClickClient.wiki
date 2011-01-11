@@ -7,5 +7,7 @@ The *auction-client-click* project is an [http://click.apache.org/ Apache Click]
 http://axon-auction-example.googlecode.com/svn/www/auction-client-click-dependency.gif
 
 = Preview =
+
 Here is a first screenshot of the registration screen:
+
 http://axon-auction-example.googlecode.com/svn/www/register-user-screenshot.jpg
