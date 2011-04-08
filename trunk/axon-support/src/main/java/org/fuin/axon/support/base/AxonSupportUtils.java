@@ -21,7 +21,6 @@ import org.axonframework.serializer.AggregateIdentifierConverter;
 import org.fuin.serialver4j.hessian.UUIDDeserializer;
 import org.fuin.serialver4j.hessian.UUIDSerializer;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 
 import com.caucho.hessian.io.ExtSerializerFactory;
 import com.caucho.hessian.io.SerializerFactory;
@@ -48,9 +47,8 @@ public final class AxonSupportUtils {
 	public static SerializerFactory createSerializerFactory() {
 
 		final ExtSerializerFactory extSerializerFactory = new ExtSerializerFactory();
-		extSerializerFactory.addSerializer(LocalDateTime.class, new JodaLocalDateTimeSerializer());
-		extSerializerFactory.addDeserializer(LocalDateTime.class,
-		        new JodaLocalDateTimeDeserializer());
+		extSerializerFactory.addSerializer(DateTime.class, new JodaDateTimeSerializer());
+		extSerializerFactory.addDeserializer(DateTime.class, new JodaDateTimeDeserializer());
 		extSerializerFactory.addSerializer(UUID.class, new UUIDSerializer());
 		extSerializerFactory.addDeserializer(UUID.class, new UUIDDeserializer());
 		final SerializerFactory serializerFactory = new SerializerFactory();
@@ -69,7 +67,6 @@ public final class AxonSupportUtils {
 		xstream.registerConverter(new JodaTimeConverter());
 		xstream.addImmutableType(UUID.class);
 		xstream.registerConverter(new AggregateIdentifierConverter());
-		xstream.aliasType("localDateTime", LocalDateTime.class);
 		xstream.aliasType("dateTime", DateTime.class);
 		xstream.aliasType("uuid", UUID.class);
 		return xstream;

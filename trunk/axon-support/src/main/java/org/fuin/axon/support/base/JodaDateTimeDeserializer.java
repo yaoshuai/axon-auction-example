@@ -18,25 +18,25 @@ package org.fuin.axon.support.base;
 import java.io.IOException;
 
 import org.fuin.serialver4j.hessian.BaseDeserializer;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 
 import com.caucho.hessian.io.AbstractHessianInput;
 
 /**
- * Deserializes Joda {@link LocalDateTime} objects.
+ * Deserializes Joda {@link DateTime} objects.
  */
-public final class JodaLocalDateTimeDeserializer extends BaseDeserializer {
+public final class JodaDateTimeDeserializer extends BaseDeserializer {
 
 	@Override
 	public final Class<?> getType() {
-		return LocalDateTime.class;
+		return DateTime.class;
 	}
 
 	@Override
 	protected final Object readValue(final AbstractHessianInput in) throws IOException {
 		final long millis = in.readUTCDate();
-		return new LocalDateTime(millis, DateTimeZone.UTC);
+		return new DateTime(millis, DateTimeZone.UTC);
 	}
 
 }

@@ -17,6 +17,7 @@ package org.fuin.axon.support.base;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,7 +39,6 @@ import org.fuin.serialver4j.xstream.VersioningXStreamSerializer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.io.FileSystemResource;
 
 /**
  * Tests event store with different serializers.
@@ -181,7 +181,7 @@ public class FileSystemEventStoreTest {
 	        final VersioningSerializer versioningSerializer) {
 		final FileSystemEventStore eventStore = new FileSystemEventStore(
 		        new VersioningEventSerializer(versioningSerializer));
-		eventStore.setBaseDir(new FileSystemResource("target/"));
+		eventStore.setBaseDir(new File("target"));
 		return eventStore;
 	}
 

@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class JodaTimeConverterTest {
 	@Test
 	public final void testCanConvert() {
 		assertThat(testee.canConvert(this.getClass())).isFalse();
-		assertThat(testee.canConvert(LocalDateTime.class)).isTrue();
+		assertThat(testee.canConvert(DateTime.class)).isTrue();
 	}
 
 	@Test
@@ -62,13 +62,13 @@ public class JodaTimeConverterTest {
 		// PREPARE
 		final HierarchicalStreamWriter writer = mock(HierarchicalStreamWriter.class);
 		final MarshallingContext context = mock(MarshallingContext.class);
-		final LocalDateTime localDateTime = new LocalDateTime(0);
+		final DateTime localDateTime = new DateTime(0);
 
 		// TEST
 		testee.marshal(localDateTime, writer, context);
 
 		// ASSERT
-		verify(writer).setValue("1970-01-01T01:00:00.000");
+		verify(writer).setValue("1970-01-01T01:00:00.000+01:00");
 
 	}
 
@@ -78,14 +78,14 @@ public class JodaTimeConverterTest {
 		// PREPARE
 		final HierarchicalStreamReader reader = mock(HierarchicalStreamReader.class);
 		final UnmarshallingContext context = mock(UnmarshallingContext.class);
-		when(context.getRequiredType()).thenReturn(LocalDateTime.class);
-		when(reader.getValue()).thenReturn("1970-01-01T01:00:00.000");
+		when(context.getRequiredType()).thenReturn(DateTime.class);
+		when(reader.getValue()).thenReturn("1970-01-01T01:00:00.000+01:00");
 
 		// TEST
 		final Object result = testee.unmarshal(reader, context);
 
 		// ASSERT
-		assertThat(result).isEqualTo(new LocalDateTime(0));
+		assertThat(result).isEqualTo(new DateTime(0));
 
 	}
 

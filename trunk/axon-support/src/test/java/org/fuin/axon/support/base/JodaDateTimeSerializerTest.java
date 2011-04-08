@@ -15,33 +15,32 @@
  */
 package org.fuin.axon.support.base;
 
-import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.caucho.hessian.io.AbstractHessianInput;
+import com.caucho.hessian.io.AbstractHessianOutput;
 
 /**
- * Test {@link JodaLocalDateTimeDeserializer}.
+ * Test {@link JodaDateTimeSerializer}.
  * 
  * @author Michael Schnell
  */
 // TESTCODE:BEGIN
-public class JodaLocalDateTimeDeserializerTest {
+public class JodaDateTimeSerializerTest {
 
-	private JodaLocalDateTimeDeserializer testee;
+	private JodaDateTimeSerializer testee;
 
 	@Before
 	public final void setUp() {
-		testee = new JodaLocalDateTimeDeserializer();
+		testee = new JodaDateTimeSerializer();
 	}
 
 	@After
@@ -50,18 +49,18 @@ public class JodaLocalDateTimeDeserializerTest {
 	}
 
 	@Test
-	public final void testReadValue() throws IOException {
+	public final void testWriteValue() throws IOException {
 
 		// PREPARE
-		final AbstractHessianInput in = mock(AbstractHessianInput.class);
-		when(in.readUTCDate()).thenReturn(0L);
+		final AbstractHessianOutput out = mock(AbstractHessianOutput.class);
+		final DateTime dateTime = new DateTime(0);
+		final long millis = dateTime.toDateTime(DateTimeZone.UTC).getMillis();
 
 		// TEST
-		final Object result = testee.readValue(in);
+		testee.writeValue(out, dateTime);
 
 		// ASSERT
-		assertThat(result).isNotNull();
-		assertThat(result).isEqualTo(new LocalDateTime(0, DateTimeZone.UTC));
+		verify(out).writeUTCDate(millis);
 
 	}
 
