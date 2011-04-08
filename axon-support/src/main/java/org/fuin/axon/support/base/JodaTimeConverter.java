@@ -18,7 +18,7 @@ package org.fuin.axon.support.base;
 import java.lang.reflect.Constructor;
 
 import org.axonframework.util.SerializationException;
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -36,7 +36,7 @@ public final class JodaTimeConverter implements Converter {
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean canConvert(final Class type) {
-		return (type != null) && LocalDateTime.class.getPackage().equals(type.getPackage());
+		return (type != null) && DateTime.class.getPackage().equals(type.getPackage());
 	}
 
 	@Override

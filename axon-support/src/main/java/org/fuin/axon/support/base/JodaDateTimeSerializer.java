@@ -18,21 +18,21 @@ package org.fuin.axon.support.base;
 import java.io.IOException;
 
 import org.fuin.serialver4j.hessian.BaseSerializer;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 
 import com.caucho.hessian.io.AbstractHessianOutput;
 
 /**
- * Serializes Joda {@link LocalDateTime} objects.
+ * Serializes Joda {@link DateTime} objects.
  */
-public final class JodaLocalDateTimeSerializer extends BaseSerializer {
+public final class JodaDateTimeSerializer extends BaseSerializer {
 
 	@Override
 	protected final void writeValue(final AbstractHessianOutput out, final Object obj)
 	        throws IOException {
-		final LocalDateTime localDateTime = (LocalDateTime) obj;
-		final long millis = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();
+		final DateTime dateTime = (DateTime) obj;
+		final long millis = dateTime.toDateTime(DateTimeZone.UTC).getMillis();
 		out.writeUTCDate(millis);
 	}
 
