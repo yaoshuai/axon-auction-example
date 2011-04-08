@@ -59,7 +59,7 @@
 	
 	<bean id="eventStore" class="org.axonframework.eventstore.fs.FileSystemEventStore">
 		<property name="baseDir">
-			<bean class="org.springframework.core.io.FileSystemResource">
+			<bean class="java.io.File">
 				<constructor-arg value="${java.io.tmpdir}/axon-auction-example/" />
 			</bean>
 		</property>
