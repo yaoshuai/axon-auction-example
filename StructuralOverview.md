@@ -1,0 +1,1 @@
+![http://axon-auction-example.googlecode.com/svn/www/project-structure.gif](http://axon-auction-example.googlecode.com/svn/www/project-structure.gif)
